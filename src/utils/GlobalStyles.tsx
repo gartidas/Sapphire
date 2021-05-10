@@ -15,6 +15,26 @@ body{
 *{
   color:${({ theme }) => theme.primary};
 }
+
+.Toastify__toast-container {
+    @media only screen and (max-width: 480px) {
+      width: min(92%, 350px);
+      padding: 4px;
+      left: auto;
+      top: 1rem;
+      margin: 0;
+    }
+    .Toastify__toast {
+      padding: 0;
+      min-height: 0px;
+      margin-bottom: 0.2rem !important;
+      .Toastify__toast-body {
+        width: 100%;
+        padding: 0;
+        background-color: ${({ theme }) => theme.secondary};
+      }
+    }
+  }
 `;
 
 export default GlobalStyles;

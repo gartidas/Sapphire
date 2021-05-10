@@ -75,7 +75,7 @@ const HomeTemplate = () => {
       <TimelineWrapper>
         <Timeline align="alternate">
           {memories.map((x) => (
-            <TimelineItem>
+            <TimelineItem key={x.id}>
               <TimelineSeparator>
                 <TimelineDot className={classes.timelineDot} />
                 <TimelineConnector className={classes.timelineConnector} />
