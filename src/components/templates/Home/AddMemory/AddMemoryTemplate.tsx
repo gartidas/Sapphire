@@ -67,7 +67,8 @@ const AddMemoryTemplate = ({ file, setFile, setModalOpen }: AddMemoryProps) => {
       //TODO: read response
       await projectFirestore
         .collection("/memories")
-        .add(memory)
+        .doc(memory.date.toString())
+        .set(memory)
         .catch(errorToast);
 
       successToast("Memory added!");
