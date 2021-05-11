@@ -28,11 +28,17 @@ interface ICloudinaryResponse {
 
 interface AddMemoryProps {
   file: File | undefined;
+  memories: IMemoryData[];
   setFile: (file: File | undefined) => void;
   setModalOpen: (open: boolean) => void;
 }
 
-const AddMemoryTemplate = ({ file, setFile, setModalOpen }: AddMemoryProps) => {
+const AddMemoryTemplate = ({
+  file,
+  setFile,
+  setModalOpen,
+  memories,
+}: AddMemoryProps) => {
   const { register, handleSubmit, errors, setError } = useForm<IMemoryData>();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState<MaterialUiPickersDate>(
@@ -54,9 +60,18 @@ const AddMemoryTemplate = ({ file, setFile, setModalOpen }: AddMemoryProps) => {
 
   const onSubmit = async (data: IMemoryData) => {
     try {
-      if (!file) return;
+      if (!file) {
+        errorToast("File not set!");
+        return;
+      }
+
+      if (memories.find((x) => x.date === data.date)) {
+        errorToast("Memory already exists!");
+        return;
+      }
+
       setIsLoading(true);
-      const cloudinaryResponse = await uploadImage(data.date.toString(), file);
+      const cloudinaryResponse = await uploadImage(data.date.toString(), file!);
 
       if (!cloudinaryResponse) return;
 
@@ -64,7 +79,7 @@ const AddMemoryTemplate = ({ file, setFile, setModalOpen }: AddMemoryProps) => {
         ...data,
         imageUrl: cloudinaryResponse.secure_url,
       };
-      //TODO: read response
+
       await projectFirestore
         .collection("/memories")
         .doc(memory.date.toString())

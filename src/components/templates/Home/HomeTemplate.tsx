@@ -99,6 +99,7 @@ const HomeTemplate = () => {
             file={file}
             setFile={setFile}
             setModalOpen={setModalOpen}
+            memories={memories}
           />
         </Modal>
       )}
