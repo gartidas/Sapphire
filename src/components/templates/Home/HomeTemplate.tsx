@@ -13,10 +13,11 @@ import { makeStyles } from "@material-ui/core";
 
 import Modal from "../../elements/Modal";
 import AddMemoryTemplate from "./AddMemory/AddMemoryTemplate";
-import { IMemoryData } from "../../../utils/types";
+import { IMemoryData, ModalType } from "../../../utils/types";
 import { projectFirestore } from "../../../firebase/config";
 
 import { AddButton, TimelineWrapper, Wrapper } from "./HomeTemplate.styled";
+import MemoryDetail from "./MemoryDetail/MemoryDetail";
 
 const useStyles = makeStyles((theme) => ({
   timelineDot: {
@@ -44,6 +45,7 @@ const HomeTemplate = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [file, setFile] = useState<File>();
   const [memories, setMemories] = useState<IMemoryData[]>([]);
+  const [modalType, setModalType] = useState<ModalType>();
 
   const fetchData = useCallback(() => {
     projectFirestore
@@ -67,9 +69,14 @@ const HomeTemplate = () => {
     setMemories(documents);
   };
 
+  const openModal = (modalType: ModalType) => {
+    setModalType(modalType);
+    setModalOpen(true);
+  };
+
   return (
     <Wrapper>
-      <AddButton onClick={() => setModalOpen(true)}>
+      <AddButton onClick={() => openModal(ModalType.Add)}>
         <Add />
       </AddButton>
       <TimelineWrapper>
@@ -77,7 +84,12 @@ const HomeTemplate = () => {
           {memories.map((x) => (
             <TimelineItem key={x.id}>
               <TimelineSeparator>
-                <TimelineDot className={classes.timelineDot} />
+                <div
+                  onClick={() => openModal(ModalType.Detail)}
+                  style={{ borderRadius: "50%" }}
+                >
+                  <TimelineDot className={classes.timelineDot} />
+                </div>
                 <TimelineConnector className={classes.timelineConnector} />
               </TimelineSeparator>
               <TimelineContent className={classes.timelineContent}>
@@ -92,15 +104,22 @@ const HomeTemplate = () => {
           open
           onClose={() => {
             setModalOpen(false);
+            setModalType(undefined);
             setFile(undefined);
           }}
         >
-          <AddMemoryTemplate
-            file={file}
-            setFile={setFile}
-            setModalOpen={setModalOpen}
-            memories={memories}
-          />
+          <>
+            {modalType === ModalType.Add && (
+              <AddMemoryTemplate
+                file={file}
+                setFile={setFile}
+                setModalOpen={setModalOpen}
+                memories={memories}
+              />
+            )}
+
+            {modalType === ModalType.Detail && <MemoryDetail />}
+          </>
         </Modal>
       )}
     </Wrapper>

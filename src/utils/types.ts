@@ -16,3 +16,9 @@ export interface IMemoryData {
   date: Date;
   description: string;
 }
+
+export enum ModalType {
+  Add,
+  Edit,
+  Detail,
+}
