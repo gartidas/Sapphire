@@ -29,14 +29,14 @@ interface ICloudinaryResponse {
 interface AddMemoryProps {
   file: File | undefined;
   memories: IMemoryData[];
-  setFile: (file: File | undefined) => void;
-  setModalOpen: (open: boolean) => void;
+  setFile: (file?: File) => void;
+  onClose: () => void;
 }
 
 const AddMemoryTemplate = ({
   file,
   setFile,
-  setModalOpen,
+  onClose,
   memories,
 }: AddMemoryProps) => {
   const { register, handleSubmit, errors, setError } = useForm<IMemoryData>();
@@ -87,8 +87,8 @@ const AddMemoryTemplate = ({
         .catch(errorToast);
 
       successToast("Memory added!");
-      setFile(undefined);
-      setModalOpen(false);
+      setFile();
+      onClose();
     } catch (err) {
       setError(err.field, err.error);
     }
