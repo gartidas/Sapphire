@@ -1,4 +1,4 @@
-import { Button as MuiButton } from "@material-ui/core";
+import { IconButton as MuiButton } from "@material-ui/core";
 import styled from "styled-components";
 
 import { NAVBAR_HEIGHT } from "../../modules/Navbar/Navbar.styled";
