@@ -22,3 +22,16 @@ export enum ModalType {
   Edit,
   Detail,
 }
+
+export type OpenedModalType =
+  | {
+      type: ModalType.Add;
+    }
+  | {
+      type: ModalType.Detail;
+      memory: IMemoryData;
+    }
+  | {
+      type: ModalType.Edit;
+      memory: IMemoryData;
+    };

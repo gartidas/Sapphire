@@ -1,4 +1,5 @@
-import { IMemoryData } from "../../../../utils/types";
+import { IMemoryData, OpenedModalType } from "../../../../utils/types";
+import ModalButtons from "../../../modules/ModalButtons/ModalButtons";
 
 import {
   Wrapper,
@@ -6,13 +7,14 @@ import {
   WrapperRightSide,
   DetailTitle,
   DetailDescription,
-} from "./MemoryDetail.styled";
+} from "./MemoryDetailTemplate.styled";
 
 interface IMemoryDetailProps {
   openedMemory: IMemoryData;
+  setOpenedModal: (openedModal: OpenedModalType) => void;
 }
 
-const MemoryDetail = ({ openedMemory }: IMemoryDetailProps) => {
+const MemoryDetail = ({ openedMemory, setOpenedModal }: IMemoryDetailProps) => {
   return (
     <Wrapper>
       <StyledImage src={openedMemory.imageUrl} />
@@ -20,6 +22,10 @@ const MemoryDetail = ({ openedMemory }: IMemoryDetailProps) => {
         <DetailTitle>{openedMemory.date}</DetailTitle>
         <DetailDescription>{openedMemory.description}</DetailDescription>
       </WrapperRightSide>
+      <ModalButtons
+        openedMemory={openedMemory}
+        setOpenedModal={setOpenedModal}
+      />
     </Wrapper>
   );
 };

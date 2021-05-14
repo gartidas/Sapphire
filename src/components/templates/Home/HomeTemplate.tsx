@@ -12,12 +12,13 @@ import {
 import { makeStyles } from "@material-ui/core";
 
 import Modal from "../../elements/Modal";
-import AddMemoryTemplate from "./AddMemory/AddMemoryTemplate";
-import { IMemoryData, ModalType } from "../../../utils/types";
+import { IMemoryData, ModalType, OpenedModalType } from "../../../utils/types";
 import { projectFirestore } from "../../../firebase/config";
+import AddMemoryTemplate from "./AddMemory/AddMemoryTemplate";
+import MemoryDetail from "./MemoryDetail/MemoryDetailTemplate";
+import EditMemoryTemplate from "./EditMemoryTemplate/EditMemoryTemplate";
 
 import { AddButton, TimelineWrapper, Wrapper } from "./HomeTemplate.styled";
-import MemoryDetail from "./MemoryDetail/MemoryDetail";
 
 const useStyles = makeStyles((theme) => ({
   timelineDot: {
@@ -39,19 +40,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
 }));
-
-type OpenedModalType =
-  | {
-      type: ModalType.Add;
-    }
-  | {
-      type: ModalType.Detail;
-      memory: IMemoryData;
-    }
-  | {
-      type: ModalType.Edit;
-      memory: IMemoryData;
-    };
 
 const HomeTemplate = () => {
   const classes = useStyles();
@@ -127,8 +115,13 @@ const HomeTemplate = () => {
             )}
 
             {openedModal.type === ModalType.Detail && (
-              <MemoryDetail openedMemory={openedModal.memory} />
+              <MemoryDetail
+                openedMemory={openedModal.memory}
+                setOpenedModal={setOpenedModal}
+              />
             )}
+
+            {openedModal.type === ModalType.Edit && <EditMemoryTemplate />}
           </>
         </Modal>
       )}
