@@ -7,6 +7,7 @@ const useStyles = makeStyles(() => ({
   paper: {
     backgroundColor: theme.secondary,
     minWidth: "50%",
+    maxHeight: "80%",
     textAlign: "center",
   },
 }));

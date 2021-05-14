@@ -1,6 +1,12 @@
 import { IMemoryData } from "../../../../utils/types";
 
-import { Wrapper, StyledImage, WrapperRightSide } from "./MemoryDetail.styled";
+import {
+  Wrapper,
+  StyledImage,
+  WrapperRightSide,
+  DetailTitle,
+  DetailDescription,
+} from "./MemoryDetail.styled";
 
 interface IMemoryDetailProps {
   openedMemory: IMemoryData;
@@ -11,8 +17,8 @@ const MemoryDetail = ({ openedMemory }: IMemoryDetailProps) => {
     <Wrapper>
       <StyledImage src={openedMemory.imageUrl} />
       <WrapperRightSide>
-        <h1>{openedMemory.date}</h1>
-        <p>{openedMemory.description}</p>
+        <DetailTitle>{openedMemory.date}</DetailTitle>
+        <DetailDescription>{openedMemory.description}</DetailDescription>
       </WrapperRightSide>
     </Wrapper>
   );
