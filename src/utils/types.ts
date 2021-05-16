@@ -35,3 +35,5 @@ export type OpenedModalType =
       type: ModalType.Edit;
       memory: IMemoryData;
     };
+
+export type SetError = (name: keyof IMemoryData, error: ErrorOption) => void;

@@ -121,7 +121,15 @@ const HomeTemplate = () => {
               />
             )}
 
-            {openedModal.type === ModalType.Edit && <EditMemoryTemplate />}
+            {openedModal.type === ModalType.Edit && (
+              <EditMemoryTemplate
+                file={file}
+                setFile={setFile}
+                memories={memories}
+                onClose={() => setOpenedModal(undefined)}
+                openedMemory={openedModal.memory}
+              />
+            )}
           </>
         </Modal>
       )}

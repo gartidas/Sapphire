@@ -5,11 +5,11 @@ import firebase from "firebase/app";
 import { projectAuth } from "../firebase/config";
 import PageLoader from "../components/modules/PageLoader/PageLoader";
 
-interface AuthContextValue {
+interface IAuthContextValue {
   user?: firebase.User;
 }
 
-const AuthContext = createContext<AuthContextValue>(null!);
+const AuthContext = createContext<IAuthContextValue>(null!);
 
 export const useAuth = () => useContext(AuthContext);
 

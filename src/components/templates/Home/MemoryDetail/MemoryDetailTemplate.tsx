@@ -11,7 +11,7 @@ import {
 
 interface IMemoryDetailProps {
   openedMemory: IMemoryData;
-  setOpenedModal: (openedModal: OpenedModalType) => void;
+  setOpenedModal: (openedModal: OpenedModalType | undefined) => void;
 }
 
 const MemoryDetail = ({ openedMemory, setOpenedModal }: IMemoryDetailProps) => {
