@@ -1,7 +1,10 @@
 import { useState } from "react";
 
 import { projectFirestore } from "../../../../firebase/config";
-import { uploadImage } from "../../../../utils/FirebaseStorageUtils";
+import {
+  deleteImage,
+  uploadImage,
+} from "../../../../utils/FirebaseStorageUtils";
 import { IMemoryData, SetError } from "../../../../utils/types";
 
 import { errorToast, successToast } from "../../../../services/toastService";
@@ -53,7 +56,8 @@ const AddMemoryTemplate = ({
           .doc(memory.date.toString())
           .set(memory);
       } catch (err) {
-        //TODO: delete image
+        await deleteImage(data.date.toString());
+
         errorToast(
           err.code === "permission-denied"
             ? "Permission denied!"
