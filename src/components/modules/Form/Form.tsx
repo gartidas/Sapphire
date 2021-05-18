@@ -1,9 +1,8 @@
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useRef } from "react";
 import { CircularProgress } from "@material-ui/core";
 import { AddAPhoto, Publish } from "@material-ui/icons";
 import moment from "moment";
-import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
-import { useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 
 import TextBox from "../../elements/TextBox";
 import DatePicker from "../../elements/DatePicker";
@@ -21,7 +20,7 @@ interface IFormProps {
   file: File | undefined;
   setFile: (file?: File) => void;
   isLoading: boolean;
-  openedMemory?: IMemoryData;
+  openedMemory: Partial<IMemoryData>;
 }
 
 const Form = ({
@@ -32,12 +31,10 @@ const Form = ({
   openedMemory,
 }: IFormProps) => {
   const inputRef = useRef<HTMLInputElement>(null!);
-  const [selectedDate, setSelectedDate] = useState<MaterialUiPickersDate>(
-    moment()
-  );
-  const { register, handleSubmit, errors, setError } = useForm<IMemoryData>({
+  const methods = useForm<IMemoryData>({
     defaultValues: openedMemory,
   });
+  const { register, handleSubmit, errors, setError } = methods;
 
   const handleUploadImageClicked = () => {
     if (!inputRef.current) return;
@@ -52,66 +49,78 @@ const Form = ({
   };
 
   return (
-    <form onSubmit={handleSubmit(createSubmitHandler(setError))}>
-      <FormContent>
-        <Button
-          variant="outlined"
-          fullWidth
-          onClick={handleUploadImageClicked}
-          color="secondary"
-        >
-          {file ? (
-            <StyledFileName>{file?.name}</StyledFileName>
-          ) : (
-            <>
-              <AddAPhoto /> Upload image
-            </>
-          )}
-        </Button>
-        <DatePicker
-          name="date"
-          label="Date"
-          views={["year", "month"]}
-          format="YYYY-MM"
-          inputRef={register({ required: "Is required" })}
-          error={!!errors.date?.message}
-          helperText={errors.date?.message}
-          minDate={moment("2020-05").toDate()}
-          value={selectedDate}
-          onChange={(newDate) => setSelectedDate(newDate)}
-          fullWidth
-        />
-
-        <TextBox
-          name="description"
-          label="Description"
-          inputRef={register}
-          error={!!errors.description?.message}
-          helperText={errors.description?.message}
-          multiline
-          rows={5}
-          fullWidth
-        />
-
-        {isLoading ? (
-          <CircularProgress />
-        ) : (
-          <Button type="submit" fullWidth variant="outlined" color="secondary">
-            <Publish />
-            Submit
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(createSubmitHandler(setError))}>
+        <FormContent>
+          <Button
+            variant="outlined"
+            fullWidth
+            onClick={handleUploadImageClicked}
+            color="secondary"
+          >
+            {file ? (
+              <StyledFileName>{file?.name}</StyledFileName>
+            ) : (
+              <>
+                <AddAPhoto /> Upload image
+              </>
+            )}
           </Button>
-        )}
 
-        <StyledInput
-          name="image"
-          value=""
-          type="file"
-          accept="image/*"
-          ref={inputRef}
-          onChange={handleInputChanged}
-        />
-      </FormContent>
-    </form>
+          <Controller
+            name="date"
+            rules={{ required: "Is required" }}
+            render={({ onChange, ref, ...rest }) => (
+              <DatePicker
+                {...rest}
+                label="Date"
+                views={["year", "month"]}
+                format="YYYY-MM"
+                error={!!errors.date?.message}
+                helperText={errors.date?.message}
+                minDate={moment("2020-05").toDate()}
+                fullWidth
+                onChange={(date) => onChange(date?.format("YYYY-MM"))}
+              />
+            )}
+          />
+
+          <TextBox
+            name="description"
+            label="Description"
+            inputRef={register}
+            error={!!errors.description?.message}
+            helperText={errors.description?.message}
+            multiline
+            rows={5}
+            fullWidth
+          />
+
+          {isLoading ? (
+            <CircularProgress />
+          ) : (
+            <Button
+              type="submit"
+              fullWidth
+              variant="outlined"
+              color="secondary"
+            >
+              <Publish />
+              Submit
+            </Button>
+          )}
+
+          <StyledInput
+            name="image"
+            value=""
+            type="file"
+            accept="image/*"
+            ref={inputRef}
+            onChange={handleInputChanged}
+          />
+        </FormContent>
+      </form>
+    </FormProvider>
   );
 };
 

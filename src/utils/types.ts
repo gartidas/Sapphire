@@ -13,7 +13,7 @@ export interface IUserData {
 export interface IMemoryData {
   id: string;
   imageUrl: string;
-  date: Date;
+  date: string;
   description: string;
 }
 

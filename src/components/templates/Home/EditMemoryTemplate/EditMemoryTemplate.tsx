@@ -86,6 +86,7 @@ const EditMemoryTemplate = ({
 
       successToast("Memory edited!");
       setIsLoading(false);
+      setFile();
       onClose();
     } catch (err) {
       setIsLoading(false);
