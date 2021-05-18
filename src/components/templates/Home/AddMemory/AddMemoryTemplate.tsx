@@ -1,4 +1,5 @@
 import { useState } from "react";
+import moment from "moment";
 
 import { projectFirestore } from "../../../../firebase/config";
 import {
@@ -6,10 +7,8 @@ import {
   uploadImage,
 } from "../../../../utils/FirebaseStorageUtils";
 import { IMemoryData, SetError } from "../../../../utils/types";
-
 import { errorToast, successToast } from "../../../../services/toastService";
 import Form from "../../../modules/Form/Form";
-import moment from "moment";
 
 interface IAddMemoryProps {
   file: File | undefined;
