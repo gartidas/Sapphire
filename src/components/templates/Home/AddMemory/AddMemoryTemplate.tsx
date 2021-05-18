@@ -8,7 +8,7 @@ import {
 import { IMemoryData, SetError } from "../../../../utils/types";
 
 import { errorToast, successToast } from "../../../../services/toastService";
-import SubmitForm from "../../../modules/Form/Form";
+import Form from "../../../modules/Form/Form";
 
 interface IAddMemoryProps {
   file: File | undefined;
@@ -78,7 +78,7 @@ const AddMemoryTemplate = ({
   };
 
   return (
-    <SubmitForm
+    <Form
       createSubmitHandler={onSubmit}
       setFile={setFile}
       file={file}

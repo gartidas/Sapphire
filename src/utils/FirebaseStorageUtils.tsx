@@ -1,5 +1,6 @@
 import { projectStorage } from "../firebase/config";
 import { errorToast } from "../services/toastService";
+import { IMemoryData, SetError } from "./types";
 
 export const uploadImage = async (
   fileName: string,
@@ -38,5 +39,31 @@ export const deleteImage = async (fileName: string): Promise<boolean> => {
         : `${err.name}:${err.code}`
     );
     return false;
+  }
+};
+
+export const getImage = async (
+  fileName: string,
+  callback: (file: File, data: IMemoryData, setError: SetError) => void,
+  data: IMemoryData,
+  setError: SetError
+): Promise<void> => {
+  try {
+    await projectStorage
+      .ref(`images/${fileName}`)
+      .getDownloadURL()
+      .then((url) => {
+        var xhr = new XMLHttpRequest();
+        xhr.responseType = "blob";
+        xhr.onload = () => {
+          var blob = xhr.response;
+          blob.lastModified = new Date();
+          callback(new File([blob], fileName), data, setError);
+        };
+        xhr.open("GET", url);
+        xhr.send();
+      });
+  } catch (err) {
+    errorToast(err.code);
   }
 };

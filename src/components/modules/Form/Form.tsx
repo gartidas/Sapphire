@@ -16,7 +16,7 @@ import {
   StyledInput,
 } from "./Form.styled";
 
-interface ISubmitFormProps {
+interface IFormProps {
   createSubmitHandler: (setError: SetError) => (data: IMemoryData) => void;
   file: File | undefined;
   setFile: (file?: File) => void;
@@ -24,13 +24,13 @@ interface ISubmitFormProps {
   openedMemory?: IMemoryData;
 }
 
-const SubmitForm = ({
+const Form = ({
   createSubmitHandler,
   setFile,
   file,
   isLoading,
   openedMemory,
-}: ISubmitFormProps) => {
+}: IFormProps) => {
   const inputRef = useRef<HTMLInputElement>(null!);
   const [selectedDate, setSelectedDate] = useState<MaterialUiPickersDate>(
     moment()
@@ -115,4 +115,4 @@ const SubmitForm = ({
   );
 };
 
-export default SubmitForm;
+export default Form;
