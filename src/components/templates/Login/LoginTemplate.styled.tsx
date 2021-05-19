@@ -6,7 +6,7 @@ export const PageContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   height: 100vh;
 `;
 
@@ -16,17 +16,28 @@ export const StyledForm = styled.form`
   align-items: center;
   max-width: 500px;
   width: 90%;
-  > * + * {
-    margin-top: 30px;
+  flex: 1;
+
+  > div {
+    position: relative;
+    transform: translateY(-50%);
+    > * + * {
+      margin-top: 30px;
+    }
   }
 `;
 
 export const LogoWrapper = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  position: fixed;
-  top: 10px;
+  flex: 1;
+
+  > div {
+    display: flex;
+    align-items: center;
+    margin-top: 50px;
+  }
 `;
 
 export const LogoImage = styled.img`
@@ -36,7 +47,7 @@ export const LogoImage = styled.img`
 
 export const LogoTitle = styled.h1`
   font-size: 5rem;
-
+  margin: 0;
   @media screen and (max-width: ${SM}px) {
     font-size: 3rem;
   }
