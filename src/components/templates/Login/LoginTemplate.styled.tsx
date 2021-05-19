@@ -17,27 +17,16 @@ export const StyledForm = styled.form`
   max-width: 500px;
   width: 90%;
   flex: 1;
-
-  > div {
-    position: relative;
-    transform: translateY(-50%);
-    > * + * {
-      margin-top: 30px;
-    }
+  > * + * {
+    margin-top: 30px;
   }
 `;
 
 export const LogoWrapper = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   flex: 1;
-
-  > div {
-    display: flex;
-    align-items: center;
-    margin-top: 50px;
-  }
 `;
 
 export const LogoImage = styled.img`

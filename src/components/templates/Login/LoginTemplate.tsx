@@ -40,44 +40,35 @@ const LoginTemplate = () => {
   return (
     <PageContent>
       <LogoWrapper>
-        <div>
-          <LogoImage src={logo} />
-          <LogoTitle>Sapphire</LogoTitle>
-        </div>
+        <LogoImage src={logo} />
+        <LogoTitle>Sapphire</LogoTitle>
       </LogoWrapper>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <TextBox
-            name="email"
-            label="Email"
-            inputRef={register({ required: "Is required" })}
-            error={!!errors.email?.message}
-            helperText={errors.email?.message}
-            fullWidth
-          />
+        <TextBox
+          name="email"
+          label="Email"
+          inputRef={register({ required: "Is required" })}
+          error={!!errors.email?.message}
+          helperText={errors.email?.message}
+          fullWidth
+        />
 
-          <TextBox
-            name="password"
-            type="password"
-            label="Password"
-            inputRef={register({ required: "Is required" })}
-            error={!!errors.password?.message}
-            helperText={errors.password?.message}
-            fullWidth
-          />
-          {isLoading ? (
-            <CircularProgress />
-          ) : (
-            <Button
-              type="submit"
-              fullWidth
-              variant="outlined"
-              color="secondary"
-            >
-              Login
-            </Button>
-          )}
-        </div>
+        <TextBox
+          name="password"
+          type="password"
+          label="Password"
+          inputRef={register({ required: "Is required" })}
+          error={!!errors.password?.message}
+          helperText={errors.password?.message}
+          fullWidth
+        />
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          <Button type="submit" fullWidth variant="outlined" color="secondary">
+            Login
+          </Button>
+        )}
       </StyledForm>
     </PageContent>
   );
