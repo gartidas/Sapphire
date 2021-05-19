@@ -7,8 +7,15 @@ import { IUserData } from "../../../utils/types";
 import { projectAuth } from "../../../firebase/config";
 import { firebaseErrorToFieldError } from "../../../utils/firebase-error";
 import TextBox from "../../elements/TextBox";
+import logo from "../../../logo.png";
 
-import { StyledForm, PageContent } from "./LoginTemplate.styled";
+import {
+  StyledForm,
+  PageContent,
+  LogoWrapper,
+  LogoImage,
+  LogoTitle,
+} from "./LoginTemplate.styled";
 
 const LoginTemplate = () => {
   const { register, handleSubmit, errors, setError } = useForm<IUserData>();
@@ -32,6 +39,10 @@ const LoginTemplate = () => {
 
   return (
     <PageContent>
+      <LogoWrapper>
+        <LogoImage src={logo} />
+        <LogoTitle>Sapphire</LogoTitle>
+      </LogoWrapper>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <TextBox
           name="email"
