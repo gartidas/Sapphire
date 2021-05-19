@@ -6,6 +6,6 @@ https://material-ui.com/components/timeline/
 ### Tech stack:
 
 - React
-- Firebase firestore + firestorage
+- Firebase firestore + firebase storage
 - TypeScript
 - Styled-components
