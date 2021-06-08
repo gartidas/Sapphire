@@ -14,6 +14,8 @@ body{
 
 *{
   color:${({ theme }) => theme.primary};
+  scrollbar-color:${({ theme }) => theme.primary} #F5F5F5;
+  scrollbar-width:6px;
 }
 
 .Toastify__toast-container {
@@ -40,6 +42,7 @@ body{
 {
   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
   box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  -moz-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
   background-color: #F5F5F5;
 }
 
@@ -53,7 +56,6 @@ body{
 {
   background-color: ${({ theme }) => theme.primary};
 }
-
 `;
 
 export default GlobalStyles;
