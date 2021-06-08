@@ -15,7 +15,7 @@ body{
 *{
   color:${({ theme }) => theme.primary};
   scrollbar-color:${({ theme }) => theme.primary} #F5F5F5;
-  scrollbar-width:6px;
+  scrollbar-width:thin;
 }
 
 .Toastify__toast-container {
