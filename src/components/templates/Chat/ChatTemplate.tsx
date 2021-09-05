@@ -20,59 +20,78 @@ import {
   MessagesWrapper,
   StyledTextBox,
   DummySpan,
+  LoadingSpinner,
 } from "./ChatTemplate.styled";
 
 const ChatTemplate = () => {
   const auth = useAuth();
-  const [hasMore, setHasMore] = useState(false);
-  const [lastVisible, setLastVisible] = useState(null);
-  const [messagesLoading, setMessagesLoading] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
+  const [lastVisible, setLastVisible] =
+    useState<
+      firebase.firestore.QueryDocumentSnapshot<firebase.firestore.DocumentData>
+    >();
+  const [messagesLoading, setMessagesLoading] = useState(false);
   const pageSize = 13;
   const [messageText, setMessageText] = useState("");
   const [messages, setMessages] = useState<IMessage[]>([]);
   const messagesEl = useRef<HTMLDivElement>(null);
 
-  const fetchData = useCallback(() => {
+  const fetchData = useCallback(async () => {
     setMessagesLoading(true);
-    projectFirestore
+    let request = projectFirestore
       .collection("messages")
-      .orderBy("date", "desc")
-      .limit(pageSize)
-      .onSnapshot(mapDocs, (err) => console.log(err));
-  }, []);
+      .orderBy("date", "desc");
+
+    if (lastVisible) {
+      request = request.startAfter(lastVisible);
+    }
+
+    mapDocs(await request.limit(pageSize).get());
+  }, [lastVisible]);
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    projectFirestore.collection("messages").onSnapshot(
+      (snap) => {
+        const changes = snap.docChanges();
+
+        if (changes.length === 1) {
+          setMessages((prev) => [
+            { ...(changes[0].doc.data() as IMessage), id: changes[0].doc.id },
+            ...prev,
+          ]);
+        }
+      },
+      (err) => console.log(err)
+    );
+  }, []);
 
   const mapDocs = (
     snap: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>
   ) => {
-    let documents: any[] = [];
+    let documents: firebase.firestore.QueryDocumentSnapshot<firebase.firestore.DocumentData>[] =
+      [];
     snap.forEach((doc) => {
-      documents.push({ ...doc.data(), id: doc.id });
+      documents.push(doc);
     });
-
     setLastVisible(documents[documents.length - 1]);
-    setMessages(documents);
+
+    const mappedDocuments: IMessage[] = documents.map((x) => ({
+      ...(x.data() as any),
+      id: x.id,
+    }));
+
+    setMessages((prev) => [...prev, ...mappedDocuments]);
     setHasMore(documents.length === pageSize);
     setMessagesLoading(false);
   };
 
-  const nextPage = () => {
-    if (!hasMore) return;
-    setMessagesLoading(true);
-
-    projectFirestore
-      .collection("messages")
-      .orderBy("date", "desc")
-      .startAfter(lastVisible)
-      .limit(pageSize)
-      .onSnapshot(mapDocs, (err) => console.log(err));
-  };
-
   const observe = useObserver<HTMLDivElement>(
-    nextPage,
+    fetchData,
     hasMore && !messagesLoading
   );
 
@@ -110,8 +129,12 @@ const ChatTemplate = () => {
           {messages.map((x) => (
             <Message key={x.id} message={x} />
           ))}
-          {/* {messagesLoading && <CircularProgress color="secondary" />} */}
           <DummySpan ref={observe} />
+          {messagesLoading && (
+            <LoadingSpinner>
+              <CircularProgress color="secondary" />
+            </LoadingSpinner>
+          )}
         </MessagesWrapper>
         <ActionsWrapper>
           <StyledTextBox

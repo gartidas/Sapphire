@@ -59,3 +59,9 @@ export const DummySpan = styled.span`
   height: 1px;
   display: inline-block;
 `;
+
+export const LoadingSpinner = styled.div`
+  min-height: 60px;
+  display: grid;
+  place-items: center;
+`;
