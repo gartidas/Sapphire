@@ -34,7 +34,7 @@ const ChatTemplate = () => {
   const pageSize = 13;
   const [messageText, setMessageText] = useState("");
   const [messages, setMessages] = useState<IMessage[]>([]);
-  const messagesEl = useRef<HTMLDivElement>(null);
+  const lastMessageEl = useRef<HTMLDivElement>(null);
 
   const fetchData = useCallback(async () => {
     setMessagesLoading(true);
@@ -112,6 +112,7 @@ const ChatTemplate = () => {
         errorToast(err.code);
       }
       setMessageText("");
+      lastMessageEl.current?.scrollIntoView();
     }
   };
 
@@ -125,7 +126,8 @@ const ChatTemplate = () => {
         </Link>
       </ButtonsWrapper>
       <ChatWrapper>
-        <MessagesWrapper ref={messagesEl}>
+        <MessagesWrapper>
+          <DummySpan ref={lastMessageEl} />
           {messages.map((x) => (
             <Message key={x.id} message={x} />
           ))}
