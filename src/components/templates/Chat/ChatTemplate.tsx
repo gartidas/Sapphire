@@ -49,6 +49,11 @@ const ChatTemplate = () => {
     mapDocs(await request.limit(pageSize).get());
   }, [lastVisible]);
 
+  const observe = useObserver<HTMLDivElement>(
+    fetchData,
+    hasMore && !messagesLoading
+  );
+
   useEffect(() => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -89,11 +94,6 @@ const ChatTemplate = () => {
     setHasMore(documents.length === pageSize);
     setMessagesLoading(false);
   };
-
-  const observe = useObserver<HTMLDivElement>(
-    fetchData,
-    hasMore && !messagesLoading
-  );
 
   const enterPressed = async () => {
     if (messageText !== "") {
