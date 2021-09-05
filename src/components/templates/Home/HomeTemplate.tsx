@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Add } from "@material-ui/icons";
+import { Add, Chat } from "@material-ui/icons";
 import firebase from "firebase/app";
 import {
   Timeline,
@@ -9,7 +9,8 @@ import {
   TimelineItem,
   TimelineSeparator,
 } from "@material-ui/lab";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, IconButton as MuiButton } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 import Modal from "../../elements/Modal";
 import { IMemoryData, ModalType, OpenedModalType } from "../../../utils/types";
@@ -18,7 +19,11 @@ import AddMemoryTemplate from "./AddMemory/AddMemoryTemplate";
 import MemoryDetail from "./MemoryDetail/MemoryDetailTemplate";
 import EditMemoryTemplate from "./EditMemoryTemplate/EditMemoryTemplate";
 
-import { AddButton, TimelineWrapper, Wrapper } from "./HomeTemplate.styled";
+import {
+  ButtonsWrapper,
+  TimelineWrapper,
+  Wrapper,
+} from "./HomeTemplate.styled";
 
 const useStyles = makeStyles((theme) => ({
   timelineDot: {
@@ -71,9 +76,16 @@ const HomeTemplate = () => {
 
   return (
     <Wrapper>
-      <AddButton onClick={() => setOpenedModal({ type: ModalType.Add })}>
-        <Add />
-      </AddButton>
+      <ButtonsWrapper>
+        <Link to="/chat">
+          <MuiButton>
+            <Chat />
+          </MuiButton>
+        </Link>
+        <MuiButton onClick={() => setOpenedModal({ type: ModalType.Add })}>
+          <Add />
+        </MuiButton>
+      </ButtonsWrapper>
       <TimelineWrapper>
         <Timeline align="alternate">
           {memories.map((x) => (

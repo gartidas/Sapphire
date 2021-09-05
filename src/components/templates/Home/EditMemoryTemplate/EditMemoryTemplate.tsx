@@ -74,7 +74,7 @@ const EditMemoryTemplate = ({
           .collection("/memories")
           .doc(memory.date.toString())
           .set(memory);
-      } catch (err) {
+      } catch (err: any) {
         errorToast(
           err.code === "permission-denied"
             ? "Permission denied!"
@@ -88,7 +88,7 @@ const EditMemoryTemplate = ({
       setIsLoading(false);
       setFile();
       onClose();
-    } catch (err) {
+    } catch (err: any) {
       setIsLoading(false);
       setError(err.field, err.error);
     }
@@ -124,7 +124,7 @@ const EditMemoryTemplate = ({
           .collection("/memories")
           .doc(memory.date.toString())
           .set(memory);
-      } catch (err) {
+      } catch (err: any) {
         errorToast(err.code);
         setIsLoading(false);
         return;
@@ -133,7 +133,7 @@ const EditMemoryTemplate = ({
       successToast("Memory edited!");
       setIsLoading(false);
       onClose();
-    } catch (err) {
+    } catch (err: any) {
       setIsLoading(false);
       setError(err.field, err.error);
     }
@@ -154,7 +154,7 @@ const EditMemoryTemplate = ({
 
       setIsLoading(false);
       return true;
-    } catch (err) {
+    } catch (err: any) {
       setIsLoading(false);
       errorToast(err.code);
       return false;

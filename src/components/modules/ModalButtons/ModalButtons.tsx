@@ -40,7 +40,7 @@ const ModalButtons = ({ openedMemory, setOpenedModal }: IModalButtonsProps) => {
           successToast("Memory deleted!");
           setOpenedModal(undefined);
         });
-    } catch (err) {
+    } catch (err: any) {
       setIsLoading(false);
       errorToast(err.code);
     }

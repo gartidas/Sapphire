@@ -17,6 +17,13 @@ export interface IMemoryData {
   description: string;
 }
 
+export interface IMessage {
+  id?: string;
+  date: string;
+  from: string;
+  content: string;
+}
+
 export enum ModalType {
   Add,
   Edit,

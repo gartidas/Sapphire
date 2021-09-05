@@ -1,14 +1,18 @@
-import { IconButton as MuiButton } from "@material-ui/core";
 import styled from "styled-components";
 
 import { NAVBAR_HEIGHT } from "../../modules/Navbar/Navbar.styled";
 
-export const AddButton = styled(MuiButton)`
+export const ButtonsWrapper = styled.div`
   position: fixed;
+  display: flex;
+  flex-direction: column;
   bottom: 10px;
   left: 10px;
-  border-radius: 50%;
-  padding: 20px;
+
+  button {
+    border-radius: 50%;
+    padding: 20px;
+  }
 `;
 
 export const Wrapper = styled.div`

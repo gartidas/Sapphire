@@ -55,7 +55,7 @@ const AddMemoryTemplate = ({
           .collection("/memories")
           .doc(memory.date.toString())
           .set(memory);
-      } catch (err) {
+      } catch (err: any) {
         await deleteImage(data.date.toString());
 
         errorToast(
@@ -71,7 +71,7 @@ const AddMemoryTemplate = ({
       setIsLoading(false);
       setFile();
       onClose();
-    } catch (err) {
+    } catch (err: any) {
       setError(err.field, err.error);
       setIsLoading(false);
     }
