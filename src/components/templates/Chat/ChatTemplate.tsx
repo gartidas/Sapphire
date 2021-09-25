@@ -5,12 +5,15 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import firebase from "firebase/app";
 
-import { IMessage } from "../../../utils/types";
+import { IMessage, IUserState } from "../../../utils/types";
 import Message from "../../modules/Message/Message";
 import { useAuth } from "../../../contextProviders/AuthProvider";
 import { projectFirestore } from "../../../firebase/config";
 import { errorToast } from "../../../services/toastService";
 import useObserver from "../../../hooks/useObserver";
+import ThreeDots from "../../elements/ThreeDots";
+import useIsTyping from "../../../hooks/useIsTyping";
+import { handleUserStateChanged } from "../../../utils/helperMethods";
 
 import {
   Wrapper,
@@ -21,6 +24,7 @@ import {
   StyledTextBox,
   DummySpan,
   LoadingSpinner,
+  OnlineStatus,
 } from "./ChatTemplate.styled";
 
 const ChatTemplate = () => {
@@ -35,6 +39,7 @@ const ChatTemplate = () => {
   const [messageText, setMessageText] = useState("");
   const [messages, setMessages] = useState<IMessage[]>([]);
   const lastMessageEl = useRef<HTMLDivElement>(null);
+  const [isTyping, setIsTyping] = useState(false);
 
   const fetchData = useCallback(async () => {
     setMessagesLoading(true);
@@ -56,6 +61,7 @@ const ChatTemplate = () => {
 
   useEffect(() => {
     fetchData();
+    // fetchData is called only after component rendered
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -116,8 +122,38 @@ const ChatTemplate = () => {
     }
   };
 
+  const handleIsTypingChanged = useCallback(
+    async (isTyping: boolean) => {
+      if (!auth.user?.email) return;
+
+      let userState: IUserState = { id: auth.user.email, isTyping: isTyping };
+      await handleUserStateChanged(userState);
+    },
+    [auth]
+  );
+
+  useIsTyping(messageText, handleIsTypingChanged);
+
+  useEffect(() => {
+    projectFirestore.collection("users").onSnapshot(
+      (snap) => {
+        let documents: IUserState[] = [];
+        snap.forEach((doc) => {
+          documents.push({ ...doc.data(), id: doc.id });
+        });
+        let changedUserState = documents.find((x) => x.id !== auth.user?.email);
+
+        if (changedUserState) {
+          setIsTyping(changedUserState.isTyping!);
+        }
+      },
+      (err) => console.log(err)
+    );
+  }, [auth]);
+
   return (
     <Wrapper>
+      {auth.isOnline && <OnlineStatus />}
       <ButtonsWrapper>
         <Link to="/">
           <MuiButton>
@@ -127,6 +163,7 @@ const ChatTemplate = () => {
       </ButtonsWrapper>
       <ChatWrapper>
         <MessagesWrapper>
+          {isTyping && <ThreeDots />}
           <DummySpan ref={lastMessageEl} />
           {messages.map((x) => (
             <Message key={x.id} message={x} />
@@ -144,7 +181,9 @@ const ChatTemplate = () => {
             name="message"
             placeholder="Aa"
             value={messageText}
-            onChange={(event) => setMessageText(event.target.value)}
+            onChange={(event) => {
+              setMessageText(event.target.value);
+            }}
             multiline
             onKeyDown={(event) => {
               if (event.key === "Enter" && !event.shiftKey) {

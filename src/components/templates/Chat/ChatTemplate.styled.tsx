@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { theme } from "../../../utils/theme";
+import { SM, theme } from "../../../utils/theme";
 import TextBox from "../../elements/TextBox";
 import { NAVBAR_HEIGHT } from "../../modules/Navbar/Navbar.styled";
 
@@ -13,6 +13,33 @@ export const ButtonsWrapper = styled.div`
   button {
     border-radius: 50%;
     padding: 20px;
+  }
+
+  @media screen and (max-width: ${SM}px) {
+    left: 5px;
+
+    button {
+      padding: 10px;
+    }
+  }
+`;
+
+export const OnlineStatus = styled.div`
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background: ${theme.primary};
+  border-radius: 50%;
+  top: calc(10px + ${NAVBAR_HEIGHT}px);
+  left: 10px;
+
+  box-shadow: 0 0 0 0 ${theme.primary}, 0 0 0 0 ${theme.primary};
+  animation: pulse 2s infinite cubic-bezier(0.66, 0.33, 0, 1);
+
+  @keyframes pulse {
+    to {
+      box-shadow: 0 0 0 12px transparent, 0 0 0 24px rgba(227, 115, 14, 0);
+    }
   }
 `;
 

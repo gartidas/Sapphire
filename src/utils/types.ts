@@ -10,6 +10,12 @@ export interface IUserData {
   password: string;
 }
 
+export interface IUserState {
+  id?: string;
+  isTyping?: boolean;
+  isOnline?: boolean;
+}
+
 export interface IMemoryData {
   id: string;
   imageUrl: string;

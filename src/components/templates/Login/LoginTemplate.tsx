@@ -30,7 +30,7 @@ const LoginTemplate = () => {
         data.password
       );
       router.replace("/home");
-    } catch (err) {
+    } catch (err: any) {
       var error = firebaseErrorToFieldError(err);
       setError(error.field, error.error);
     }

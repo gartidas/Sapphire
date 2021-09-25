@@ -18,9 +18,11 @@ import { projectFirestore } from "../../../firebase/config";
 import AddMemoryTemplate from "./AddMemory/AddMemoryTemplate";
 import MemoryDetail from "./MemoryDetail/MemoryDetailTemplate";
 import EditMemoryTemplate from "./EditMemoryTemplate/EditMemoryTemplate";
+import { useAuth } from "../../../contextProviders/AuthProvider";
 
 import {
   ButtonsWrapper,
+  IndicatingButton,
   TimelineWrapper,
   Wrapper,
 } from "./HomeTemplate.styled";
@@ -51,6 +53,7 @@ const HomeTemplate = () => {
   const [file, setFile] = useState<File>();
   const [memories, setMemories] = useState<IMemoryData[]>([]);
   const [openedModal, setOpenedModal] = useState<OpenedModalType>();
+  const auth = useAuth();
 
   const fetchData = useCallback(() => {
     projectFirestore
@@ -78,9 +81,15 @@ const HomeTemplate = () => {
     <Wrapper>
       <ButtonsWrapper>
         <Link to="/chat">
-          <MuiButton>
-            <Chat />
-          </MuiButton>
+          {auth.isOnline ? (
+            <IndicatingButton className="indicating">
+              <Chat />
+            </IndicatingButton>
+          ) : (
+            <MuiButton>
+              <Chat />
+            </MuiButton>
+          )}
         </Link>
         <MuiButton onClick={() => setOpenedModal({ type: ModalType.Add })}>
           <Add />

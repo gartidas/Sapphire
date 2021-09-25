@@ -3,10 +3,12 @@ import ReactDOM from "react-dom";
 import { StylesProvider } from "@material-ui/styles";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
+
 import App from "./App";
 import { theme } from "./utils/theme";
-import AuthProvider from "./contextProviders/AuthProvider";
 import GlobalStyles from "./utils/GlobalStyles";
+import AuthProvider from "./contextProviders/AuthProvider";
+import { MyOnlineStatusProvider } from "./contextProviders/MyOnlineStatusProvider";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -15,7 +17,9 @@ ReactDOM.render(
         <ThemeProvider theme={theme}>
           <GlobalStyles />
           <AuthProvider>
-            <App />
+            <MyOnlineStatusProvider>
+              <App />
+            </MyOnlineStatusProvider>
           </AuthProvider>
         </ThemeProvider>
       </StylesProvider>
