@@ -43,6 +43,35 @@ export const OnlineStatus = styled.div`
   }
 `;
 
+export const OfflineStatus = styled.div`
+  width: calc(20% - 15px);
+  position: fixed;
+  display: inline-block;
+  top: calc(10px + ${NAVBAR_HEIGHT}px);
+  left: 0;
+  padding-left: 10px;
+
+  font-size: 0.8rem;
+  font-weight: 600;
+  word-wrap: break-word;
+
+  @media screen and (max-width: ${SM}px) {
+    padding-left: 3px;
+    width: calc(20% - 8px);
+  }
+
+  p {
+    margin: 0;
+    :first-letter {
+      text-transform: uppercase;
+    }
+
+    span {
+      font-weight: 700;
+    }
+  }
+`;
+
 export const ChatWrapper = styled.div`
   display: flex;
   flex-direction: column;

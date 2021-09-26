@@ -25,6 +25,7 @@ import {
   DummySpan,
   LoadingSpinner,
   OnlineStatus,
+  OfflineStatus,
 } from "./ChatTemplate.styled";
 
 const ChatTemplate = () => {
@@ -40,6 +41,7 @@ const ChatTemplate = () => {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const lastMessageEl = useRef<HTMLDivElement>(null);
   const [isTyping, setIsTyping] = useState(false);
+  const [lastOnline, setLastOnline] = useState<string>();
 
   const fetchData = useCallback(async () => {
     setMessagesLoading(true);
@@ -145,6 +147,8 @@ const ChatTemplate = () => {
 
         if (changedUserState) {
           setIsTyping(changedUserState.isTyping!);
+          if (!changedUserState.isOnline)
+            setLastOnline(changedUserState.lastOnline);
         }
       },
       (err) => console.log(err)
@@ -153,7 +157,17 @@ const ChatTemplate = () => {
 
   return (
     <Wrapper>
-      {auth.isOnline && <OnlineStatus />}
+      {auth.isOnline ? (
+        <OnlineStatus />
+      ) : (
+        <OfflineStatus>
+          <p>
+            Last seen:
+            <br />
+            <span>{moment(lastOnline).fromNow()}</span>
+          </p>
+        </OfflineStatus>
+      )}
       <ButtonsWrapper>
         <Link to="/">
           <MuiButton>

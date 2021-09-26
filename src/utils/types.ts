@@ -14,6 +14,7 @@ export interface IUserState {
   id?: string;
   isTyping?: boolean;
   isOnline?: boolean;
+  lastOnline?: string;
 }
 
 export interface IMemoryData {

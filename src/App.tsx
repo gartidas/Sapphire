@@ -22,7 +22,11 @@ function App() {
     async (isOnline: boolean) => {
       if (!auth.user?.email) return;
 
-      let userState: IUserState = { id: auth.user.email, isOnline: isOnline };
+      let userState: IUserState = {
+        id: auth.user.email,
+        isOnline: isOnline,
+        lastOnline: isOnline ? "" : moment().toLocaleString(),
+      };
       await handleUserStateChanged(userState);
     },
     [auth]

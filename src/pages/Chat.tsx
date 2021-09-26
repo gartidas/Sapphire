@@ -17,6 +17,8 @@ function Home() {
         else setTitleVersion(0);
       }, 2000);
       return () => clearInterval(interval);
+    } else {
+      setTitleVersion(0);
     }
   }, [auth, titleVersion]);
 

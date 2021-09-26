@@ -20,10 +20,6 @@ export const Info = styled.p`
     display: inline-block;
     font-weight: 600;
   }
-
-  .from {
-    font-weight: 700;
-  }
 `;
 
 export const Wrapper = styled.div`
