@@ -18,7 +18,7 @@ export const uploadImage = async (
 
     const url = await projectStorage.ref(`images/${fileName}`).getDownloadURL();
     return url;
-  } catch (err) {
+  } catch (err: any) {
     errorToast(
       err.code === "storage/unauthorized"
         ? "Permission denied!"
@@ -32,7 +32,7 @@ export const deleteImage = async (fileName: string): Promise<boolean> => {
   try {
     await projectStorage.ref(`images/${fileName}`).delete();
     return true;
-  } catch (err) {
+  } catch (err: any) {
     errorToast(
       err.code === "storage/unauthorized"
         ? "Permission denied!"
@@ -63,7 +63,7 @@ export const getImage = async (
         xhr.open("GET", url);
         xhr.send();
       });
-  } catch (err) {
+  } catch (err: any) {
     errorToast(err.code);
   }
 };
