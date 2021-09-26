@@ -10,17 +10,17 @@ function Home() {
   const titles: string[] = ["◇ Sapphire ◇ Home", "◆ Sapphire ◆ Home"];
   const [titleVersion, setTitleVersion] = useState(0);
 
-  useEffect(() => {
-    if (auth.isOnline) {
-      const interval = setInterval(() => {
-        if (titleVersion === 0) setTitleVersion(1);
-        else setTitleVersion(0);
-      }, 2000);
-      return () => clearInterval(interval);
-    } else {
-      setTitleVersion(0);
-    }
-  }, [auth, titleVersion]);
+  // useEffect(() => {
+  //   if (auth.isOnline) {
+  //     const interval = setInterval(() => {
+  //       if (titleVersion === 0) setTitleVersion(1);
+  //       else setTitleVersion(0);
+  //     }, 2000);
+  //     return () => clearInterval(interval);
+  //   } else {
+  //     setTitleVersion(0);
+  //   }
+  // }, [auth, titleVersion]);
 
   return (
     <LoggedLayout>
