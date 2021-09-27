@@ -80,7 +80,7 @@ const HomeTemplate = () => {
   return (
     <Wrapper>
       <ButtonsWrapper>
-        {/* <Link to="/chat">
+        <Link to="/chat">
           {auth.isOnline ? (
             <IndicatingButton className="indicating">
               <Chat />
@@ -90,7 +90,7 @@ const HomeTemplate = () => {
               <Chat />
             </MuiButton>
           )}
-        </Link> */}
+        </Link>
         <MuiButton onClick={() => setOpenedModal({ type: ModalType.Add })}>
           <Add />
         </MuiButton>
