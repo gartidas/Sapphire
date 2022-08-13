@@ -8,7 +8,7 @@ import {
 } from "../../../../utils/FirebaseStorageUtils";
 import { IMemoryData, SetError } from "../../../../utils/types";
 import { errorToast, successToast } from "../../../../services/toastService";
-import Form from "../../../modules/Form/Form";
+import Form from "../../../modules/MemoryForm/MemoryForm";
 
 interface IAddMemoryProps {
   file: File | undefined;

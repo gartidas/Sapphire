@@ -8,7 +8,7 @@ import {
   uploadImage,
 } from "../../../../utils/FirebaseStorageUtils";
 import { IMemoryData, SetError } from "../../../../utils/types";
-import Form from "../../../modules/Form/Form";
+import Form from "../../../modules/MemoryForm/MemoryForm";
 
 interface IEditMemoryProps {
   file: File | undefined;

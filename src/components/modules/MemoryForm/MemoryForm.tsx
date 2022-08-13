@@ -13,7 +13,7 @@ import {
   FormContent,
   StyledFileName,
   StyledInput,
-} from "./Form.styled";
+} from "./MemoryForm.styled";
 
 interface IFormProps {
   createSubmitHandler: (setError: SetError) => (data: IMemoryData) => void;

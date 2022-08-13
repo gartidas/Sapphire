@@ -16,7 +16,7 @@ import { IMemoryData, ModalType, OpenedModalType } from "../../../utils/types";
 import { projectFirestore } from "../../../firebase/config";
 import AddMemoryTemplate from "./AddMemory/AddMemoryTemplate";
 import MemoryDetail from "./MemoryDetail/MemoryDetailTemplate";
-import EditMemoryTemplate from "./EditMemoryTemplate/EditMemoryTemplate";
+import EditMemoryTemplate from "./EditMemory/EditMemoryTemplate";
 
 import {
   ButtonsWrapper,
