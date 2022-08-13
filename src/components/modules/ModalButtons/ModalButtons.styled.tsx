@@ -11,19 +11,10 @@ export const Wrapper = styled.div`
 `;
 
 export const Button = styled(MuiButton)`
-  /* .root {
-    max-width: 30px;
-    max-height: 30px;
-  } */
   border-radius: 50%;
   padding: 20px;
 
   @media screen and (max-width: ${SM}px) {
     padding: 10px;
-
-    /* svg {
-      width: 15px;
-      height: 15px;
-    } */
   }
 `;

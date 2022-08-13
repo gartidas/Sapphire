@@ -7,7 +7,7 @@ function Login() {
   return (
     <DefaultLayout>
       <Helmet>
-        <title>◇ Sapphire ◇ Login</title>
+        <title>◇ Sapphire ◇</title>
       </Helmet>
       <LoginTemplate />
     </DefaultLayout>

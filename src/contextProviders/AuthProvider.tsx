@@ -1,4 +1,4 @@
-import { createContext, FC, useContext, useEffect, useState } from "react";
+import { createContext, FC, useContext, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "firebase/app";
 
@@ -8,7 +8,6 @@ import { IUserState } from "../utils/types";
 
 interface IAuthContextValue {
   user?: firebase.User;
-  isOnline?: boolean;
 }
 
 const AuthContext = createContext<IAuthContextValue>(null!);
@@ -17,7 +16,6 @@ export const useAuth = () => useContext(AuthContext);
 
 const AuthProvider: FC = ({ children }) => {
   const [user, loading] = useAuthState(projectAuth);
-  const [isOnline, setIsOnline] = useState(false);
 
   useEffect(() => {
     projectFirestore.collection("users").onSnapshot(
@@ -26,11 +24,6 @@ const AuthProvider: FC = ({ children }) => {
         snap.forEach((doc) => {
           documents.push({ ...doc.data(), id: doc.id });
         });
-        let changedUserState = documents.find((x) => x.id !== user?.email);
-
-        if (changedUserState) {
-          setIsOnline(changedUserState.isOnline!);
-        }
       },
       (err) => console.log(err)
     );
@@ -39,9 +32,7 @@ const AuthProvider: FC = ({ children }) => {
   if (loading) return <PageLoader />;
 
   return (
-    <AuthContext.Provider
-      value={{ user: user || undefined, isOnline: isOnline || undefined }}
-    >
+    <AuthContext.Provider value={{ user: user || undefined }}>
       {children}
     </AuthContext.Provider>
   );

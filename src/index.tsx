@@ -8,7 +8,6 @@ import App from "./App";
 import { theme } from "./utils/theme";
 import GlobalStyles from "./utils/GlobalStyles";
 import AuthProvider from "./contextProviders/AuthProvider";
-import { MyOnlineStatusProvider } from "./contextProviders/MyOnlineStatusProvider";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -17,9 +16,7 @@ ReactDOM.render(
         <ThemeProvider theme={theme}>
           <GlobalStyles />
           <AuthProvider>
-            <MyOnlineStatusProvider>
-              <App />
-            </MyOnlineStatusProvider>
+            <App />
           </AuthProvider>
         </ThemeProvider>
       </StylesProvider>
