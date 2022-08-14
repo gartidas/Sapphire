@@ -8,6 +8,8 @@ import App from "./App";
 import { theme } from "./utils/theme";
 import GlobalStyles from "./utils/GlobalStyles";
 import AuthProvider from "./contextProviders/AuthProvider";
+import ModalProvider from "./contextProviders/ModalProvider";
+import MemoryProvider from "./contextProviders/MemoryProvider";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -16,7 +18,11 @@ ReactDOM.render(
         <ThemeProvider theme={theme}>
           <GlobalStyles />
           <AuthProvider>
-            <App />
+            <ModalProvider>
+              <MemoryProvider>
+                <App />
+              </MemoryProvider>
+            </ModalProvider>
           </AuthProvider>
         </ThemeProvider>
       </StylesProvider>

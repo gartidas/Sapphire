@@ -10,25 +10,11 @@ export interface IUserData {
   password: string;
 }
 
-export interface IUserState {
-  id?: string;
-  isTyping?: boolean;
-  isOnline?: boolean;
-  lastOnline?: string;
-}
-
 export interface IMemoryData {
   id: string;
   imageUrl: string;
   date: string;
   description: string;
-}
-
-export interface IMessage {
-  id?: string;
-  date: string;
-  from: string;
-  content: string;
 }
 
 export enum ModalType {

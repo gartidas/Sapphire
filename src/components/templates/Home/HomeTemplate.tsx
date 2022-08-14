@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { Add } from "@material-ui/icons";
-import firebase from "firebase/app";
 import {
   Timeline,
   TimelineConnector,
@@ -12,8 +11,6 @@ import {
 import { makeStyles, IconButton as MuiButton } from "@material-ui/core";
 
 import Modal from "../../elements/Modal";
-import { IMemoryData, ModalType, OpenedModalType } from "../../../utils/types";
-import { projectFirestore } from "../../../firebase/config";
 import AddMemoryTemplate from "./AddMemory/AddMemoryTemplate";
 import MemoryDetail from "./MemoryDetail/MemoryDetailTemplate";
 import EditMemoryTemplate from "./EditMemory/EditMemoryTemplate";
@@ -23,6 +20,9 @@ import {
   TimelineWrapper,
   Wrapper,
 } from "./HomeTemplate.styled";
+import { useModal } from "../../../contextProviders/ModalProvider";
+import { useMemory } from "../../../contextProviders/MemoryProvider";
+import { ModalType } from "../../../utils/types";
 
 const useStyles = makeStyles((theme) => ({
   timelineDot: {
@@ -48,35 +48,15 @@ const useStyles = makeStyles((theme) => ({
 const HomeTemplate = () => {
   const classes = useStyles();
   const [file, setFile] = useState<File>();
-  const [memories, setMemories] = useState<IMemoryData[]>([]);
-  const [openedModal, setOpenedModal] = useState<OpenedModalType>();
-
-  const fetchData = useCallback(() => {
-    projectFirestore
-      .collection("memories")
-      .orderBy("date")
-      .onSnapshot(mapDocs, (err) => console.log(err));
-  }, []);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  const mapDocs = (
-    snap: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>
-  ) => {
-    let documents: any = [];
-    snap.forEach((doc) => {
-      documents.push({ ...doc.data(), id: doc.id });
-    });
-
-    setMemories(documents);
-  };
+  const { memories } = useMemory();
+  const { openedModal, changeOpenedModalState } = useModal();
 
   return (
     <Wrapper>
       <ButtonsWrapper>
-        <MuiButton onClick={() => setOpenedModal({ type: ModalType.Add })}>
+        <MuiButton
+          onClick={() => changeOpenedModalState({ type: ModalType.Add })}
+        >
           <Add />
         </MuiButton>
       </ButtonsWrapper>
@@ -87,7 +67,10 @@ const HomeTemplate = () => {
               <TimelineSeparator>
                 <div
                   onClick={() => {
-                    setOpenedModal({ type: ModalType.Detail, memory: x });
+                    changeOpenedModalState({
+                      type: ModalType.Detail,
+                      memory: x,
+                    });
                   }}
                   style={{ borderRadius: "50%" }}
                 >
@@ -106,7 +89,7 @@ const HomeTemplate = () => {
         <Modal
           open
           onClose={() => {
-            setOpenedModal(undefined);
+            changeOpenedModalState(undefined);
             setFile(undefined);
           }}
         >
@@ -115,24 +98,19 @@ const HomeTemplate = () => {
               <AddMemoryTemplate
                 file={file}
                 setFile={setFile}
-                memories={memories}
-                onClose={() => setOpenedModal(undefined)}
+                onClose={() => changeOpenedModalState(undefined)}
               />
             )}
 
             {openedModal.type === ModalType.Detail && (
-              <MemoryDetail
-                openedMemory={openedModal.memory}
-                setOpenedModal={setOpenedModal}
-              />
+              <MemoryDetail openedMemory={openedModal.memory} />
             )}
 
             {openedModal.type === ModalType.Edit && (
               <EditMemoryTemplate
                 file={file}
                 setFile={setFile}
-                memories={memories}
-                onClose={() => setOpenedModal(undefined)}
+                onClose={() => changeOpenedModalState(undefined)}
                 openedMemory={openedModal.memory}
               />
             )}

@@ -1,4 +1,4 @@
-import { IMemoryData, OpenedModalType } from "../../../../utils/types";
+import { IMemoryData } from "../../../../utils/types";
 import ModalButtons from "../../../modules/ModalButtons/ModalButtons";
 
 import {
@@ -11,10 +11,9 @@ import {
 
 interface IMemoryDetailProps {
   openedMemory: IMemoryData;
-  setOpenedModal: (openedModal: OpenedModalType | undefined) => void;
 }
 
-const MemoryDetail = ({ openedMemory, setOpenedModal }: IMemoryDetailProps) => {
+const MemoryDetail = ({ openedMemory }: IMemoryDetailProps) => {
   return (
     <Wrapper>
       <StyledImage src={openedMemory.imageUrl} />
@@ -22,10 +21,7 @@ const MemoryDetail = ({ openedMemory, setOpenedModal }: IMemoryDetailProps) => {
         <DetailTitle>{openedMemory.date}</DetailTitle>
         <DetailDescription>{openedMemory.description}</DetailDescription>
       </WrapperRightSide>
-      <ModalButtons
-        openedMemory={openedMemory}
-        setOpenedModal={setOpenedModal}
-      />
+      <ModalButtons openedMemory={openedMemory} />
     </Wrapper>
   );
 };

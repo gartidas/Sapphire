@@ -1,63 +1,39 @@
 import { CircularProgress } from "@material-ui/core";
 import { Delete, Edit } from "@material-ui/icons";
-import { useState } from "react";
+import { useMemory } from "../../../contextProviders/MemoryProvider";
+import { useModal } from "../../../contextProviders/ModalProvider";
+import { successToast } from "../../../services/toastService";
 
-import { projectFirestore } from "../../../firebase/config";
-import { errorToast, successToast } from "../../../services/toastService";
-import { deleteImage } from "../../../utils/FirebaseStorageUtils";
-import { IMemoryData, ModalType, OpenedModalType } from "../../../utils/types";
+import { IMemoryData, ModalType } from "../../../utils/types";
 
 import { Wrapper, Button } from "../ModalButtons/ModalButtons.styled";
 
 interface IModalButtonsProps {
   openedMemory: IMemoryData;
-  setOpenedModal: (openedModal: OpenedModalType | undefined) => void;
 }
 
-const ModalButtons = ({ openedMemory, setOpenedModal }: IModalButtonsProps) => {
-  const openedModalType: OpenedModalType = {
-    type: ModalType.Edit,
-    memory: openedMemory,
-  };
-  const [isLoading, setIsLoading] = useState(false);
-
-  const deleteMemory = async (openedMemory: IMemoryData) => {
-    try {
-      setIsLoading(true);
-
-      const isDeleted = await deleteImage(openedMemory.id);
-      if (!isDeleted) {
-        setIsLoading(false);
-        return;
-      }
-
-      await projectFirestore
-        .collection("/memories")
-        .doc(openedMemory.id)
-        .delete()
-        .then(() => {
-          setIsLoading(false);
-          successToast("Memory deleted!");
-          setOpenedModal(undefined);
-        });
-    } catch (err: any) {
-      setIsLoading(false);
-      errorToast(err.code);
-    }
-  };
+const ModalButtons = ({ openedMemory }: IModalButtonsProps) => {
+  const { changeOpenedModalState } = useModal();
+  const { deleteMemory, isLoading, changeLoadingState } = useMemory();
 
   return (
     <Wrapper>
       <Button
         onClick={() => {
-          setOpenedModal(openedModalType);
+          changeOpenedModalState({
+            type: ModalType.Edit,
+            memory: openedMemory,
+          });
         }}
       >
         <Edit />
       </Button>
       <Button
-        onClick={() => {
-          deleteMemory(openedMemory);
+        onClick={async () => {
+          changeLoadingState(true);
+          await deleteMemory(openedMemory);
+          successToast("Memory deleted!");
+          changeOpenedModalState(undefined);
         }}
       >
         {isLoading ? <CircularProgress /> : <Delete />}

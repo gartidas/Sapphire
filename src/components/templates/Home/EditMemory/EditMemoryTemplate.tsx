@@ -1,19 +1,13 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useMemory } from "../../../../contextProviders/MemoryProvider";
 
-import { projectFirestore } from "../../../../firebase/config";
 import { errorToast, successToast } from "../../../../services/toastService";
-import {
-  deleteImage,
-  getImage,
-  uploadImage,
-} from "../../../../utils/FirebaseStorageUtils";
-import { IMemoryData, SetError } from "../../../../utils/types";
+import { getImage, uploadImage } from "../../../../utils/FirebaseStorageUtils";
+import { IMemoryData } from "../../../../utils/types";
 import MemoryForm from "../../../modules/MemoryForm/MemoryForm";
 
 interface IEditMemoryProps {
   file: File | undefined;
-  memories: IMemoryData[];
   setFile: (file?: File) => void;
   onClose: () => void;
   openedMemory: IMemoryData;
@@ -23,10 +17,10 @@ const EditMemoryTemplate = ({
   file,
   setFile,
   onClose,
-  memories,
   openedMemory,
 }: IEditMemoryProps) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const { editMemory, deleteMemory, memories, changeLoadingState, isLoading } =
+    useMemory();
   const methods = useForm<IMemoryData>({
     defaultValues: openedMemory,
   });
@@ -43,23 +37,23 @@ const EditMemoryTemplate = ({
         return;
       }
 
-      setIsLoading(true);
+      changeLoadingState(true);
       if (data.date !== openedMemory.date) {
         if (!file) {
-          //This is where code ends and continues in callback function
+          //NOTE: This is where code ends and continues in callback function
           await getImage(openedMemory.id, getImageCallback, data, setError);
           return;
         } else {
           const isDeleted = await deleteMemory(openedMemory);
 
           if (!isDeleted) {
-            setIsLoading(false);
+            changeLoadingState(false);
             return;
           }
         }
       }
 
-      const memory: Omit<IMemoryData, "id"> = {
+      const memory: IMemoryData = {
         ...data,
         imageUrl: openedMemory.imageUrl,
       };
@@ -68,101 +62,56 @@ const EditMemoryTemplate = ({
         const storageResponse = await uploadImage(data.date.toString(), file);
 
         if (!storageResponse) {
-          setIsLoading(false);
+          changeLoadingState(false);
           return;
         }
         memory.imageUrl = storageResponse;
       }
 
-      try {
-        await projectFirestore
-          .collection("/memories")
-          .doc(memory.date.toString())
-          .set(memory);
-      } catch (err: any) {
-        errorToast(
-          err.code === "permission-denied"
-            ? "Permission denied!"
-            : `${err.name}:${err.code}`
-        );
-        setIsLoading(false);
-        return;
-      }
+      await editMemory(memory);
 
       successToast("Memory edited!");
-      setIsLoading(false);
+      changeLoadingState(false);
       setFile();
       onClose();
     } catch (err: any) {
-      setIsLoading(false);
+      changeLoadingState(false);
       setError(err.field, err.error);
     }
   };
 
   const getImageCallback = async (
     file: File,
-    data: IMemoryData,
-    setError: SetError
+    data: IMemoryData
   ): Promise<void> => {
     try {
       const isDeleted = await deleteMemory(openedMemory);
 
       if (!isDeleted) {
-        setIsLoading(false);
+        changeLoadingState(false);
         return;
       }
 
       const storageResponse = await uploadImage(data.date.toString(), file);
 
       if (!storageResponse) {
-        setIsLoading(false);
+        changeLoadingState(false);
         return;
       }
 
-      const memory: Omit<IMemoryData, "id"> = {
+      const memory: IMemoryData = {
         ...data,
         imageUrl: storageResponse,
       };
 
-      try {
-        await projectFirestore
-          .collection("/memories")
-          .doc(memory.date.toString())
-          .set(memory);
-      } catch (err: any) {
-        errorToast(err.code);
-        setIsLoading(false);
-        return;
-      }
+      await editMemory(memory);
 
       successToast("Memory edited!");
-      setIsLoading(false);
+      changeLoadingState(false);
       onClose();
     } catch (err: any) {
-      setIsLoading(false);
+      changeLoadingState(false);
       setError(err.field, err.error);
-    }
-  };
-
-  const deleteMemory = async (openedMemory: IMemoryData): Promise<boolean> => {
-    try {
-      const isDeleted = await deleteImage(openedMemory.id);
-      if (!isDeleted) {
-        setIsLoading(false);
-        return false;
-      }
-
-      await projectFirestore
-        .collection("/memories")
-        .doc(openedMemory.id)
-        .delete();
-
-      setIsLoading(false);
-      return true;
-    } catch (err: any) {
-      setIsLoading(false);
-      errorToast(err.code);
-      return false;
     }
   };
 

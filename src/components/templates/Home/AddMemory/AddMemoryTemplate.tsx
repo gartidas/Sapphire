@@ -1,30 +1,22 @@
 import { useState } from "react";
 import moment from "moment";
 
-import { projectFirestore } from "../../../../firebase/config";
-import {
-  deleteImage,
-  uploadImage,
-} from "../../../../utils/FirebaseStorageUtils";
+import { uploadImage } from "../../../../utils/FirebaseStorageUtils";
 import { IMemoryData } from "../../../../utils/types";
 import { errorToast, successToast } from "../../../../services/toastService";
 import MemoryForm from "../../../modules/MemoryForm/MemoryForm";
 import { useForm } from "react-hook-form";
+import { useMemory } from "../../../../contextProviders/MemoryProvider";
 
 interface IAddMemoryProps {
   file: File | undefined;
-  memories: IMemoryData[];
   setFile: (file?: File) => void;
   onClose: () => void;
 }
 
-const AddMemoryTemplate = ({
-  file,
-  setFile,
-  onClose,
-  memories,
-}: IAddMemoryProps) => {
+const AddMemoryTemplate = ({ file, setFile, onClose }: IAddMemoryProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const { addMemory, memories } = useMemory();
   const methods = useForm<IMemoryData>({
     defaultValues: { date: moment().format("YYYY-MM") },
   });
@@ -50,27 +42,12 @@ const AddMemoryTemplate = ({
         return;
       }
 
-      const memory: Omit<IMemoryData, "id"> = {
+      const memory: IMemoryData = {
         ...data,
         imageUrl: storageResponse,
       };
 
-      try {
-        await projectFirestore
-          .collection("/memories")
-          .doc(memory.date.toString())
-          .set(memory);
-      } catch (err: any) {
-        await deleteImage(data.date.toString());
-
-        errorToast(
-          err.code === "permission-denied"
-            ? "Permission denied!"
-            : `${err.name}:${err.code}`
-        );
-        setIsLoading(false);
-        return;
-      }
+      await addMemory(memory);
 
       successToast("Memory added!");
       setIsLoading(false);
