@@ -40,7 +40,7 @@ const EditMemoryTemplate = ({
       changeLoadingState(true);
       if (data.date !== openedMemory.date) {
         if (!file) {
-          //NOTE: This is where code ends and continues in callback function
+          // NOTE: This is where code ends and continues in callback function
           await getImage(openedMemory.id, getImageCallback, data, setError);
           return;
         } else {

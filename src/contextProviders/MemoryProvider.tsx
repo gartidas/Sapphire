@@ -46,6 +46,9 @@ const MemoryProvider: FC = ({ children }) => {
       .orderBy("date", "desc")
       .limit(20)
       .onSnapshot(mapDocs, (err) => console.log(err));
+
+    // NOTE: Map docs would cause endless refetch
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadNextBatch = useCallback(() => {
@@ -57,6 +60,9 @@ const MemoryProvider: FC = ({ children }) => {
         .startAfter(lastVisible.date)
         .onSnapshot(mapDocs, (err) => console.log(err));
     }
+
+    // NOTE: Map docs would cause endless refetch
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastVisible]);
 
   const mapDocs = (
@@ -68,7 +74,7 @@ const MemoryProvider: FC = ({ children }) => {
     });
 
     setHasMore(documents.length === 20);
-    setMemories((prev) => [...prev, ...documents]);
+    setMemories((prev) => (lastVisible ? [...prev, ...documents] : documents));
   };
 
   const addMemory = useCallback(

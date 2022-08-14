@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { toast as toastifyToast } from "react-toastify";
 import { Alert, AlertProps } from "@material-ui/lab";
 
-//NOTE: Fix for https://github.com/fkhadra/react-toastify/issues/224
+// NOTE: Fix for https://github.com/fkhadra/react-toastify/issues/224
 const DummyContainer = ({ children }: { children: ReactNode }) => (
   <div>{children}</div>
 );
