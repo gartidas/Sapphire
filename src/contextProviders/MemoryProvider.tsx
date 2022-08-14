@@ -40,6 +40,7 @@ const MemoryProvider: FC = ({ children }) => {
   }, []);
 
   const fetchMemories = useCallback(() => {
+    setMemories([]);
     projectFirestore
       .collection("memories")
       .orderBy("date", "desc")
