@@ -1,4 +1,3 @@
-import { useState } from "react";
 import moment from "moment";
 
 import { uploadImage } from "../../../../utils/FirebaseStorageUtils";
@@ -15,8 +14,7 @@ interface IAddMemoryProps {
 }
 
 const AddMemoryTemplate = ({ file, setFile, onClose }: IAddMemoryProps) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const { addMemory, memories } = useMemory();
+  const { addMemory, memories, changeLoadingState, isLoading } = useMemory();
   const methods = useForm<IMemoryData>({
     defaultValues: { date: moment().format("YYYY-MM") },
   });
@@ -34,11 +32,11 @@ const AddMemoryTemplate = ({ file, setFile, onClose }: IAddMemoryProps) => {
         return;
       }
 
-      setIsLoading(true);
+      changeLoadingState(true);
       const storageResponse = await uploadImage(data.date.toString(), file!);
 
       if (!storageResponse) {
-        setIsLoading(false);
+        changeLoadingState(false);
         return;
       }
 
@@ -50,12 +48,12 @@ const AddMemoryTemplate = ({ file, setFile, onClose }: IAddMemoryProps) => {
       await addMemory(memory);
 
       successToast("Memory added!");
-      setIsLoading(false);
+      changeLoadingState(false);
       setFile();
       onClose();
     } catch (err: any) {
       setError(err.field, err.error);
-      setIsLoading(false);
+      changeLoadingState(false);
     }
   };
 

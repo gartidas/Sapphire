@@ -122,8 +122,8 @@ const MemoryProvider: FC = ({ children }) => {
         .doc(openedMemory.id)
         .delete();
 
-      setIsLoading(false);
       await fetchMemories();
+      setIsLoading(false);
       return true;
     } catch (err: any) {
       setIsLoading(false);
