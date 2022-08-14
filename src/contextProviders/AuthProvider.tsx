@@ -3,7 +3,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "firebase/app";
 
 import { projectAuth, projectFirestore } from "../firebase/config";
-import PageLoader from "../components/modules/FullPageSpinner/FullPageSpinner";
+import FullPageSpinner from "../components/modules/FullPageSpinner/FullPageSpinner";
 import { IUserState } from "../utils/types";
 
 interface IAuthContextValue {
@@ -29,7 +29,7 @@ const AuthProvider: FC = ({ children }) => {
     );
   }, [user]);
 
-  if (loading) return <PageLoader />;
+  if (loading) return <FullPageSpinner />;
 
   return (
     <AuthContext.Provider value={{ user: user || undefined }}>

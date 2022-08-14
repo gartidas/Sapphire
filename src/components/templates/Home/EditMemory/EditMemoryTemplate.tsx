@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 import { projectFirestore } from "../../../../firebase/config";
 import { errorToast, successToast } from "../../../../services/toastService";
@@ -8,7 +9,7 @@ import {
   uploadImage,
 } from "../../../../utils/FirebaseStorageUtils";
 import { IMemoryData, SetError } from "../../../../utils/types";
-import Form from "../../../modules/MemoryForm/MemoryForm";
+import MemoryForm from "../../../modules/MemoryForm/MemoryForm";
 
 interface IEditMemoryProps {
   file: File | undefined;
@@ -26,8 +27,12 @@ const EditMemoryTemplate = ({
   openedMemory,
 }: IEditMemoryProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const methods = useForm<IMemoryData>({
+    defaultValues: openedMemory,
+  });
+  const { setError } = methods;
 
-  const onSubmit = (setError: SetError) => async (data: IMemoryData) => {
+  const onSubmit = async (data: IMemoryData) => {
     try {
       if (
         memories.find(
@@ -162,8 +167,9 @@ const EditMemoryTemplate = ({
   };
 
   return (
-    <Form
-      createSubmitHandler={onSubmit}
+    <MemoryForm
+      onSubmit={onSubmit}
+      methods={methods}
       setFile={setFile}
       file={file}
       isLoading={isLoading}

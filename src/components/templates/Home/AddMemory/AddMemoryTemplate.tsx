@@ -6,9 +6,10 @@ import {
   deleteImage,
   uploadImage,
 } from "../../../../utils/FirebaseStorageUtils";
-import { IMemoryData, SetError } from "../../../../utils/types";
+import { IMemoryData } from "../../../../utils/types";
 import { errorToast, successToast } from "../../../../services/toastService";
-import Form from "../../../modules/MemoryForm/MemoryForm";
+import MemoryForm from "../../../modules/MemoryForm/MemoryForm";
+import { useForm } from "react-hook-form";
 
 interface IAddMemoryProps {
   file: File | undefined;
@@ -24,8 +25,12 @@ const AddMemoryTemplate = ({
   memories,
 }: IAddMemoryProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const methods = useForm<IMemoryData>({
+    defaultValues: { date: moment().format("YYYY-MM") },
+  });
+  const { setError } = methods;
 
-  const onSubmit = (setError: SetError) => async (data: IMemoryData) => {
+  const onSubmit = async (data: IMemoryData) => {
     try {
       if (!file) {
         errorToast("File not set!");
@@ -78,8 +83,9 @@ const AddMemoryTemplate = ({
   };
 
   return (
-    <Form
-      createSubmitHandler={onSubmit}
+    <MemoryForm
+      onSubmit={onSubmit}
+      methods={methods}
       setFile={setFile}
       file={file}
       isLoading={isLoading}

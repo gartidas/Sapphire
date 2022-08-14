@@ -2,11 +2,11 @@ import { ChangeEvent, useRef } from "react";
 import { CircularProgress } from "@material-ui/core";
 import { AddAPhoto, Publish } from "@material-ui/icons";
 import moment from "moment";
-import { Controller, FormProvider, useForm } from "react-hook-form";
+import { Controller, FormProvider, UseFormMethods } from "react-hook-form";
 
 import TextBox from "../../elements/TextBox";
 import DatePicker from "../../elements/DatePicker";
-import { IMemoryData, SetError } from "../../../utils/types";
+import { IMemoryData } from "../../../utils/types";
 
 import {
   Button,
@@ -16,25 +16,23 @@ import {
 } from "./MemoryForm.styled";
 
 interface IFormProps {
-  createSubmitHandler: (setError: SetError) => (data: IMemoryData) => void;
+  methods: UseFormMethods<IMemoryData>;
+  onSubmit: (data: IMemoryData) => Promise<void>;
   file: File | undefined;
   setFile: (file?: File) => void;
   isLoading: boolean;
   openedMemory: Partial<IMemoryData>;
 }
 
-const Form = ({
-  createSubmitHandler,
+const MemoryForm = ({
+  methods,
   setFile,
   file,
   isLoading,
-  openedMemory,
+  onSubmit,
 }: IFormProps) => {
   const inputRef = useRef<HTMLInputElement>(null!);
-  const methods = useForm<IMemoryData>({
-    defaultValues: openedMemory,
-  });
-  const { register, handleSubmit, errors, setError } = methods;
+  const { register, handleSubmit, errors } = methods;
 
   const handleUploadImageClicked = () => {
     if (!inputRef.current) return;
@@ -50,7 +48,7 @@ const Form = ({
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(createSubmitHandler(setError))}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <FormContent>
           <Button
             variant="outlined"
@@ -124,4 +122,4 @@ const Form = ({
   );
 };
 
-export default Form;
+export default MemoryForm;

@@ -8,7 +8,7 @@ const StyledWrapper = styled.div`
   min-height: 100vh;
 `;
 
-const PageLoader = () => {
+const FullPageSpinner = () => {
   return (
     <StyledWrapper>
       <CircularProgress color="secondary" />
@@ -16,4 +16,4 @@ const PageLoader = () => {
   );
 };
 
-export default PageLoader;
+export default FullPageSpinner;
