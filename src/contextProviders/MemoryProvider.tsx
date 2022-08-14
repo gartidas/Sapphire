@@ -39,14 +39,51 @@ const MemoryProvider: FC = ({ children }) => {
     setIsLoading(isLoading);
   }, []);
 
+  const fetchMemories = useCallback(() => {
+    projectFirestore
+      .collection("memories")
+      .orderBy("date", "desc")
+      .limit(20)
+      .onSnapshot(mapDocs, (err) => console.log(err));
+  }, []);
+
+  const loadNextBatch = useCallback(() => {
+    if (lastVisible) {
+      projectFirestore
+        .collection("memories")
+        .orderBy("date", "desc")
+        .limit(20)
+        .startAfter(lastVisible.date)
+        .onSnapshot(mapDocs, (err) => console.log(err));
+    }
+  }, [lastVisible]);
+
+  const mapDocs = (
+    snap: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>
+  ) => {
+    let documents: any = [];
+    snap.forEach((doc) => {
+      documents.push({ ...doc.data(), id: doc.id });
+    });
+
+    setHasMore(documents.length === 20);
+    setMemories((prev) => [...prev, ...documents]);
+  };
+
   const addMemory = useCallback(
-    async (data: IMemoryData) => await uploadMemoryData(data, true),
-    []
+    async (data: IMemoryData) => {
+      await uploadMemoryData(data, true);
+      await fetchMemories();
+    },
+    [fetchMemories]
   );
 
   const editMemory = useCallback(
-    async (data: IMemoryData) => await uploadMemoryData(data, false),
-    []
+    async (data: IMemoryData) => {
+      await uploadMemoryData(data, false);
+      await fetchMemories();
+    },
+    [fetchMemories]
   );
 
   const uploadMemoryData = async (
@@ -85,43 +122,13 @@ const MemoryProvider: FC = ({ children }) => {
         .delete();
 
       setIsLoading(false);
+      await fetchMemories();
       return true;
     } catch (err: any) {
       setIsLoading(false);
       errorToast(err.code);
       return false;
     }
-  };
-
-  const fetchMemories = useCallback(() => {
-    projectFirestore
-      .collection("memories")
-      .orderBy("date", "desc")
-      .limit(20)
-      .onSnapshot(mapDocs, (err) => console.log(err));
-  }, []);
-
-  const loadNextBatch = useCallback(() => {
-    if (lastVisible) {
-      projectFirestore
-        .collection("memories")
-        .orderBy("date", "desc")
-        .limit(20)
-        .startAfter(lastVisible.date)
-        .onSnapshot(mapDocs, (err) => console.log(err));
-    }
-  }, [lastVisible]);
-
-  const mapDocs = (
-    snap: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>
-  ) => {
-    let documents: any = [];
-    snap.forEach((doc) => {
-      documents.push({ ...doc.data(), id: doc.id });
-    });
-
-    setHasMore(documents.length === 20);
-    setMemories((prev) => [...prev, ...documents]);
   };
 
   useEffect(() => {
