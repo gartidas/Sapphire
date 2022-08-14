@@ -15,9 +15,10 @@ import { useAuth } from "./AuthProvider";
 
 interface IMemoryContextValue {
   isLoading: boolean;
+  hasMore: boolean;
   changeLoadingState: (isLoading: boolean) => void;
   memories: IMemoryData[];
-  fetchMemories: () => void;
+  loadNextBatch: () => void;
   addMemory: (data: IMemoryData) => Promise<void>;
   editMemory: (data: IMemoryData) => Promise<void>;
   deleteMemory: (data: IMemoryData) => Promise<boolean>;
@@ -29,8 +30,10 @@ export const useMemory = () => useContext(MemoryContext);
 
 const MemoryProvider: FC = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
   const [memories, setMemories] = useState<IMemoryData[]>([]);
   const { user } = useAuth();
+  const lastVisible = memories && memories[memories.length - 1];
 
   const changeLoadingState = useCallback((isLoading: boolean) => {
     setIsLoading(isLoading);
@@ -93,9 +96,21 @@ const MemoryProvider: FC = ({ children }) => {
   const fetchMemories = useCallback(() => {
     projectFirestore
       .collection("memories")
-      .orderBy("date")
+      .orderBy("date", "desc")
+      .limit(20)
       .onSnapshot(mapDocs, (err) => console.log(err));
   }, []);
+
+  const loadNextBatch = useCallback(() => {
+    if (lastVisible) {
+      projectFirestore
+        .collection("memories")
+        .orderBy("date", "desc")
+        .limit(20)
+        .startAfter(lastVisible.date)
+        .onSnapshot(mapDocs, (err) => console.log(err));
+    }
+  }, [lastVisible]);
 
   const mapDocs = (
     snap: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>
@@ -105,7 +120,8 @@ const MemoryProvider: FC = ({ children }) => {
       documents.push({ ...doc.data(), id: doc.id });
     });
 
-    setMemories(documents);
+    setHasMore(documents.length === 20);
+    setMemories((prev) => [...prev, ...documents]);
   };
 
   useEffect(() => {
@@ -120,8 +136,9 @@ const MemoryProvider: FC = ({ children }) => {
         addMemory,
         editMemory,
         deleteMemory,
-        fetchMemories,
+        loadNextBatch,
         memories,
+        hasMore,
       }}
     >
       {children}

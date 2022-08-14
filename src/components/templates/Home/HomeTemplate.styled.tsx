@@ -1,3 +1,4 @@
+import { CircularProgress } from "@material-ui/core";
 import styled from "styled-components";
 import { SM } from "../../../utils/theme";
 
@@ -35,4 +36,15 @@ export const TimelineWrapper = styled.div`
   min-width: 80%;
   margin-right: auto;
   margin-left: auto;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const DummymSpan = styled.span`
+  height: 1px;
+  display: inline-block;
+`;
+
+export const Spinner = styled(CircularProgress)`
+  align-self: center;
 `;

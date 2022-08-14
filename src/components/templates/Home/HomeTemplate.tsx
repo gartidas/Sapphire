@@ -17,12 +17,15 @@ import EditMemoryTemplate from "./EditMemory/EditMemoryTemplate";
 
 import {
   ButtonsWrapper,
+  DummymSpan,
+  Spinner,
   TimelineWrapper,
   Wrapper,
 } from "./HomeTemplate.styled";
 import { useModal } from "../../../contextProviders/ModalProvider";
 import { useMemory } from "../../../contextProviders/MemoryProvider";
 import { ModalType } from "../../../utils/types";
+import useObserver from "../../../hooks/useObserver";
 
 const useStyles = makeStyles((theme) => ({
   timelineDot: {
@@ -48,8 +51,12 @@ const useStyles = makeStyles((theme) => ({
 const HomeTemplate = () => {
   const classes = useStyles();
   const [file, setFile] = useState<File>();
-  const { memories } = useMemory();
+  const { memories, isLoading, loadNextBatch, hasMore } = useMemory();
   const { openedModal, changeOpenedModalState } = useModal();
+  const observe = useObserver<HTMLDivElement>(
+    loadNextBatch,
+    hasMore && !isLoading
+  );
 
   return (
     <Wrapper>
@@ -84,6 +91,10 @@ const HomeTemplate = () => {
             </TimelineItem>
           ))}
         </Timeline>
+
+        {isLoading && <Spinner />}
+
+        <DummymSpan ref={observe} />
       </TimelineWrapper>
       {openedModal && (
         <Modal
