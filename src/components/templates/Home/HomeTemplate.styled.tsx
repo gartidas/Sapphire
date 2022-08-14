@@ -43,6 +43,7 @@ export const TimelineWrapper = styled.div`
 export const DummymSpan = styled.span`
   height: 1px;
   display: inline-block;
+  align-self: center;
 `;
 
 export const Spinner = styled(CircularProgress)`
