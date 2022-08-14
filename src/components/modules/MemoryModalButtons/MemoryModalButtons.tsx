@@ -6,13 +6,13 @@ import { successToast } from "../../../services/toastService";
 
 import { IMemoryData, ModalType } from "../../../utils/types";
 
-import { Wrapper, Button } from "../ModalButtons/ModalButtons.styled";
+import { Wrapper, Button } from "./MemoryModalButtons.styled";
 
-interface IModalButtonsProps {
+interface IMemoryModalButtonsProps {
   openedMemory: IMemoryData;
 }
 
-const ModalButtons = ({ openedMemory }: IModalButtonsProps) => {
+const MemoryModalButtons = ({ openedMemory }: IMemoryModalButtonsProps) => {
   const { changeOpenedModalState } = useModal();
   const { deleteMemory, isLoading, changeLoadingState } = useMemory();
 
@@ -42,4 +42,4 @@ const ModalButtons = ({ openedMemory }: IModalButtonsProps) => {
   );
 };
 
-export default ModalButtons;
+export default MemoryModalButtons;

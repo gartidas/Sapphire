@@ -15,7 +15,7 @@ import {
   StyledInput,
 } from "./MemoryForm.styled";
 
-interface IFormProps {
+interface IMemoryFormProps {
   methods: UseFormMethods<IMemoryData>;
   onSubmit: (data: IMemoryData) => Promise<void>;
   file: File | undefined;
@@ -30,7 +30,7 @@ const MemoryForm = ({
   file,
   isLoading,
   onSubmit,
-}: IFormProps) => {
+}: IMemoryFormProps) => {
   const inputRef = useRef<HTMLInputElement>(null!);
   const { register, handleSubmit, errors } = methods;
 

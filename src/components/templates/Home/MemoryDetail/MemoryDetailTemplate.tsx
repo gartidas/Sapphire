@@ -1,5 +1,5 @@
 import { IMemoryData } from "../../../../utils/types";
-import ModalButtons from "../../../modules/ModalButtons/ModalButtons";
+import MemoryModalButtons from "../../../modules/MemoryModalButtons/MemoryModalButtons";
 
 import {
   Wrapper,
@@ -21,7 +21,7 @@ const MemoryDetail = ({ openedMemory }: IMemoryDetailProps) => {
         <DetailTitle>{openedMemory.date}</DetailTitle>
         <DetailDescription>{openedMemory.description}</DetailDescription>
       </WrapperRightSide>
-      <ModalButtons openedMemory={openedMemory} />
+      <MemoryModalButtons openedMemory={openedMemory} />
     </Wrapper>
   );
 };

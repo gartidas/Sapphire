@@ -15,10 +15,10 @@ import { useAuth } from "./AuthProvider";
 
 interface IMemoryContextValue {
   isLoading: boolean;
-  hasMore: boolean;
   changeLoadingState: (isLoading: boolean) => void;
-  memories: IMemoryData[];
+  hasMore: boolean;
   loadNextBatch: () => void;
+  memories: IMemoryData[];
   addMemory: (data: IMemoryData) => Promise<void>;
   editMemory: (data: IMemoryData) => Promise<void>;
   deleteMemory: (data: IMemoryData) => Promise<boolean>;
@@ -74,7 +74,7 @@ const MemoryProvider: FC = ({ children }) => {
   const addMemory = useCallback(
     async (data: IMemoryData) => {
       await uploadMemoryData(data, true);
-      await fetchMemories();
+      fetchMemories();
     },
     [fetchMemories]
   );
@@ -82,7 +82,7 @@ const MemoryProvider: FC = ({ children }) => {
   const editMemory = useCallback(
     async (data: IMemoryData) => {
       await uploadMemoryData(data, false);
-      await fetchMemories();
+      fetchMemories();
     },
     [fetchMemories]
   );
@@ -122,8 +122,8 @@ const MemoryProvider: FC = ({ children }) => {
         .doc(openedMemory.id)
         .delete();
 
-      await fetchMemories();
       setIsLoading(false);
+      fetchMemories();
       return true;
     } catch (err: any) {
       setIsLoading(false);
