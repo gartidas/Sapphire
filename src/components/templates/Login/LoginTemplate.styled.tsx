@@ -1,7 +1,5 @@
 import styled from "styled-components";
 
-import { SM } from "../../../utils/theme";
-
 export const PageContent = styled.div`
   display: flex;
   flex-direction: column;
@@ -19,25 +17,5 @@ export const StyledForm = styled.form`
   flex: 1;
   > * + * {
     margin-top: 30px;
-  }
-`;
-
-export const LogoWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-`;
-
-export const LogoImage = styled.img`
-  margin-right: 10px;
-  height: 50px;
-`;
-
-export const LogoTitle = styled.h1`
-  font-size: 5rem;
-  margin: 0;
-  @media screen and (max-width: ${SM}px) {
-    font-size: 3rem;
   }
 `;
