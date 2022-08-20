@@ -27,6 +27,7 @@ import { useMemory } from "../../../contextProviders/MemoryProvider";
 import { ModalType } from "../../../utils/types";
 import useObserver from "../../../hooks/useObserver";
 import FullPageSpinner from "../../modules/FullPageSpinner/FullPageSpinner";
+import NoData from "../../elements/NoData/NoData";
 
 const useStyles = makeStyles((theme) => ({
   timelineDot: {
@@ -99,8 +100,7 @@ const HomeTemplate = () => {
           <DummymSpan ref={observe} />
         </TimelineWrapper>
       ) : (
-        // TODO: Add no memories component
-        <>{isLoading ? <FullPageSpinner hasNavbar /> : "Nothing to show"}</>
+        <>{isLoading ? <FullPageSpinner hasNavbar /> : <NoData />}</>
       )}
 
       {openedModal && (
