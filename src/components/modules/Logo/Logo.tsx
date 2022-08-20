@@ -1,15 +1,19 @@
 import { useState } from "react";
-import { LogoImage } from "./LogoImage.styled";
-import { Wrapper, Title } from "./LogoTitle.styled";
-import logo from "../../../logo.png";
+import LogoImage, { LogoImageProps } from "../LogoImage/LogoImage";
+import { Wrapper, Title } from "./Logo.styled";
 
-const LogoTitle = () => {
+interface LogoProps {
+  className?: string;
+  imageProps?: LogoImageProps;
+}
+
+const Logo = ({ className, imageProps }: LogoProps) => {
   const [isAnimationRunning, setIsAnimationRunning] = useState(false);
 
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <LogoImage
-        src={logo}
+        {...imageProps}
         onMouseEnter={() => setIsAnimationRunning(true)}
         isAnimationRunning={isAnimationRunning}
         onAnimationEnd={() => setIsAnimationRunning(false)}
@@ -19,4 +23,4 @@ const LogoTitle = () => {
   );
 };
 
-export default LogoTitle;
+export default Logo;

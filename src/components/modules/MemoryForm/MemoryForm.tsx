@@ -1,5 +1,4 @@
 import { ChangeEvent, useRef } from "react";
-import { CircularProgress } from "@material-ui/core";
 import { AddAPhoto, Publish } from "@material-ui/icons";
 import moment from "moment";
 import { Controller, FormProvider, UseFormMethods } from "react-hook-form";
@@ -14,6 +13,7 @@ import {
   StyledFileName,
   StyledInput,
 } from "./MemoryForm.styled";
+import LogoImage from "../LogoImage/LogoImage";
 
 interface IMemoryFormProps {
   methods: UseFormMethods<IMemoryData>;
@@ -94,19 +94,16 @@ const MemoryForm = ({
             fullWidth
           />
 
-          {isLoading ? (
-            <CircularProgress />
-          ) : (
-            <Button
-              type="submit"
-              fullWidth
-              variant="outlined"
-              color="secondary"
-            >
-              <Publish />
-              Submit
-            </Button>
-          )}
+          <Button type="submit" fullWidth variant="outlined" color="secondary">
+            {isLoading ? (
+              <LogoImage isAnimationRunning={isLoading} isInfinite />
+            ) : (
+              <>
+                <Publish />
+                Submit
+              </>
+            )}
+          </Button>
 
           <StyledInput
             name="image"

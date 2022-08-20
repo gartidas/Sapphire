@@ -56,6 +56,10 @@ body{
 {
   background-color: ${({ theme }) => theme.primary};
 }
+
+canvas{
+  position: fixed !important;
+}
 `;
 
 export default GlobalStyles;

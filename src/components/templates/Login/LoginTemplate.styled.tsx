@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Logo from "../../modules/Logo/Logo";
 
 export const PageContent = styled.div`
   display: flex;
@@ -18,4 +19,8 @@ export const StyledForm = styled.form`
   > * + * {
     margin-top: 30px;
   }
+`;
+
+export const StyledLogo = styled(Logo)`
+  flex: 1;
 `;

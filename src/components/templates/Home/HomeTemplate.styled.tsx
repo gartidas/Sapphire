@@ -1,6 +1,6 @@
-import { CircularProgress } from "@material-ui/core";
 import styled from "styled-components";
 import { SM } from "../../../utils/theme";
+import LogoImage from "../../modules/LogoImage/LogoImage";
 
 import { NAVBAR_HEIGHT } from "../../modules/Navbar/Navbar.styled";
 
@@ -46,6 +46,6 @@ export const DummymSpan = styled.span`
   align-self: center;
 `;
 
-export const Spinner = styled(CircularProgress)`
+export const Spinner = styled(LogoImage)`
   align-self: center;
 `;

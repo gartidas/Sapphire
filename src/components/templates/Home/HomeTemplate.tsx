@@ -26,6 +26,7 @@ import { useModal } from "../../../contextProviders/ModalProvider";
 import { useMemory } from "../../../contextProviders/MemoryProvider";
 import { ModalType } from "../../../utils/types";
 import useObserver from "../../../hooks/useObserver";
+import FullPageSpinner from "../../modules/FullPageSpinner/FullPageSpinner";
 
 const useStyles = makeStyles((theme) => ({
   timelineDot: {
@@ -67,35 +68,41 @@ const HomeTemplate = () => {
           <Add />
         </MuiButton>
       </ButtonsWrapper>
-      <TimelineWrapper>
-        <Timeline align="alternate">
-          {memories.map((x) => (
-            <TimelineItem key={x.id}>
-              <TimelineSeparator>
-                <div
-                  onClick={() => {
-                    changeOpenedModalState({
-                      type: ModalType.Detail,
-                      memory: x,
-                    });
-                  }}
-                  style={{ borderRadius: "50%" }}
-                >
-                  <TimelineDot className={classes.timelineDot} />
-                </div>
-                <TimelineConnector className={classes.timelineConnector} />
-              </TimelineSeparator>
-              <TimelineContent className={classes.timelineContent}>
-                {x.date}
-              </TimelineContent>
-            </TimelineItem>
-          ))}
-        </Timeline>
+      {memories ? (
+        <TimelineWrapper>
+          <Timeline align="alternate">
+            {memories.map((x) => (
+              <TimelineItem key={x.id}>
+                <TimelineSeparator>
+                  <div
+                    onClick={() => {
+                      changeOpenedModalState({
+                        type: ModalType.Detail,
+                        memory: x,
+                      });
+                    }}
+                    style={{ borderRadius: "50%" }}
+                  >
+                    <TimelineDot className={classes.timelineDot} />
+                  </div>
+                  <TimelineConnector className={classes.timelineConnector} />
+                </TimelineSeparator>
+                <TimelineContent className={classes.timelineContent}>
+                  {x.date}
+                </TimelineContent>
+              </TimelineItem>
+            ))}
+          </Timeline>
 
-        {isLoading && <Spinner />}
+          {isLoading && <Spinner isAnimationRunning={isLoading} isInfinite />}
 
-        <DummymSpan ref={observe} />
-      </TimelineWrapper>
+          <DummymSpan ref={observe} />
+        </TimelineWrapper>
+      ) : (
+        // TODO: Add no memories component
+        <>{isLoading ? <FullPageSpinner hasNavbar /> : "Nothing to show"}</>
+      )}
+
       {openedModal && (
         <Modal
           open

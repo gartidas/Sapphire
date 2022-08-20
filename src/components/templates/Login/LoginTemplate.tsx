@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Button, CircularProgress } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { useHistory } from "react-router";
 
 import { IUserData } from "../../../utils/types";
@@ -8,8 +8,8 @@ import { projectAuth } from "../../../firebase/config";
 import { firebaseErrorToFieldError } from "../../../utils/firebase-error";
 import TextBox from "../../elements/TextBox";
 
-import { StyledForm, PageContent } from "./LoginTemplate.styled";
-import LogoTitle from "../../modules/LogoTitle/LogoTitle";
+import { StyledForm, PageContent, StyledLogo } from "./LoginTemplate.styled";
+import LogoImage from "../../modules/LogoImage/LogoImage";
 
 const LoginTemplate = () => {
   const { register, handleSubmit, errors, setError } = useForm<IUserData>();
@@ -33,7 +33,7 @@ const LoginTemplate = () => {
 
   return (
     <PageContent>
-      <LogoTitle />
+      <StyledLogo />
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <TextBox
           name="email"
@@ -53,13 +53,13 @@ const LoginTemplate = () => {
           helperText={errors.password?.message}
           fullWidth
         />
-        {isLoading ? (
-          <CircularProgress />
-        ) : (
-          <Button type="submit" fullWidth variant="outlined" color="secondary">
-            Login
-          </Button>
-        )}
+        <Button type="submit" fullWidth variant="outlined" color="secondary">
+          {isLoading ? (
+            <LogoImage isAnimationRunning={isLoading} isInfinite />
+          ) : (
+            "Login"
+          )}
+        </Button>
       </StyledForm>
     </PageContent>
   );

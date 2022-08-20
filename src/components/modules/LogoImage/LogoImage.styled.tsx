@@ -1,13 +1,15 @@
 import styled, { css } from "styled-components";
 import { SM } from "../../../utils/theme";
 
-interface LogoImageProps {
-  isAnimationRunning: boolean;
+interface ImageProps {
+  isAnimationRunning?: boolean;
+  isInfinite?: boolean;
   size?: { mobile?: number; desktop?: number };
 }
 
-export const LogoImage = styled.img<LogoImageProps>`
+export const Image = styled.img<ImageProps>`
   height: ${({ size }) => (size ? size.desktop ?? 30 : 30)}px;
+  width: ${({ size }) => (size ? size.desktop ?? 30 : 30)}px;
 
   ${({ isAnimationRunning }) =>
     isAnimationRunning &&
@@ -18,8 +20,18 @@ export const LogoImage = styled.img<LogoImageProps>`
       animation: spinHorizontally 0.8s linear;
     `};
 
+  ${({ isInfinite }) =>
+    isInfinite &&
+    css`
+      -moz-animation-iteration-count: infinite;
+      -o-animation-iteration-count: infinite;
+      -webkit-animation-iteration-count: infinite;
+      animation-iteration-count: infinite;
+    `};
+
   @media screen and (max-width: ${SM}px) {
     height: ${({ size }) => (size ? size.mobile ?? 20 : 20)}px;
+    width: ${({ size }) => (size ? size.mobile ?? 20 : 20)}px;
   }
 
   @keyframes spinHorizontally {

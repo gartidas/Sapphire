@@ -1,10 +1,10 @@
-import { CircularProgress } from "@material-ui/core";
 import { Delete, Edit } from "@material-ui/icons";
 import { useMemory } from "../../../contextProviders/MemoryProvider";
 import { useModal } from "../../../contextProviders/ModalProvider";
 import { successToast } from "../../../services/toastService";
 
 import { IMemoryData, ModalType } from "../../../utils/types";
+import LogoImage from "../LogoImage/LogoImage";
 
 import { Wrapper, Button } from "./MemoryModalButtons.styled";
 
@@ -36,7 +36,11 @@ const MemoryModalButtons = ({ openedMemory }: IMemoryModalButtonsProps) => {
           changeOpenedModalState(undefined);
         }}
       >
-        {isLoading ? <CircularProgress /> : <Delete />}
+        {isLoading ? (
+          <LogoImage isAnimationRunning={isLoading} isInfinite />
+        ) : (
+          <Delete />
+        )}
       </Button>
     </Wrapper>
   );
