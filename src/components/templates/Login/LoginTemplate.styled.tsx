@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Logo from "../../modules/Logo/Logo";
+import { Button as MuiButton } from "@material-ui/core";
 
 export const PageContent = styled.div`
   display: flex;
@@ -23,4 +24,10 @@ export const StyledForm = styled.form`
 
 export const StyledLogo = styled(Logo)`
   flex: 1;
+`;
+
+export const Button = styled(MuiButton)`
+  img {
+    margin-right: 10px;
+  }
 `;

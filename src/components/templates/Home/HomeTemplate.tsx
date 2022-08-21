@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Add } from "@material-ui/icons";
 import {
   Timeline,
   TimelineConnector,
@@ -19,7 +18,7 @@ import {
   ButtonsWrapper,
   DummymSpan,
   IndicatingButton,
-  Spinner,
+  StyledSpinner,
   TimelineWrapper,
   Wrapper,
 } from "./HomeTemplate.styled";
@@ -29,6 +28,7 @@ import { ModalType } from "../../../utils/types";
 import useObserver from "../../../hooks/useObserver";
 import FullPageSpinner from "../../modules/FullPageSpinner/FullPageSpinner";
 import NoData from "../../elements/NoData/NoData";
+import addIcon from "./Add.gif";
 
 const useStyles = makeStyles((theme) => ({
   timelineDot: {
@@ -68,7 +68,7 @@ const HomeTemplate = () => {
           isIndicating={!memories || memories.length === 0}
           onClick={() => changeOpenedModalState({ type: ModalType.Add })}
         >
-          <Add />
+          <img src={addIcon} alt="Add" width={40} />
         </IndicatingButton>
       </ButtonsWrapper>
       {memories && memories.length > 0 ? (
@@ -97,7 +97,7 @@ const HomeTemplate = () => {
             ))}
           </Timeline>
 
-          {isLoading && <Spinner isAnimationRunning={isLoading} isInfinite />}
+          {isLoading && <StyledSpinner size={{ desktop: 60, mobile: 40 }} />}
 
           <DummymSpan ref={observe} />
         </TimelineWrapper>

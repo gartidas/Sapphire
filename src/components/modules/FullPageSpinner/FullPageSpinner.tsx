@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import LogoImage from "../LogoImage/LogoImage";
+import Spinner from "../../elements/Spinner/Spinner";
 import { NAVBAR_HEIGHT } from "../Navbar/Navbar.styled";
 
 const StyledWrapper = styled.div<FullPageSpinnerProps>`
@@ -17,11 +17,7 @@ interface FullPageSpinnerProps {
 const FullPageSpinner = (props: FullPageSpinnerProps) => {
   return (
     <StyledWrapper {...props}>
-      <LogoImage
-        isAnimationRunning
-        isInfinite
-        size={{ desktop: 100, mobile: 50 }}
-      />
+      <Spinner size={{ desktop: 500, mobile: 200 }} />
     </StyledWrapper>
   );
 };

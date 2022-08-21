@@ -1,5 +1,4 @@
 import { ChangeEvent, useRef } from "react";
-import { AddAPhoto, Publish } from "@material-ui/icons";
 import moment from "moment";
 import { Controller, FormProvider, UseFormMethods } from "react-hook-form";
 
@@ -13,7 +12,9 @@ import {
   StyledFileName,
   StyledInput,
 } from "./MemoryForm.styled";
-import LogoImage from "../LogoImage/LogoImage";
+import submitIcon from "./Submit.gif";
+import uploadImageIcon from "./UploadImage.gif";
+import Spinner from "../../elements/Spinner/Spinner";
 
 interface IMemoryFormProps {
   methods: UseFormMethods<IMemoryData>;
@@ -46,6 +47,9 @@ const MemoryForm = ({
     setFile(file);
   };
 
+  // NOTE: Upload image doesn't have the same context as the image tag
+  /* eslint-disable jsx-a11y/img-redundant-alt */
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -60,7 +64,8 @@ const MemoryForm = ({
               <StyledFileName>{file?.name}</StyledFileName>
             ) : (
               <>
-                <AddAPhoto /> Upload image
+                <img src={uploadImageIcon} alt="Upload image" width={30} />
+                Upload image
               </>
             )}
           </Button>
@@ -96,10 +101,10 @@ const MemoryForm = ({
 
           <Button type="submit" fullWidth variant="outlined" color="secondary">
             {isLoading ? (
-              <LogoImage isAnimationRunning={isLoading} isInfinite />
+              <Spinner size={{ desktop: 30, mobile: 30 }} />
             ) : (
               <>
-                <Publish />
+                <img src={submitIcon} alt="Submit" width={30} />
                 Submit
               </>
             )}

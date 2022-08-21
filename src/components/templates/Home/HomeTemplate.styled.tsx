@@ -1,8 +1,8 @@
 import styled, { css } from "styled-components";
 import { SM, theme } from "../../../utils/theme";
-import LogoImage from "../../modules/LogoImage/LogoImage";
 import { ButtonProps, IconButton as MuiButton } from "@material-ui/core";
 import { NAVBAR_HEIGHT } from "../../modules/Navbar/Navbar.styled";
+import Spinner from "../../elements/Spinner/Spinner";
 
 interface IndicatingButtonProps extends ButtonProps {
   isIndicating?: boolean;
@@ -65,6 +65,6 @@ export const DummymSpan = styled.span`
   align-self: center;
 `;
 
-export const Spinner = styled(LogoImage)`
+export const StyledSpinner = styled(Spinner)`
   align-self: center;
 `;

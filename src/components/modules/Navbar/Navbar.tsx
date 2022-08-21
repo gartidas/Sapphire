@@ -1,11 +1,11 @@
 import { Button } from "@material-ui/core";
-import { ExitToAppRounded } from "@material-ui/icons";
 import { useState } from "react";
 
 import { useAuth } from "../../../contextProviders/AuthProvider";
 import { projectAuth } from "../../../firebase/config";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { MD } from "../../../utils/theme";
+import logoutIcon from "./Logout.gif";
 
 import {
   Chip,
@@ -38,7 +38,7 @@ const Navbar = () => {
       <Chip>
         <UserTag>{auth.user?.email}</UserTag>
         <Button onClick={onLogoutClick}>
-          <ExitToAppRounded />
+          <img src={logoutIcon} alt="Log out" width={40} />
         </Button>
       </Chip>
     </StyledNavbar>

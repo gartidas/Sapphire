@@ -13,7 +13,7 @@ export const FormContent = styled.div`
 `;
 
 export const Button = styled(MuiButton)`
-  svg {
+  img {
     margin-right: 10px;
   }
 `;

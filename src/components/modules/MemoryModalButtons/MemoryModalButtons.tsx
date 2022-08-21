@@ -1,12 +1,13 @@
-import { Delete, Edit } from "@material-ui/icons";
 import { useMemory } from "../../../contextProviders/MemoryProvider";
 import { useModal } from "../../../contextProviders/ModalProvider";
 import { successToast } from "../../../services/toastService";
 
 import { IMemoryData, ModalType } from "../../../utils/types";
-import LogoImage from "../LogoImage/LogoImage";
 
 import { Wrapper, Button } from "./MemoryModalButtons.styled";
+import editIcon from "./Edit.gif";
+import deleteIcon from "./Delete.gif";
+import Spinner from "../../elements/Spinner/Spinner";
 
 interface IMemoryModalButtonsProps {
   openedMemory: IMemoryData;
@@ -26,7 +27,7 @@ const MemoryModalButtons = ({ openedMemory }: IMemoryModalButtonsProps) => {
           });
         }}
       >
-        <Edit />
+        <img src={editIcon} alt="Edit" width={40} />
       </Button>
       <Button
         onClick={async () => {
@@ -37,9 +38,9 @@ const MemoryModalButtons = ({ openedMemory }: IMemoryModalButtonsProps) => {
         }}
       >
         {isLoading ? (
-          <LogoImage isAnimationRunning={isLoading} isInfinite />
+          <Spinner size={{ desktop: 40, mobile: 40 }} />
         ) : (
-          <Delete />
+          <img src={deleteIcon} alt="Delete" width={40} />
         )}
       </Button>
     </Wrapper>
