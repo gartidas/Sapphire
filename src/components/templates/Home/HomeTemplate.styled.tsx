@@ -1,8 +1,27 @@
-import styled from "styled-components";
-import { SM } from "../../../utils/theme";
+import styled, { css } from "styled-components";
+import { SM, theme } from "../../../utils/theme";
 import LogoImage from "../../modules/LogoImage/LogoImage";
-
+import { ButtonProps, IconButton as MuiButton } from "@material-ui/core";
 import { NAVBAR_HEIGHT } from "../../modules/Navbar/Navbar.styled";
+
+interface IndicatingButtonProps extends ButtonProps {
+  isIndicating?: boolean;
+}
+
+export const IndicatingButton = styled(MuiButton)<IndicatingButtonProps>`
+  ${({ isIndicating }) =>
+    isIndicating &&
+    css`
+      animation: pulse 2s infinite cubic-bezier(0.66, 0.33, 0, 1);
+      box-shadow: 0 0 0 0 ${theme.primary}, 0 0 0 0 ${theme.primary};
+    `};
+
+  @keyframes pulse {
+    to {
+      box-shadow: 0 0 0 12px transparent, 0 0 0 24px rgba(227, 115, 14, 0);
+    }
+  }
+`;
 
 export const ButtonsWrapper = styled.div`
   position: fixed;

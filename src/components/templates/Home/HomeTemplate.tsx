@@ -8,7 +8,7 @@ import {
   TimelineItem,
   TimelineSeparator,
 } from "@material-ui/lab";
-import { makeStyles, IconButton as MuiButton } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 
 import Modal from "../../elements/Modal";
 import AddMemoryTemplate from "./AddMemory/AddMemoryTemplate";
@@ -18,6 +18,7 @@ import EditMemoryTemplate from "./EditMemory/EditMemoryTemplate";
 import {
   ButtonsWrapper,
   DummymSpan,
+  IndicatingButton,
   Spinner,
   TimelineWrapper,
   Wrapper,
@@ -63,13 +64,14 @@ const HomeTemplate = () => {
   return (
     <Wrapper>
       <ButtonsWrapper>
-        <MuiButton
+        <IndicatingButton
+          isIndicating={!memories || memories.length === 0}
           onClick={() => changeOpenedModalState({ type: ModalType.Add })}
         >
           <Add />
-        </MuiButton>
+        </IndicatingButton>
       </ButtonsWrapper>
-      {memories ? (
+      {memories && memories.length > 0 ? (
         <TimelineWrapper>
           <Timeline align="alternate">
             {memories.map((x) => (
