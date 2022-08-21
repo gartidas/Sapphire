@@ -1,13 +1,14 @@
 import styled from "styled-components";
 import Logo from "../../modules/Logo/Logo";
 import { Button as MuiButton } from "@material-ui/core";
+import { FOOTER_HEIGHT } from "../../modules/Footer/Footer.styled";
 
 export const PageContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  height: 100vh;
+  height: calc(100vh - ${FOOTER_HEIGHT}px);
 `;
 
 export const StyledForm = styled.form`
