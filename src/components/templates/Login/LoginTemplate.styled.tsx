@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Logo from "../../modules/Logo/Logo";
 import { Button as MuiButton } from "@material-ui/core";
 import { FOOTER_HEIGHT } from "../../modules/Footer/Footer.styled";
+import TextBox from "../../elements/TextBox";
 
 export const PageContent = styled.div`
   display: flex;
@@ -27,8 +28,25 @@ export const StyledLogo = styled(Logo)`
   flex: 1;
 `;
 
-export const Button = styled(MuiButton)`
+export const LoginButton = styled(MuiButton)`
   img {
     margin-right: 10px;
+  }
+`;
+
+export const ShowHideButton = styled(MuiButton)`
+  position: absolute;
+  padding-top: 8px;
+  right: 0;
+`;
+
+export const PasswordWrapper = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+export const StyledTextBox = styled(TextBox)`
+  input {
+    padding: 18.5px 64px 18.5px 14px;
   }
 `;
