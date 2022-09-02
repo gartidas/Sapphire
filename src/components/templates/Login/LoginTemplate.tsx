@@ -11,14 +11,20 @@ import {
   StyledForm,
   PageContent,
   StyledLogo,
-  Button,
+  LoginButton,
+  PasswordWrapper,
+  ShowHideButton,
+  StyledTextBox,
 } from "./LoginTemplate.styled";
 import loginIcon from "./Login.gif";
+import showIcon from "./Show.gif";
+import hideIcon from "./Hide.gif";
 import Spinner from "../../elements/Spinner/Spinner";
 
 const LoginTemplate = () => {
   const { register, handleSubmit, errors, setError } = useForm<IUserData>();
   const [isLoading, setIsLoading] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const router = useHistory();
 
   const onSubmit = async (data: IUserData) => {
@@ -49,16 +55,33 @@ const LoginTemplate = () => {
           fullWidth
         />
 
-        <TextBox
-          name="password"
-          type="password"
-          label="Password"
-          inputRef={register({ required: "Is required" })}
-          error={!!errors.password?.message}
-          helperText={errors.password?.message}
+        <PasswordWrapper>
+          <StyledTextBox
+            name="password"
+            type={isPasswordVisible ? "text" : "password"}
+            label="Password"
+            inputRef={register({ required: "Is required" })}
+            error={!!errors.password?.message}
+            helperText={errors.password?.message}
+            fullWidth
+          />
+          <ShowHideButton
+            onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+          >
+            <img
+              src={isPasswordVisible ? hideIcon : showIcon}
+              alt={isPasswordVisible ? "Hide" : "Show"}
+              width={40}
+            />
+          </ShowHideButton>
+        </PasswordWrapper>
+
+        <LoginButton
+          type="submit"
           fullWidth
-        />
-        <Button type="submit" fullWidth variant="outlined" color="secondary">
+          variant="outlined"
+          color="secondary"
+        >
           {isLoading ? (
             <Spinner size={{ desktop: 40, mobile: 40 }} />
           ) : (
@@ -67,7 +90,7 @@ const LoginTemplate = () => {
               Login
             </>
           )}
-        </Button>
+        </LoginButton>
       </StyledForm>
     </PageContent>
   );
