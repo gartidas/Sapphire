@@ -1,10 +1,14 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import { LG, SM, theme } from "../../../utils/theme";
 import LogoImage from "../LogoImage/LogoImage";
 import Logo from "../Logo/Logo";
 
 export const NAVBAR_HEIGHT = 80;
+
+interface StyledLinkProps {
+  useLogoLink?: boolean;
+}
 
 export const StyledNavbar = styled.div`
   position: relative;
@@ -47,4 +51,12 @@ export const StyledLogo = styled(Logo)`
 
 export const StyledLogoImage = styled(LogoImage)`
   margin-left: 20px;
+`;
+
+export const StyledLink = styled.div<StyledLinkProps>`
+  ${({ useLogoLink }) =>
+    useLogoLink &&
+    css`
+      cursor: pointer;
+    `};
 `;

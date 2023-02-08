@@ -11,17 +11,20 @@ import { errorToast } from "../services/toastService";
 import { deleteImage } from "../utils/FirebaseStorageUtils";
 import { IMemoryData } from "../utils/types";
 import firebase from "firebase/app";
-import { useAuth } from "./AuthProvider";
+import { useUser } from "./UserProvider";
 
 interface IMemoryContextValue {
   isLoading: boolean;
   changeLoadingState: (isLoading: boolean) => void;
   hasMore: boolean;
-  loadNextBatch: () => void;
+  loadNextBatch: (familyId: string) => void;
   memories: IMemoryData[];
-  addMemory: (data: IMemoryData) => Promise<void>;
-  editMemory: (data: IMemoryData) => Promise<void>;
-  deleteMemory: (data: IMemoryData) => Promise<boolean>;
+  addMemory: (data: IMemoryData, familyId: string) => Promise<void>;
+  editMemory: (data: IMemoryData, familyId: string) => Promise<void>;
+  deleteMemory: (
+    openedMemory: IMemoryData,
+    familyId: string
+  ) => Promise<boolean>;
 }
 
 const MemoryContext = createContext<IMemoryContextValue>(null!);
@@ -32,17 +35,19 @@ const MemoryProvider: FC = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(false);
   const [memories, setMemories] = useState<IMemoryData[]>([]);
-  const { user } = useAuth();
+  const { user } = useUser();
   const lastVisible = memories && memories[memories.length - 1];
 
   const changeLoadingState = useCallback((isLoading: boolean) => {
     setIsLoading(isLoading);
   }, []);
 
-  const fetchMemories = useCallback(() => {
+  const fetchMemories = useCallback((familyId: string) => {
     setMemories([]);
     projectFirestore
-      .collection("memories")
+      .collection("familyAssets")
+      .doc("memories")
+      .collection(familyId)
       .orderBy("date", "desc")
       .limit(20)
       .onSnapshot(mapDocs, (err) => console.log(err));
@@ -51,19 +56,23 @@ const MemoryProvider: FC = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const loadNextBatch = useCallback(() => {
-    if (lastVisible) {
-      projectFirestore
-        .collection("memories")
-        .orderBy("date", "desc")
-        .limit(20)
-        .startAfter(lastVisible.date)
-        .onSnapshot(mapDocs, (err) => console.log(err));
-    }
-
+  const loadNextBatch = useCallback(
+    (familyId: string) => {
+      if (lastVisible) {
+        projectFirestore
+          .collection("familyAssets")
+          .doc("memories")
+          .collection(familyId)
+          .orderBy("date", "desc")
+          .limit(20)
+          .startAfter(lastVisible.date)
+          .onSnapshot(mapDocs, (err) => console.log(err));
+      }
+    },
     // NOTE: Map docs would cause endless refetch
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lastVisible]);
+    [lastVisible]
+  );
 
   const mapDocs = (
     snap: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>
@@ -78,32 +87,36 @@ const MemoryProvider: FC = ({ children }) => {
   };
 
   const addMemory = useCallback(
-    async (data: IMemoryData) => {
-      await uploadMemoryData(data, true);
-      fetchMemories();
+    async (data: IMemoryData, familyId: string) => {
+      await uploadMemoryData(data, familyId, true);
+      fetchMemories(familyId);
     },
     [fetchMemories]
   );
 
   const editMemory = useCallback(
-    async (data: IMemoryData) => {
-      await uploadMemoryData(data, false);
-      fetchMemories();
+    async (data: IMemoryData, familyId: string) => {
+      await uploadMemoryData(data, familyId, false);
+      fetchMemories(familyId);
     },
     [fetchMemories]
   );
 
   const uploadMemoryData = async (
     data: Omit<IMemoryData, "id">,
+    familyId: string,
     revertOnError: boolean
   ) => {
     try {
       await projectFirestore
-        .collection("/memories")
+        .collection("familyAssets")
+        .doc("memories")
+        .collection(familyId)
         .doc(data.date.toString())
         .set(data);
     } catch (err: any) {
-      revertOnError && (await deleteImage(data.date.toString()));
+      revertOnError &&
+        (await deleteImage(`${familyId}/${data.date.toString()}`));
 
       errorToast(
         err.code === "permission-denied"
@@ -115,21 +128,26 @@ const MemoryProvider: FC = ({ children }) => {
     }
   };
 
-  const deleteMemory = async (openedMemory: IMemoryData): Promise<boolean> => {
+  const deleteMemory = async (
+    openedMemory: IMemoryData,
+    familyId: string
+  ): Promise<boolean> => {
     try {
-      const isDeleted = await deleteImage(openedMemory.id);
+      const isDeleted = await deleteImage(`${familyId}/${openedMemory.id}`);
       if (!isDeleted) {
         setIsLoading(false);
         return false;
       }
 
       await projectFirestore
-        .collection("/memories")
+        .collection("familyAssets")
+        .doc("memories")
+        .collection(familyId)
         .doc(openedMemory.id)
         .delete();
 
       setIsLoading(false);
-      fetchMemories();
+      fetchMemories(familyId);
       return true;
     } catch (err: any) {
       setIsLoading(false);
@@ -139,7 +157,7 @@ const MemoryProvider: FC = ({ children }) => {
   };
 
   useEffect(() => {
-    if (user) fetchMemories();
+    if (user) fetchMemories(user.familyId);
   }, [fetchMemories, user]);
 
   return (

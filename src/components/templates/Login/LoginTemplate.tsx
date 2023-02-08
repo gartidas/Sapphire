@@ -12,20 +12,18 @@ import {
   PageContent,
   StyledLogo,
   LoginButton,
-  PasswordWrapper,
-  ShowHideButton,
-  StyledTextBox,
+  Text,
 } from "./LoginTemplate.styled";
 import loginIcon from "./Login.gif";
-import showIcon from "./Show.gif";
-import hideIcon from "./Hide.gif";
 import Spinner from "../../elements/Spinner/Spinner";
+import { useUser } from "../../../contextProviders/UserProvider";
+import PasswordTextBox from "../../elements/PasswordTextBox/PasswordTextBox";
 
 const LoginTemplate = () => {
   const { register, handleSubmit, errors, setError } = useForm<IUserData>();
   const [isLoading, setIsLoading] = useState(false);
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const router = useHistory();
+  const { fetchUser } = useUser();
 
   const onSubmit = async (data: IUserData) => {
     try {
@@ -34,6 +32,8 @@ const LoginTemplate = () => {
         data.email.trim(),
         data.password
       );
+      fetchUser(data.email.trim());
+
       router.replace("/home");
     } catch (err: any) {
       var error = firebaseErrorToFieldError(err);
@@ -55,26 +55,14 @@ const LoginTemplate = () => {
           fullWidth
         />
 
-        <PasswordWrapper>
-          <StyledTextBox
-            name="password"
-            type={isPasswordVisible ? "text" : "password"}
-            label="Password"
-            inputRef={register({ required: "Is required" })}
-            error={!!errors.password?.message}
-            helperText={errors.password?.message}
-            fullWidth
-          />
-          <ShowHideButton
-            onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-          >
-            <img
-              src={isPasswordVisible ? hideIcon : showIcon}
-              alt={isPasswordVisible ? "Hide" : "Show"}
-              width={40}
-            />
-          </ShowHideButton>
-        </PasswordWrapper>
+        <PasswordTextBox
+          name="password"
+          label="Password"
+          inputRef={register({ required: "Is required" })}
+          error={!!errors.password?.message}
+          helperText={errors.password?.message}
+          fullWidth
+        />
 
         <LoginButton
           type="submit"
@@ -91,6 +79,10 @@ const LoginTemplate = () => {
             </>
           )}
         </LoginButton>
+        <Text>
+          Don't have a account?&nbsp;
+          <span onClick={() => router.push("/register")}>Sign up.</span>
+        </Text>
       </StyledForm>
     </PageContent>
   );

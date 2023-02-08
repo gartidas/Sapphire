@@ -10,6 +10,7 @@ import GlobalStyles from "./utils/GlobalStyles";
 import AuthProvider from "./contextProviders/AuthProvider";
 import ModalProvider from "./contextProviders/ModalProvider";
 import MemoryProvider from "./contextProviders/MemoryProvider";
+import UserProvider from "./contextProviders/UserProvider";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -18,11 +19,13 @@ ReactDOM.render(
         <ThemeProvider theme={theme}>
           <GlobalStyles />
           <AuthProvider>
-            <ModalProvider>
-              <MemoryProvider>
-                <App />
-              </MemoryProvider>
-            </ModalProvider>
+            <UserProvider>
+              <ModalProvider>
+                <MemoryProvider>
+                  <App />
+                </MemoryProvider>
+              </ModalProvider>
+            </UserProvider>
           </AuthProvider>
         </ThemeProvider>
       </StylesProvider>

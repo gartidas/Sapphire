@@ -8,6 +8,7 @@ import { Wrapper, Button } from "./MemoryModalButtons.styled";
 import editIcon from "./Edit.gif";
 import deleteIcon from "./Delete.gif";
 import Spinner from "../../elements/Spinner/Spinner";
+import { useUser } from "../../../contextProviders/UserProvider";
 
 interface IMemoryModalButtonsProps {
   openedMemory: IMemoryData;
@@ -16,6 +17,7 @@ interface IMemoryModalButtonsProps {
 const MemoryModalButtons = ({ openedMemory }: IMemoryModalButtonsProps) => {
   const { changeOpenedModalState } = useModal();
   const { deleteMemory, isLoading, changeLoadingState } = useMemory();
+  const { user } = useUser();
 
   return (
     <Wrapper>
@@ -32,7 +34,7 @@ const MemoryModalButtons = ({ openedMemory }: IMemoryModalButtonsProps) => {
       <Button
         onClick={async () => {
           changeLoadingState(true);
-          await deleteMemory(openedMemory);
+          await deleteMemory(openedMemory, user!.familyId);
           successToast("Memory deleted!");
           changeOpenedModalState(undefined);
         }}

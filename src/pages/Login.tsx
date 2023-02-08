@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet";
 
 import DefaultLayout from "../components/layouts/DefaultLayout";
+import Footer from "../components/modules/Footer/Footer";
 import LoginTemplate from "../components/templates/Login/LoginTemplate";
 
 function Login() {
@@ -10,6 +11,7 @@ function Login() {
         <title>◇ Sapphire ◇</title>
       </Helmet>
       <LoginTemplate />
+      <Footer />
     </DefaultLayout>
   );
 }
