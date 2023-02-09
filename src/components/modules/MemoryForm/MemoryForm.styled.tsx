@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Button as MuiButton } from "@material-ui/core";
 
 export const FormContent = styled.div`
   display: flex;
@@ -10,23 +9,4 @@ export const FormContent = styled.div`
   > * + * {
     margin-top: 30px;
   }
-`;
-
-export const Button = styled(MuiButton)`
-  img {
-    margin-right: 10px;
-  }
-`;
-
-export const StyledInput = styled.input`
-  display: none;
-`;
-
-export const StyledFileName = styled.p`
-  font-weight: bold;
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 `;

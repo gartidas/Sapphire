@@ -1,13 +1,22 @@
-import { ErrorOption, FieldName } from "react-hook-form";
+import { ErrorOption, FieldName, FieldValues } from "react-hook-form";
 
-export interface ISubmitError<TFormData> {
+export interface ISubmitError<TFormData extends FieldValues> {
   field: FieldName<TFormData>;
   error: ErrorOption;
 }
 
 export interface IUserData {
+  familyId: string;
   email: string;
+  nickname?: string;
+  dateOfBirth?: string;
   password: string;
+  profilePicture?: string;
+}
+
+export interface IFamily {
+  familyId: string;
+  nickname?: string;
 }
 
 export interface IMemoryData {

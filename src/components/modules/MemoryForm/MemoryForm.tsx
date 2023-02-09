@@ -6,15 +6,13 @@ import TextBox from "../../elements/TextBox";
 import DatePicker from "../../elements/DatePicker";
 import { IMemoryData } from "../../../utils/types";
 
-import {
-  Button,
-  FormContent,
-  StyledFileName,
-  StyledInput,
-} from "./MemoryForm.styled";
-import submitIcon from "./Submit.gif";
+import { FormContent } from "./MemoryForm.styled";
 import uploadImageIcon from "./UploadImage.gif";
 import Spinner from "../../elements/Spinner/Spinner";
+import { FormPictureInput } from "../../elements/FormPictureInput";
+import { FormButton } from "../../elements/FormButton";
+import { FormFileName } from "../../elements/FormFileName";
+import { SubmitIcon } from "../../elements/SubmitIcon/SubmitIcon";
 
 interface IMemoryFormProps {
   methods: UseFormMethods<IMemoryData>;
@@ -54,21 +52,21 @@ const MemoryForm = ({
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormContent>
-          <Button
+          <FormButton
             variant="outlined"
             fullWidth
             onClick={handleUploadImageClicked}
             color="secondary"
           >
             {file ? (
-              <StyledFileName>{file?.name}</StyledFileName>
+              <FormFileName>{file?.name}</FormFileName>
             ) : (
               <>
                 <img src={uploadImageIcon} alt="Upload image" width={30} />
                 Upload image
               </>
             )}
-          </Button>
+          </FormButton>
 
           <Controller
             name="date"
@@ -99,18 +97,23 @@ const MemoryForm = ({
             fullWidth
           />
 
-          <Button type="submit" fullWidth variant="outlined" color="secondary">
+          <FormButton
+            type="submit"
+            fullWidth
+            variant="outlined"
+            color="secondary"
+          >
             {isLoading ? (
               <Spinner size={{ desktop: 30, mobile: 30 }} />
             ) : (
               <>
-                <img src={submitIcon} alt="Submit" width={30} />
+                <SubmitIcon />
                 Submit
               </>
             )}
-          </Button>
+          </FormButton>
 
-          <StyledInput
+          <FormPictureInput
             name="image"
             value=""
             type="file"

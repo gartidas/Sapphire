@@ -6,6 +6,7 @@ import { errorToast, successToast } from "../../../../services/toastService";
 import MemoryForm from "../../../modules/MemoryForm/MemoryForm";
 import { useForm } from "react-hook-form";
 import { useMemory } from "../../../../contextProviders/MemoryProvider";
+import { useUser } from "../../../../contextProviders/UserProvider";
 
 interface IAddMemoryProps {
   file: File | undefined;
@@ -19,6 +20,7 @@ const AddMemoryTemplate = ({ file, setFile, onClose }: IAddMemoryProps) => {
     defaultValues: { date: moment().format("YYYY-MM") },
   });
   const { setError } = methods;
+  const { user } = useUser();
 
   const onSubmit = async (data: IMemoryData) => {
     try {
@@ -33,7 +35,10 @@ const AddMemoryTemplate = ({ file, setFile, onClose }: IAddMemoryProps) => {
       }
 
       changeLoadingState(true);
-      const storageResponse = await uploadImage(data.date.toString(), file!);
+      const storageResponse = await uploadImage(
+        `${user!.familyId}/${data.date.toString()}`,
+        file!
+      );
 
       if (!storageResponse) {
         changeLoadingState(false);
@@ -45,7 +50,7 @@ const AddMemoryTemplate = ({ file, setFile, onClose }: IAddMemoryProps) => {
         imageUrl: storageResponse,
       };
 
-      await addMemory(memory);
+      await addMemory(memory, user!.familyId);
 
       successToast("Memory added!");
       changeLoadingState(false);

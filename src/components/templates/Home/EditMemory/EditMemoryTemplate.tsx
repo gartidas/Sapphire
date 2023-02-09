@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useMemory } from "../../../../contextProviders/MemoryProvider";
+import { useUser } from "../../../../contextProviders/UserProvider";
 
 import { errorToast, successToast } from "../../../../services/toastService";
 import { getImage, uploadImage } from "../../../../utils/FirebaseStorageUtils";
@@ -25,6 +26,7 @@ const EditMemoryTemplate = ({
     defaultValues: openedMemory,
   });
   const { setError } = methods;
+  const { user } = useUser();
 
   const onSubmit = async (data: IMemoryData) => {
     try {
@@ -41,10 +43,15 @@ const EditMemoryTemplate = ({
       if (data.date !== openedMemory.date) {
         if (!file) {
           // NOTE: This is where code ends and continues in callback function
-          await getImage(openedMemory.id, getImageCallback, data, setError);
+          await getImage(
+            `${user!.familyId}/${openedMemory.id}`,
+            getImageCallback,
+            data,
+            setError
+          );
           return;
         } else {
-          const isDeleted = await deleteMemory(openedMemory);
+          const isDeleted = await deleteMemory(openedMemory, user!.familyId);
 
           if (!isDeleted) {
             changeLoadingState(false);
@@ -59,7 +66,10 @@ const EditMemoryTemplate = ({
       };
 
       if (file) {
-        const storageResponse = await uploadImage(data.date.toString(), file);
+        const storageResponse = await uploadImage(
+          `${user!.familyId}/${data.date.toString()}`,
+          file
+        );
 
         if (!storageResponse) {
           changeLoadingState(false);
@@ -68,7 +78,7 @@ const EditMemoryTemplate = ({
         memory.imageUrl = storageResponse;
       }
 
-      await editMemory(memory);
+      await editMemory(memory, user!.familyId);
 
       successToast("Memory edited!");
       changeLoadingState(false);
@@ -85,14 +95,17 @@ const EditMemoryTemplate = ({
     data: IMemoryData
   ): Promise<void> => {
     try {
-      const isDeleted = await deleteMemory(openedMemory);
+      const isDeleted = await deleteMemory(openedMemory, user!.familyId);
 
       if (!isDeleted) {
         changeLoadingState(false);
         return;
       }
 
-      const storageResponse = await uploadImage(data.date.toString(), file);
+      const storageResponse = await uploadImage(
+        `${user!.familyId}/${data.date.toString()}`,
+        file
+      );
 
       if (!storageResponse) {
         changeLoadingState(false);
@@ -104,7 +117,7 @@ const EditMemoryTemplate = ({
         imageUrl: storageResponse,
       };
 
-      await editMemory(memory);
+      await editMemory(memory, user!.familyId);
 
       successToast("Memory edited!");
       changeLoadingState(false);

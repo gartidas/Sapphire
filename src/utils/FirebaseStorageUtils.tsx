@@ -3,12 +3,12 @@ import { errorToast } from "../services/toastService";
 import { IMemoryData, SetError } from "./types";
 
 export const uploadImage = async (
-  fileName: string,
+  filePath: string,
   file: File
 ): Promise<string | undefined> => {
   try {
     const uploadResponse = await projectStorage
-      .ref(`images/${fileName}`)
+      .ref(`images/${filePath}`)
       .put(file);
 
     if (uploadResponse.state !== "success") {
@@ -16,7 +16,7 @@ export const uploadImage = async (
       return undefined;
     }
 
-    const url = await projectStorage.ref(`images/${fileName}`).getDownloadURL();
+    const url = await projectStorage.ref(`images/${filePath}`).getDownloadURL();
     return url;
   } catch (err: any) {
     errorToast(
@@ -28,9 +28,9 @@ export const uploadImage = async (
   }
 };
 
-export const deleteImage = async (fileName: string): Promise<boolean> => {
+export const deleteImage = async (filePath: string): Promise<boolean> => {
   try {
-    await projectStorage.ref(`images/${fileName}`).delete();
+    await projectStorage.ref(`images/${filePath}`).delete();
     return true;
   } catch (err: any) {
     errorToast(
@@ -43,14 +43,14 @@ export const deleteImage = async (fileName: string): Promise<boolean> => {
 };
 
 export const getImage = async (
-  fileName: string,
+  filePath: string,
   callback: (file: File, data: IMemoryData, setError: SetError) => void,
   data: IMemoryData,
   setError: SetError
 ): Promise<void> => {
   try {
     await projectStorage
-      .ref(`images/${fileName}`)
+      .ref(`images/${filePath}`)
       .getDownloadURL()
       .then((url) => {
         var xhr = new XMLHttpRequest();
@@ -58,7 +58,7 @@ export const getImage = async (
         xhr.onload = () => {
           var blob = xhr.response;
           blob.lastModified = new Date();
-          callback(new File([blob], fileName), data, setError);
+          callback(new File([blob], filePath), data, setError);
         };
         xhr.open("GET", url);
         xhr.send();

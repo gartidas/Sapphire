@@ -8,6 +8,7 @@ declare module "styled-components" {
 export const theme = {
   primary: "#f50057",
   secondary: "#121111",
+  disabled: "#999DA0",
 };
 
 export const SM = 400;

@@ -29,6 +29,7 @@ import useObserver from "../../../hooks/useObserver";
 import FullPageSpinner from "../../modules/FullPageSpinner/FullPageSpinner";
 import NoData from "../../elements/NoData/NoData";
 import addIcon from "./Add.gif";
+import { useUser } from "../../../contextProviders/UserProvider";
 
 const useStyles = makeStyles((theme) => ({
   timelineDot: {
@@ -56,8 +57,9 @@ const HomeTemplate = () => {
   const [file, setFile] = useState<File>();
   const { memories, isLoading, loadNextBatch, hasMore } = useMemory();
   const { openedModal, changeOpenedModalState } = useModal();
+  const { user } = useUser();
   const observe = useObserver<HTMLDivElement>(
-    loadNextBatch,
+    () => loadNextBatch(user!.familyId),
     hasMore && !isLoading
   );
 
