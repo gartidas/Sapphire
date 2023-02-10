@@ -1,5 +1,4 @@
 import { ChangeEvent, useRef } from "react";
-import moment from "moment";
 import { Controller, FormProvider, UseFormMethods } from "react-hook-form";
 
 import TextBox from "../../elements/TextBox";
@@ -79,7 +78,8 @@ const MemoryForm = ({
                 format="YYYY-MM"
                 error={!!errors.date?.message}
                 helperText={errors.date?.message}
-                minDate={moment("2020-05").toDate()}
+                // TODO: Add minimal date limit to family detail (anniversary)
+                // minDate={moment("2020-05").toDate()}
                 fullWidth
                 onChange={(date) => onChange(date?.format("YYYY-MM"))}
               />
