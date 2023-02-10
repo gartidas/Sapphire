@@ -79,7 +79,8 @@ const MemoryForm = ({
                 format="YYYY-MM"
                 error={!!errors.date?.message}
                 helperText={errors.date?.message}
-                minDate={moment("2020-05").toDate()}
+                // TODO: Add minimal date limit to family detail (anniversary)
+                // minDate={moment("2020-05").toDate()}
                 fullWidth
                 onChange={(date) => onChange(date?.format("YYYY-MM"))}
               />
