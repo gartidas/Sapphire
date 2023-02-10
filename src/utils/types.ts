@@ -30,6 +30,7 @@ export enum ModalType {
   Add,
   Edit,
   Detail,
+  Confirmation,
 }
 
 export type OpenedModalType =
@@ -42,6 +43,10 @@ export type OpenedModalType =
     }
   | {
       type: ModalType.Edit;
+      memory: IMemoryData;
+    }
+  | {
+      type: ModalType.Confirmation;
       memory: IMemoryData;
     };
 

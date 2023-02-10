@@ -30,6 +30,7 @@ import FullPageSpinner from "../../modules/FullPageSpinner/FullPageSpinner";
 import NoData from "../../elements/NoData/NoData";
 import addIcon from "./Add.gif";
 import { useUser } from "../../../contextProviders/UserProvider";
+import ConfirmationTemplate from "./ConfirmationTemplate/ConfirmationTemplate";
 
 const useStyles = makeStyles((theme) => ({
   timelineDot: {
@@ -135,6 +136,10 @@ const HomeTemplate = () => {
                 onClose={() => changeOpenedModalState(undefined)}
                 openedMemory={openedModal.memory}
               />
+            )}
+
+            {openedModal.type === ModalType.Confirmation && (
+              <ConfirmationTemplate openedMemory={openedModal.memory} />
             )}
           </>
         </Modal>
