@@ -1,9 +1,6 @@
-import { Email, Facebook, FileCopy, WhatsApp } from "@material-ui/icons";
+import { Email, Link, Share, WhatsApp } from "@material-ui/icons";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { WhatsappShareButton } from "react-share";
-import EmailShareButton from "react-share/lib/EmailShareButton";
-import FacebookMessengerShareButton from "react-share/lib/FacebookMessengerShareButton";
 import { projectAuth } from "../../../firebase/config";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { errorToast, infoToast } from "../../../services/toastService";
@@ -24,6 +21,7 @@ import { useHistory } from "react-router-dom";
 import { useUser } from "../../../contextProviders/UserProvider";
 import { v4 as uuidv4 } from "uuid";
 import Cookies from "universal-cookie/cjs/Cookies";
+import { FacebookMessengerIcon } from "../../elements/FacebookMessengerIcon/FacebookMessengerIcon";
 
 const RegisterTemplate = () => {
   const appDomain = commonConfig.appDomain!;
@@ -90,39 +88,49 @@ const RegisterTemplate = () => {
           <InfoText>Would you like to invite your family also?</InfoText>
           {isDesktop ? (
             <ShareButtons>
-              <EmailShareButton url={`${shareUrl}/${user.familyId}`}>
+              <SocialIcon href={`mailto:?body=${shareUrl}/${user.familyId}`}>
                 <Email />
-              </EmailShareButton>
+              </SocialIcon>
+              <SocialIcon
+                href={`http://www.facebook.com/dialog/send?app_id=${commonConfig.facebookAppId!}&link=${`${shareUrl}/${user.familyId}`}&redirect_uri=${`${shareUrl}/${user.familyId}`}`}
+                target="_blank"
+              >
+                <FacebookMessengerIcon />
+              </SocialIcon>
+              <SocialIcon
+                href={`https://wa.me/?text=${`${shareUrl}/${user.familyId}`}`}
+                target="_blank"
+              >
+                <WhatsApp />
+              </SocialIcon>
               <SocialIcon
                 onClick={() => {
                   navigator.clipboard.writeText(`${shareUrl}/${user.familyId}`);
                   infoToast("Copied to clipboard!");
                 }}
               >
-                <FileCopy />
+                <Link />
               </SocialIcon>
             </ShareButtons>
           ) : (
             <ShareButtons>
-              <EmailShareButton url={`${shareUrl}/${user.familyId}`}>
-                <Email />
-              </EmailShareButton>
-              <FacebookMessengerShareButton
-                appId={appDomain}
-                url={`${shareUrl}/${user.familyId}`}
+              <SocialIcon
+                onClick={() => {
+                  navigator.share({
+                    url: `${shareUrl}/${user.familyId}`,
+                    text: "Come and join my family in Sapphire app!",
+                  });
+                }}
               >
-                <Facebook />
-              </FacebookMessengerShareButton>
-              <WhatsappShareButton url={`${shareUrl}/${user.familyId}`}>
-                <WhatsApp />
-              </WhatsappShareButton>
+                <Share />
+              </SocialIcon>
               <SocialIcon
                 onClick={() => {
                   navigator.clipboard.writeText(`${shareUrl}/${user.familyId}`);
                   infoToast("Copied to clipboard!");
                 }}
               >
-                <FileCopy />
+                <Link />
               </SocialIcon>
             </ShareButtons>
           )}
