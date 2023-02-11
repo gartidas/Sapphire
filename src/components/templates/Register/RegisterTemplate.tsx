@@ -92,7 +92,7 @@ const RegisterTemplate = () => {
                 <Email />
               </SocialIcon>
               <SocialIcon
-                href={`http://www.facebook.com/dialog/send?app_id=${commonConfig.facebookAppId!}&href=${`${shareUrl}/${user.familyId}`}&redirect_uri=${`${shareUrl}/${user.familyId}`}`}
+                href={`http://www.facebook.com/dialog/send?app_id=${commonConfig.facebookAppId!}&link=${`${shareUrl}/${user.familyId}`}&redirect_uri=${`${shareUrl}/${user.familyId}`}`}
                 target="_blank"
               >
                 <FacebookMessengerIcon />
