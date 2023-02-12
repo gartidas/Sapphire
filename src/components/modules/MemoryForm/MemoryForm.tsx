@@ -1,4 +1,3 @@
-import { ChangeEvent, useRef } from "react";
 import { Controller, FormProvider, UseFormMethods } from "react-hook-form";
 
 import TextBox from "../../elements/TextBox";
@@ -6,12 +5,12 @@ import DatePicker from "../../elements/DatePicker";
 import { IMemoryData } from "../../../utils/types";
 
 import { FormContent } from "./MemoryForm.styled";
-import uploadImageIcon from "./UploadImage.gif";
 import Spinner from "../../elements/Spinner/Spinner";
-import { FormPictureInput } from "../../elements/FormPictureInput";
 import { FormButton } from "../../elements/FormButton";
-import { FormFileName } from "../../elements/FormFileName";
 import { SubmitIcon } from "../../elements/SubmitIcon/SubmitIcon";
+import DropZone from "../../elements/DropZone/DropZone";
+import { useDropzone, DropEvent, FileRejection } from "react-dropzone";
+import FormFile from "../../elements/FormFile/FormFile";
 
 interface IMemoryFormProps {
   methods: UseFormMethods<IMemoryData>;
@@ -29,43 +28,40 @@ const MemoryForm = ({
   isLoading,
   onSubmit,
 }: IMemoryFormProps) => {
-  const inputRef = useRef<HTMLInputElement>(null!);
   const { register, handleSubmit, errors } = methods;
 
-  const handleUploadImageClicked = () => {
-    if (!inputRef.current) return;
-    inputRef.current.click();
-  };
-
-  const handleInputChanged = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const handleOnDrop = (
+    acceptedFiles: File[],
+    _: FileRejection[],
+    __: DropEvent
+  ) => {
+    if (!acceptedFiles) return;
+    const file = acceptedFiles[0];
 
     setFile(file);
   };
 
-  // NOTE: Upload image doesn't have the same context as the image tag
-  /* eslint-disable jsx-a11y/img-redundant-alt */
+  const dropZoneConfig = useDropzone({
+    onDrop: handleOnDrop,
+    accept: {
+      "image/png": [".png"],
+      "image/gif": [".gif"],
+      "image/jpeg": [".jpg", ".jpeg"],
+    },
+    maxFiles: 1,
+  });
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormContent>
-          <FormButton
-            variant="outlined"
-            fullWidth
-            onClick={handleUploadImageClicked}
-            color="secondary"
-          >
-            {file ? (
-              <FormFileName>{file?.name}</FormFileName>
-            ) : (
-              <>
-                <img src={uploadImageIcon} alt="Upload image" width={30} />
-                Upload image
-              </>
-            )}
-          </FormButton>
+          {file ? (
+            <>
+              <FormFile fileName={file.name} fullWidth />
+            </>
+          ) : (
+            <DropZone state={dropZoneConfig} fullWidth />
+          )}
 
           <Controller
             name="date"
@@ -112,15 +108,6 @@ const MemoryForm = ({
               </>
             )}
           </FormButton>
-
-          <FormPictureInput
-            name="image"
-            value=""
-            type="file"
-            accept="image/*"
-            ref={inputRef}
-            onChange={handleInputChanged}
-          />
         </FormContent>
       </form>
     </FormProvider>
