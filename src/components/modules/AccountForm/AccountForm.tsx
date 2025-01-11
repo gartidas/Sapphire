@@ -7,7 +7,7 @@ import Spinner from "../../elements/Spinner/Spinner";
 import { FormButton } from "../../elements/FormButton";
 import { PageContent, StyledForm, Text } from "./AccountForm.styled";
 import { useHistory } from "react-router-dom";
-import { RegisterIcon } from "../../elements/Register/RegisterIcon";
+import { RegisterIcon } from "../../elements/RegisterIcon/RegisterIcon";
 import PasswordTextBox from "../../elements/PasswordTextBox/PasswordTextBox";
 
 interface IAccountFormProps {

@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import { LG, SM, theme } from "../../../utils/theme";
 import LogoImage from "../LogoImage/LogoImage";
 import Logo from "../Logo/Logo";
+import { MenuList } from "@material-ui/core";
 
 export const NAVBAR_HEIGHT = 80;
 
@@ -59,4 +60,9 @@ export const StyledLink = styled.div<StyledLinkProps>`
     css`
       cursor: pointer;
     `};
+`;
+
+export const StyledMenuWrapper = styled(MenuList)`
+  background-color: ${theme.secondary};
+  padding: 0;
 `;

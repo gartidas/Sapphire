@@ -1,5 +1,5 @@
-import { Button } from "@material-ui/core";
-import { useState } from "react";
+import { Button, ClickAwayListener, MenuItem, Popper } from "@material-ui/core";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import { useAuth } from "../../../contextProviders/AuthProvider";
@@ -9,15 +9,18 @@ import useWindowSize from "../../../hooks/useWindowSize";
 import { noop } from "../../../utils";
 import { MD } from "../../../utils/theme";
 import logoutIcon from "./Logout.gif";
+import placeholderIcon from "./Placeholder.gif";
 
 import {
   Chip,
   StyledLink,
   StyledLogo,
   StyledLogoImage,
+  StyledMenuWrapper,
   StyledNavbar,
   UserTag,
 } from "./Navbar.styled";
+import ThemedDivider from "../../elements/ThemedDivider/ThemedDivider";
 
 interface NavabarProps {
   hideUserTag?: boolean;
@@ -29,6 +32,35 @@ const Navbar = ({ hideUserTag, useLogoLink }: NavabarProps) => {
   const router = useHistory();
   const isDesktop = useWindowSize().width > MD;
   const [isAnimationRunning, setIsAnimationRunning] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const anchorRef = useRef<HTMLButtonElement>(null);
+
+  const handleToggle = () => {
+    setIsMenuOpen((prevOpen) => !prevOpen);
+  };
+
+  // NOTE: No way to specify further
+  const handleClose = (event: MouseEvent<Document, any>) => {
+    if (
+      anchorRef.current &&
+      anchorRef.current.contains(event.target as HTMLElement)
+    ) {
+      return;
+    }
+
+    setIsMenuOpen(false);
+  };
+
+  // return focus to the button when we transitioned from !open -> open
+  const prevOpen = useRef(isMenuOpen);
+  useEffect(() => {
+    if (prevOpen.current === true && isMenuOpen === false) {
+      anchorRef.current!.focus();
+    }
+
+    prevOpen.current = isMenuOpen;
+  }, [isMenuOpen]);
+
   const { clearUser } = useUser();
   const onLogoutClick = async () => {
     await projectAuth.signOut();
@@ -55,11 +87,35 @@ const Navbar = ({ hideUserTag, useLogoLink }: NavabarProps) => {
       {!hideUserTag && (
         <Chip>
           <UserTag>{auth.user?.email}</UserTag>
-          <Button onClick={onLogoutClick}>
-            <img src={logoutIcon} alt="Log out" width={40} />
+          <Button ref={anchorRef} onClick={handleToggle}>
+            {isMenuOpen ? "▲" : "▼"}
           </Button>
         </Chip>
       )}
+      <Popper
+        open={isMenuOpen}
+        anchorEl={anchorRef.current}
+        role={undefined}
+        placement="bottom-start"
+        transition
+        disablePortal
+      >
+        <ClickAwayListener onClickAway={handleClose}>
+          <StyledMenuWrapper autoFocusItem={isMenuOpen}>
+            {/* TODO: Replace with real icons */}
+            <MenuItem onClick={() => router.push("/profile")}>
+              <img src={placeholderIcon} alt="Profile" width={40} /> Profile
+            </MenuItem>
+            <MenuItem onClick={() => router.push("/settings")}>
+              <img src={placeholderIcon} alt="Settings" width={40} /> Settings
+            </MenuItem>
+            <ThemedDivider />
+            <MenuItem onClick={onLogoutClick}>
+              <img src={logoutIcon} alt="Log out" width={40} /> Log out
+            </MenuItem>
+          </StyledMenuWrapper>
+        </ClickAwayListener>
+      </Popper>
     </StyledNavbar>
   );
 };
