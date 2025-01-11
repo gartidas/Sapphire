@@ -98,7 +98,6 @@ const Navbar = ({ hideUserTag, useLogoLink }: NavabarProps) => {
         role={undefined}
         placement="bottom-start"
         transition
-        disablePortal
       >
         <ClickAwayListener onClickAway={handleClose}>
           <StyledMenuWrapper autoFocusItem={isMenuOpen}>
