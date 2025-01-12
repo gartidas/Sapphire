@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet";
 
 import LoggedLayout from "../components/layouts/LoggedLayout";
+import SettingsTemplate from "../components/templates/SettingsTemplate/SettingsTemplate";
 
 function Settings() {
   return (
@@ -8,7 +9,7 @@ function Settings() {
       <Helmet defer={false}>
         <title>◆ Sapphire ◆</title>
       </Helmet>
-      <div>Settings</div>
+      <SettingsTemplate />
     </LoggedLayout>
   );
 }

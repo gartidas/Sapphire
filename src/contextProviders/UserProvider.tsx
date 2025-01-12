@@ -11,6 +11,7 @@ import { projectFirestore } from "../firebase/config";
 import { IFamily, IUserData } from "../utils/types";
 import { errorToast } from "../services/toastService";
 import { useAuth } from "./AuthProvider";
+import { deleteImage } from "../utils/FirebaseStorageUtils";
 
 interface IUserContextValue {
   user?: IUserData;
@@ -19,6 +20,12 @@ interface IUserContextValue {
   clearUser: () => void;
   createFamily: (data: IFamily) => Promise<void>;
   doesFamilyIdExist: (familyId: string) => Promise<boolean>;
+  updateFamily: (
+    data: Omit<IFamily, "familyId">,
+    revertOnError: boolean
+  ) => Promise<void>;
+  isFamilyLoading: boolean;
+  changeFamilyLoadingState: (isLoading: boolean) => void;
   family?: IFamily;
 }
 
@@ -30,6 +37,11 @@ const UserProvider: FC = ({ children }) => {
   const [user, setUser] = useState<IUserData>();
   const [family, setFamily] = useState<IFamily>();
   const { user: authUser } = useAuth();
+  const [isFamilyLoading, setIsFamilyLoading] = useState(false);
+
+  const changeFamilyLoadingState = useCallback((isLoading: boolean) => {
+    setIsFamilyLoading(isLoading);
+  }, []);
 
   const createFamily = useCallback(async (data: IFamily) => {
     try {
@@ -70,6 +82,32 @@ const UserProvider: FC = ({ children }) => {
   const clearFamily = () => {
     setFamily(undefined);
   };
+
+  const updateFamily = useCallback(
+    async (data: Omit<IFamily, "familyId">, revertOnError: boolean) => {
+      console.log(data);
+      try {
+        await projectFirestore
+          .collection("families")
+          .doc(family!.familyId)
+          .set({ ...data, familyId: family!.familyId });
+
+        fetchFamily(family!.familyId);
+      } catch (err: any) {
+        revertOnError && (await deleteImage(`${family!.familyId}/banner`));
+
+        errorToast(
+          err.code === "permission-denied"
+            ? "Permission denied!"
+            : `${err.name}:${err.code}`
+        );
+        setIsFamilyLoading(false);
+        return;
+      }
+    },
+
+    [family, fetchFamily]
+  );
 
   const doesFamilyIdExist = useCallback(async (familyId: string) => {
     try {
@@ -155,6 +193,9 @@ const UserProvider: FC = ({ children }) => {
         clearUser,
         createFamily,
         doesFamilyIdExist,
+        updateFamily,
+        changeFamilyLoadingState,
+        isFamilyLoading,
         family,
       }}
     >
