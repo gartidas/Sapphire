@@ -1,17 +1,49 @@
 import {
   BannerPlaceholder,
+  FamilyNicknamePlaceholder,
   StyledImage,
+  StyledTextBox,
   Wrapper,
 } from "./ProfileTemplate.styled";
-import { useState } from "react";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import BannerUploadTemplate from "./BannerUploadTemplate/BannerUploadTemplate";
 import Modal from "../../elements/Modal";
 import { useUser } from "../../../contextProviders/UserProvider";
 
 const ProfileTemplate = () => {
   const [file, setFile] = useState<File>();
-  const { family } = useUser();
+  const { family, updateFamily } = useUser();
   const [openedBannerModal, setOpenedBannerModal] = useState(false);
+  const textFieldRef = useRef<HTMLInputElement>(null);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleNicknameSubmit = async (
+    event: KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === "Enter") {
+      const textBoxValue = (event.target as HTMLInputElement).value;
+      await updateFamily({ ...family, nickname: textBoxValue });
+      setIsEditing(false);
+    } else if (event.key === "Escape") {
+      setIsEditing(false);
+    }
+  };
+
+  const handleTextBoxFocus = () => {
+    if (textFieldRef.current) {
+      textFieldRef.current.focus();
+    }
+  };
+
+  const handleTextBoxUnfocus = () => {
+    setIsEditing(false);
+  };
+
+  useEffect(() => {
+    if (isEditing) {
+      handleTextBoxFocus();
+    }
+  }, [isEditing]);
 
   return (
     <Wrapper>
@@ -25,6 +57,20 @@ const ProfileTemplate = () => {
           No image available
         </BannerPlaceholder>
       )}
+
+      {isEditing ? (
+        <StyledTextBox
+          placeholder={family?.nickname ?? "Your family's nickname"}
+          onKeyUp={handleNicknameSubmit}
+          onBlur={() => handleTextBoxUnfocus()}
+          inputRef={textFieldRef}
+        />
+      ) : (
+        <FamilyNicknamePlaceholder onClick={() => setIsEditing(true)}>
+          {family?.nickname ?? "Your family's nickname"}
+        </FamilyNicknamePlaceholder>
+      )}
+
       {openedBannerModal && (
         <Modal
           open

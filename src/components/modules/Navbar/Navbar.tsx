@@ -1,4 +1,10 @@
-import { Button, ClickAwayListener, MenuItem, Popper } from "@material-ui/core";
+import {
+  Avatar,
+  Button,
+  ClickAwayListener,
+  MenuItem,
+  Popper,
+} from "@material-ui/core";
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 
@@ -12,15 +18,15 @@ import logoutIcon from "./Logout.gif";
 import placeholderIcon from "./Placeholder.gif";
 
 import {
-  Chip,
+  ChipContent,
   StyledLink,
   StyledLogo,
   StyledLogoImage,
   StyledMenuWrapper,
   StyledNavbar,
-  UserTag,
 } from "./Navbar.styled";
 import ThemedDivider from "../../elements/ThemedDivider/ThemedDivider";
+import { getAvatarUrl } from "../../../helpers/getAvatarUrl";
 
 interface NavabarProps {
   hideUserTag?: boolean;
@@ -85,12 +91,12 @@ const Navbar = ({ hideUserTag, useLogoLink }: NavabarProps) => {
         )}
       </StyledLink>
       {!hideUserTag && (
-        <Chip>
-          <UserTag>{auth.user?.email}</UserTag>
-          <Button ref={anchorRef} onClick={handleToggle}>
-            {isMenuOpen ? "▲" : "▼"}
-          </Button>
-        </Chip>
+        <Button ref={anchorRef} onClick={handleToggle}>
+          <ChipContent>
+            <Avatar src={getAvatarUrl(auth.user?.email!)} />
+            <span>{isMenuOpen ? "▲" : "▼"}</span>
+          </ChipContent>
+        </Button>
       )}
       <Popper
         open={isMenuOpen}

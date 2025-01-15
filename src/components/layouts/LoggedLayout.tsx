@@ -8,7 +8,7 @@ const LoggedLayout: FC = ({ children }) => {
   return (
     <div>
       <Snowfall color={theme.primary} />
-      <Navbar />
+      <Navbar useLogoLink={true} />
       {children}
     </div>
   );

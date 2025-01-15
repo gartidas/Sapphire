@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-
 import { LG, SM, theme } from "../../../utils/theme";
 import LogoImage from "../LogoImage/LogoImage";
 import Logo from "../Logo/Logo";
@@ -65,4 +64,10 @@ export const StyledLink = styled.div<StyledLinkProps>`
 export const StyledMenuWrapper = styled(MenuList)`
   background-color: ${theme.secondary};
   padding: 0;
+`;
+
+export const ChipContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 `;

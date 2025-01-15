@@ -17,6 +17,7 @@ import EditMemoryTemplate from "./EditMemoryTemplate/EditMemoryTemplate";
 import {
   ButtonsWrapper,
   DummymSpan,
+  FamilyNickname,
   IndicatingButton,
   StyledSpinner,
   TimelineWrapper,
@@ -58,7 +59,7 @@ const HomeTemplate = () => {
   const [file, setFile] = useState<File>();
   const { memories, isLoading, loadNextBatch, hasMore } = useMemory();
   const { openedModal, changeOpenedModalState } = useModal();
-  const { user } = useUser();
+  const { user, family } = useUser();
   const observe = useObserver<HTMLDivElement>(
     () => loadNextBatch(user!.familyId),
     hasMore && !isLoading
@@ -74,6 +75,7 @@ const HomeTemplate = () => {
           <img src={addIcon} alt="Add" width={40} />
         </IndicatingButton>
       </ButtonsWrapper>
+      <FamilyNickname>{`${family?.nickname}'s timeline`}</FamilyNickname>
       {memories && memories.length > 0 ? (
         <TimelineWrapper>
           <Timeline align="alternate">

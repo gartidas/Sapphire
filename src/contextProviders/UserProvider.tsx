@@ -22,7 +22,7 @@ interface IUserContextValue {
   doesFamilyIdExist: (familyId: string) => Promise<boolean>;
   updateFamily: (
     data: Omit<IFamily, "familyId">,
-    revertOnError: boolean
+    revertOnError?: boolean
   ) => Promise<void>;
   isFamilyLoading: boolean;
   changeFamilyLoadingState: (isLoading: boolean) => void;
@@ -84,7 +84,7 @@ const UserProvider: FC = ({ children }) => {
   };
 
   const updateFamily = useCallback(
-    async (data: Omit<IFamily, "familyId">, revertOnError: boolean) => {
+    async (data: Omit<IFamily, "familyId">, revertOnError?: boolean) => {
       console.log(data);
       try {
         await projectFirestore

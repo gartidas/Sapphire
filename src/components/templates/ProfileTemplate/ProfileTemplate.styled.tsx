@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import { theme } from "../../../utils/theme";
+import { MD, theme } from "../../../utils/theme";
 import { NAVBAR_HEIGHT } from "../../modules/Navbar/Navbar.styled";
+import TextBox from "../../elements/TextBox";
 
 export const Wrapper = styled.div`
   display: flex;
@@ -8,6 +9,7 @@ export const Wrapper = styled.div`
   align-items: center;
   min-height: calc(100vh - ${NAVBAR_HEIGHT}px);
   padding: 1rem 0;
+  gap: 1rem;
 `;
 
 export const BannerPlaceholder = styled.div`
@@ -37,4 +39,24 @@ export const StyledImage = styled.img`
   width: 80%;
   object-fit: cover;
   object-position: center;
+`;
+
+export const FamilyNicknamePlaceholder = styled.h2`
+  cursor: pointer;
+  font-size: 3rem;
+  margin: 0;
+  max-width: 70%;
+  word-wrap: break-word;
+
+  @media screen and (max-width: ${MD}px) {
+    font-size: 1.75rem;
+  }
+`;
+
+export const StyledTextBox = styled(TextBox)`
+  width: 32rem;
+
+  @media screen and (max-width: ${MD}px) {
+    width: 19rem;
+  }
 `;

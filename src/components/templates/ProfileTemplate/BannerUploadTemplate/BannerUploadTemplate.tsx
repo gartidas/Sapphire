@@ -19,7 +19,7 @@ const BannerUploadTemplate = ({
   const { changeFamilyLoadingState, isFamilyLoading, updateFamily } = useUser();
   const methods = useForm<IFamily>();
   const { setError } = methods;
-  const { user } = useUser();
+  const { user, family } = useUser();
 
   const onSubmit = async (data: IFamily) => {
     try {
@@ -39,12 +39,13 @@ const BannerUploadTemplate = ({
         return;
       }
 
-      const family: IFamily = {
-        ...data,
-        bannerUrl: storageResponse,
-      };
-
-      await updateFamily(family, true);
+      await updateFamily(
+        {
+          ...family,
+          bannerUrl: storageResponse,
+        },
+        true
+      );
 
       successToast("Banner uploaded!");
       changeFamilyLoadingState(false);

@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { SM, theme } from "../../../utils/theme";
+import { MD, SM, theme } from "../../../utils/theme";
 import { ButtonProps, IconButton as MuiButton } from "@material-ui/core";
 import { NAVBAR_HEIGHT } from "../../modules/Navbar/Navbar.styled";
 import Spinner from "../../elements/Spinner/Spinner";
@@ -49,6 +49,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   min-height: calc(100vh - ${NAVBAR_HEIGHT}px);
+  padding-top: 0.5rem;
 `;
 
 export const TimelineWrapper = styled.div`
@@ -67,4 +68,16 @@ export const DummymSpan = styled.span`
 
 export const StyledSpinner = styled(Spinner)`
   align-self: center;
+`;
+
+export const FamilyNickname = styled.h2`
+  font-size: 3rem;
+  margin: 0;
+  max-width: 70%;
+  word-wrap: break-word;
+  text-align: center;
+
+  @media screen and (max-width: ${MD}px) {
+    font-size: 1.5rem;
+  }
 `;
