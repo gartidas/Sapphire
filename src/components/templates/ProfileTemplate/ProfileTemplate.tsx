@@ -9,6 +9,7 @@ import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import BannerUploadTemplate from "./BannerUploadTemplate/BannerUploadTemplate";
 import Modal from "../../elements/Modal";
 import { useUser } from "../../../contextProviders/UserProvider";
+import { successToast } from "../../../services/toastService";
 
 const ProfileTemplate = () => {
   const [file, setFile] = useState<File>();
@@ -25,6 +26,7 @@ const ProfileTemplate = () => {
 
       if (textBoxValue !== "") {
         await updateFamily({ ...family, nickname: textBoxValue });
+        successToast("Nickname updated!");
       }
       setIsEditing(false);
     } else if (event.key === "Escape") {
