@@ -1,7 +1,6 @@
 import { FC } from "react";
-import Snowfall from "react-snowfall";
 import styled from "styled-components";
-import { theme } from "../../utils/theme";
+import BackgroundFallEffect from "../elements/BackgroundFallEffect/BackgroundFallEffect";
 
 const Wrapper = styled.div`
   min-height: 100vh;
@@ -10,7 +9,7 @@ const Wrapper = styled.div`
 const DefaultLayout: FC = ({ children }) => {
   return (
     <Wrapper>
-      <Snowfall color={theme.primary} />
+      <BackgroundFallEffect />
       {children}
     </Wrapper>
   );

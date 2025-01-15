@@ -1,13 +1,12 @@
 import { FC } from "react";
-import Snowfall from "react-snowfall";
-import { theme } from "../../utils/theme";
 
 import Navbar from "../modules/Navbar/Navbar";
+import BackgroundFallEffect from "../elements/BackgroundFallEffect/BackgroundFallEffect";
 
 const LoggedLayout: FC = ({ children }) => {
   return (
     <div>
-      <Snowfall color={theme.primary} />
+      <BackgroundFallEffect />
       <Navbar useLogoLink={true} />
       {children}
     </div>
