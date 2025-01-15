@@ -22,7 +22,10 @@ const ProfileTemplate = () => {
   ) => {
     if (event.key === "Enter") {
       const textBoxValue = (event.target as HTMLInputElement).value;
-      await updateFamily({ ...family, nickname: textBoxValue });
+
+      if (textBoxValue !== "") {
+        await updateFamily({ ...family, nickname: textBoxValue });
+      }
       setIsEditing(false);
     } else if (event.key === "Escape") {
       setIsEditing(false);

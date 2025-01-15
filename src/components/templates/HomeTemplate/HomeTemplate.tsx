@@ -75,7 +75,9 @@ const HomeTemplate = () => {
           <img src={addIcon} alt="Add" width={40} />
         </IndicatingButton>
       </ButtonsWrapper>
-      <FamilyNickname>{`${family?.nickname}'s timeline`}</FamilyNickname>
+      {family?.nickname && (
+        <FamilyNickname>{`${family?.nickname}'s timeline`}</FamilyNickname>
+      )}
       {memories && memories.length > 0 ? (
         <TimelineWrapper>
           <Timeline align="alternate">
