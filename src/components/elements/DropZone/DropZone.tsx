@@ -3,12 +3,12 @@ import { DropZoneWrapper } from "./DropZone.styled";
 import uploadImageIcon from "./UploadImage.gif";
 import wrongActionIcon from "./WrongAction.gif";
 
-interface DropZoneProps {
+interface IDropZoneProps {
   state: DropzoneState;
   fullWidth?: boolean;
 }
 
-const DropZone = ({ state, fullWidth }: DropZoneProps) => {
+const DropZone = ({ state, fullWidth }: IDropZoneProps) => {
   const { getRootProps, getInputProps, isDragReject, isDragAccept } = state;
 
   // NOTE: Upload image doesn't have the same context as the image tag

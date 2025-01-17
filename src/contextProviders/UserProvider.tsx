@@ -27,6 +27,7 @@ interface IUserContextValue {
   isFamilyLoading: boolean;
   changeFamilyLoadingState: (isLoading: boolean) => void;
   family?: IFamily;
+  familyMembers?: IUserData[];
 }
 
 const UserContext = createContext<IUserContextValue>(null!);
@@ -35,6 +36,7 @@ export const useUser = () => useContext(UserContext);
 
 const UserProvider: FC = ({ children }) => {
   const [user, setUser] = useState<IUserData>();
+  const [familyMembers, setFamilyMembers] = useState<IUserData[]>();
   const [family, setFamily] = useState<IFamily>();
   const { user: authUser } = useAuth();
   const [isFamilyLoading, setIsFamilyLoading] = useState(false);
@@ -127,6 +129,26 @@ const UserProvider: FC = ({ children }) => {
     }
   }, []);
 
+  const fetchFamilyMembers = useCallback(async (familyId: string) => {
+    try {
+      const response = await projectFirestore
+        .collection("/users")
+        .where("familyId", "==", familyId)
+        .get();
+
+      const newFamilyMembers = response.docs.map(
+        (doc) => doc.data() as IUserData
+      );
+      setFamilyMembers(newFamilyMembers);
+    } catch (err: any) {
+      errorToast(
+        err.code === "permission-denied"
+          ? "Permission denied!"
+          : `${err.name}:${err.code}`
+      );
+    }
+  }, []);
+
   const fetchUser = useCallback(
     async (email: string) => {
       try {
@@ -140,6 +162,7 @@ const UserProvider: FC = ({ children }) => {
         const user = response.data()! as IUserData;
         setUser(user);
         fetchFamily(user.familyId);
+        fetchFamilyMembers(user.familyId);
       } catch (err: any) {
         errorToast(
           err.code === "permission-denied"
@@ -148,7 +171,7 @@ const UserProvider: FC = ({ children }) => {
         );
       }
     },
-    [fetchFamily]
+    [fetchFamily, fetchFamilyMembers]
   );
 
   const clearUser = () => {
@@ -197,6 +220,7 @@ const UserProvider: FC = ({ children }) => {
         changeFamilyLoadingState,
         isFamilyLoading,
         family,
+        familyMembers,
       }}
     >
       {children}

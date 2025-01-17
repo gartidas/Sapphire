@@ -1,13 +1,13 @@
 import styled, { css } from "styled-components";
 import { SM } from "../../../utils/theme";
 
-interface ImageProps {
+interface IImageProps {
   isAnimationRunning?: boolean;
   isInfinite?: boolean;
   size?: { mobile?: number; desktop?: number };
 }
 
-export const Image = styled.img<ImageProps>`
+export const Image = styled.img<IImageProps>`
   height: ${({ size }) => (size ? size.desktop ?? 30 : 30)}px;
   width: ${({ size }) => (size ? size.desktop ?? 30 : 30)}px;
 

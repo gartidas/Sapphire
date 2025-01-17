@@ -4,11 +4,11 @@ import { ButtonProps, IconButton as MuiButton } from "@material-ui/core";
 import { NAVBAR_HEIGHT } from "../../modules/Navbar/Navbar.styled";
 import Spinner from "../../elements/Spinner/Spinner";
 
-interface IndicatingButtonProps extends ButtonProps {
+interface IIndicatingButtonProps extends ButtonProps {
   isIndicating?: boolean;
 }
 
-export const IndicatingButton = styled(MuiButton)<IndicatingButtonProps>`
+export const IndicatingButton = styled(MuiButton)<IIndicatingButtonProps>`
   ${({ isIndicating }) =>
     isIndicating &&
     css`

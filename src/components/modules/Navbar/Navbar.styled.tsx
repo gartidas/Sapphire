@@ -6,7 +6,7 @@ import { MenuList } from "@material-ui/core";
 
 export const NAVBAR_HEIGHT = 80;
 
-interface StyledLinkProps {
+interface IStyledLinkProps {
   useLogoLink?: boolean;
 }
 
@@ -53,7 +53,7 @@ export const StyledLogoImage = styled(LogoImage)`
   margin-left: 20px;
 `;
 
-export const StyledLink = styled.div<StyledLinkProps>`
+export const StyledLink = styled.div<IStyledLinkProps>`
   ${({ useLogoLink }) =>
     useLogoLink &&
     css`

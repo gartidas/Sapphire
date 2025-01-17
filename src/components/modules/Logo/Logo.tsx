@@ -1,13 +1,13 @@
 import { useState } from "react";
-import LogoImage, { LogoImageProps } from "../LogoImage/LogoImage";
+import LogoImage, { ILogoImageProps } from "../LogoImage/LogoImage";
 import { Wrapper, Title } from "./Logo.styled";
 
-interface LogoProps {
+interface ILogoProps {
   className?: string;
-  imageProps?: LogoImageProps;
+  imageProps?: ILogoImageProps;
 }
 
-const Logo = ({ className, imageProps }: LogoProps) => {
+const Logo = ({ className, imageProps }: ILogoProps) => {
   const [isAnimationRunning, setIsAnimationRunning] = useState(false);
 
   return (

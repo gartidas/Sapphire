@@ -7,12 +7,12 @@ import {
 import { theme } from "../../../utils/theme";
 import { DefaultExtensionType, defaultStyles, FileIcon } from "react-file-icon";
 
-interface FormFileProps {
+interface IFormFileProps {
   fileName: string;
   fullWidth?: boolean;
 }
 
-const FormFile = ({ fileName, fullWidth }: FormFileProps) => {
+const FormFile = ({ fileName, fullWidth }: IFormFileProps) => {
   const fileExtension = `.${fileName.split(".").pop()}`;
   const name =
     fileExtension && fileName.substring(0, fileName.lastIndexOf(fileExtension));

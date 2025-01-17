@@ -1,11 +1,11 @@
 import styled, { css } from "styled-components";
 import { MD, theme } from "../../../utils/theme";
 
-interface FormFileProps {
+interface IFormFileProps {
   fullWidth?: boolean;
 }
 
-export const FormFileWrapper = styled.div<FormFileProps>`
+export const FormFileWrapper = styled.div<IFormFileProps>`
   display: flex;
   justify-content: center;
   align-items: center;

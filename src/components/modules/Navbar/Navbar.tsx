@@ -28,18 +28,20 @@ import {
 import ThemedDivider from "../../elements/ThemedDivider/ThemedDivider";
 import { getAvatarUrl } from "../../../helpers/getAvatarUrl";
 
-interface NavabarProps {
+interface INavbarProps {
   hideUserTag?: boolean;
   useLogoLink?: boolean;
 }
 
-const Navbar = ({ hideUserTag, useLogoLink }: NavabarProps) => {
+const Navbar = ({ hideUserTag, useLogoLink }: INavbarProps) => {
   const auth = useAuth();
   const router = useHistory();
   const isDesktop = useWindowSize().width > MD;
   const [isAnimationRunning, setIsAnimationRunning] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
+  const prevOpen = useRef(isMenuOpen);
+  const { clearUser } = useUser();
 
   const handleToggle = () => {
     setIsMenuOpen((prevOpen) => !prevOpen);
@@ -57,8 +59,11 @@ const Navbar = ({ hideUserTag, useLogoLink }: NavabarProps) => {
     setIsMenuOpen(false);
   };
 
-  // return focus to the button when we transitioned from !open -> open
-  const prevOpen = useRef(isMenuOpen);
+  const onLogoutClick = async () => {
+    await projectAuth.signOut();
+    clearUser();
+  };
+
   useEffect(() => {
     if (prevOpen.current === true && isMenuOpen === false) {
       anchorRef.current!.focus();
@@ -66,12 +71,6 @@ const Navbar = ({ hideUserTag, useLogoLink }: NavabarProps) => {
 
     prevOpen.current = isMenuOpen;
   }, [isMenuOpen]);
-
-  const { clearUser } = useUser();
-  const onLogoutClick = async () => {
-    await projectAuth.signOut();
-    clearUser();
-  };
 
   return (
     <StyledNavbar>
@@ -94,7 +93,7 @@ const Navbar = ({ hideUserTag, useLogoLink }: NavabarProps) => {
         <Button ref={anchorRef} onClick={handleToggle}>
           <ChipContent>
             <Avatar src={getAvatarUrl(auth.user?.email!)} />
-            <span>{isMenuOpen ? "▲" : "▼"}</span>
+            <div>{isMenuOpen ? "▲" : "▼"}</div>
           </ChipContent>
         </Button>
       )}
@@ -110,6 +109,9 @@ const Navbar = ({ hideUserTag, useLogoLink }: NavabarProps) => {
             {/* TODO: Replace with real icons */}
             <MenuItem onClick={() => router.push("/profile")}>
               <img src={placeholderIcon} alt="Profile" width={40} /> Profile
+            </MenuItem>
+            <MenuItem onClick={() => router.push("/family")}>
+              <img src={placeholderIcon} alt="Family" width={40} /> Family
             </MenuItem>
             <MenuItem onClick={() => router.push("/settings")}>
               <img src={placeholderIcon} alt="Settings" width={40} /> Settings

@@ -1,7 +1,7 @@
 import { Image } from "./LogoImage.styled";
 import logo from "../../../logo.png";
 
-export interface LogoImageProps {
+export interface ILogoImageProps {
   isAnimationRunning?: boolean;
   isInfinite?: boolean;
   size?: { mobile?: number; desktop?: number };
@@ -9,7 +9,7 @@ export interface LogoImageProps {
   onAnimationEnd?: () => void;
 }
 
-const LogoImage = (props: LogoImageProps) => {
+const LogoImage = (props: ILogoImageProps) => {
   return <Image src={logo} {...props} />;
 };
 
