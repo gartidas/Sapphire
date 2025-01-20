@@ -1,14 +1,14 @@
 import { UseFormMethods } from "react-hook-form";
 
-import TextBox from "../../elements/TextBox";
-import { IUserData } from "../../../utils/types";
+import { IUserData } from "../../../model";
 
 import Spinner from "../../elements/Spinner/Spinner";
-import { FormButton } from "../../elements/FormButton";
+import { FormButton } from "../../elements/FormButton/FormButton";
 import { PageContent, StyledForm, Text } from "./AccountForm.styled";
 import { useHistory } from "react-router-dom";
 import { RegisterIcon } from "../../elements/RegisterIcon/RegisterIcon";
 import PasswordTextBox from "../../elements/PasswordTextBox/PasswordTextBox";
+import TextBox from "../../elements/TextBox/TextBox";
 
 interface IAccountFormProps {
   methods: UseFormMethods<IUserData & { repeatPassword: string }>;

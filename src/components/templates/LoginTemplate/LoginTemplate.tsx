@@ -2,10 +2,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router";
 
-import { IUserData } from "../../../utils/types";
+import { IUserData } from "../../../model";
 import { projectAuth } from "../../../firebase/config";
-import { firebaseErrorToFieldError } from "../../../utils/firebase-error";
-import TextBox from "../../elements/TextBox";
+import { firebaseErrorToFieldError } from "../../../helpers/firebaseErrorToFieldError/firebaseErrorToFieldError";
 
 import {
   StyledForm,
@@ -18,6 +17,8 @@ import loginIcon from "./Login.gif";
 import Spinner from "../../elements/Spinner/Spinner";
 import { useUser } from "../../../contextProviders/UserProvider";
 import PasswordTextBox from "../../elements/PasswordTextBox/PasswordTextBox";
+import TextBox from "../../elements/TextBox/TextBox";
+import { loginErrorConfig } from "../../../helpers/firebaseErrorToFieldError/config/loginErrorConfig";
 
 const LoginTemplate = () => {
   const { register, handleSubmit, errors, setError } = useForm<IUserData>();
@@ -36,7 +37,7 @@ const LoginTemplate = () => {
 
       router.replace("/home");
     } catch (err: any) {
-      var error = firebaseErrorToFieldError(err);
+      var error = firebaseErrorToFieldError<IUserData>(err, loginErrorConfig);
       setError(error.field, error.error);
     }
     setIsLoading(false);

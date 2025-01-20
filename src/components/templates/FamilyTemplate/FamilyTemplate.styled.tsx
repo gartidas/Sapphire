@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { MD, SM, theme } from "../../../utils/theme";
 import { NAVBAR_HEIGHT } from "../../modules/Navbar/Navbar.styled";
-import TextBox from "../../elements/TextBox";
 import { MenuList } from "@material-ui/core";
+import TextBox from "../../elements/TextBox/TextBox";
 
 export const Wrapper = styled.div`
   display: flex;

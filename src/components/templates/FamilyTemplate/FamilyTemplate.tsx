@@ -11,8 +11,7 @@ import {
   Wrapper,
 } from "./FamilyTemplate.styled";
 import { KeyboardEvent, MouseEvent, useEffect, useRef, useState } from "react";
-import BannerUploadTemplate from "./BannerUploadTemplate/BannerUploadTemplate";
-import Modal from "../../elements/Modal";
+import BannerUploadTemplate from "./components/BannerUploadTemplate/BannerUploadTemplate";
 import { useUser } from "../../../contextProviders/UserProvider";
 import { infoToast, successToast } from "../../../services/toastService";
 import FamilyMemberBadge from "../../elements/FamilyMemberBadge/FamilyMemberBadge";
@@ -24,6 +23,7 @@ import { MD } from "../../../utils/theme";
 import { Email, Link, Share, WhatsApp } from "@material-ui/icons";
 import { FacebookMessengerIcon } from "../../elements/FacebookMessengerIcon/FacebookMessengerIcon";
 import ThemedDivider from "../../elements/ThemedDivider/ThemedDivider";
+import Modal from "../../elements/Modal/Modal";
 
 const FamilyTemplate = () => {
   const [file, setFile] = useState<File>();

@@ -1,4 +1,4 @@
-import { Divider, makeStyles } from "@material-ui/core";
+import { Divider, DividerProps, makeStyles } from "@material-ui/core";
 import { theme } from "../../../utils/theme";
 
 const useStyles = makeStyles(() => ({
@@ -7,10 +7,10 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const ThemedDivider = () => {
+const ThemedDivider = (props: DividerProps) => {
   const classes = useStyles();
 
-  return <Divider classes={{ root: classes.divider }} />;
+  return <Divider {...props} classes={{ root: classes.divider }} />;
 };
 
 export default ThemedDivider;

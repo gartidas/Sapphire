@@ -1,8 +1,8 @@
-import { useMemory } from "../../../../contextProviders/MemoryProvider";
-import { useModal } from "../../../../contextProviders/ModalProvider";
-import { useUser } from "../../../../contextProviders/UserProvider";
-import { successToast } from "../../../../services/toastService";
-import { IMemoryData, ModalType } from "../../../../utils/types";
+import { useMemory } from "../../../../../contextProviders/MemoryProvider";
+import { useModal } from "../../../../../contextProviders/ModalProvider";
+import { useUser } from "../../../../../contextProviders/UserProvider";
+import { successToast } from "../../../../../services/toastService";
+import { IMemoryData, ModalType } from "../../../../../model";
 import {
   ButtonsWrapper,
   StyledButton,
@@ -12,7 +12,7 @@ import {
 import yesIcon from "./Yes.gif";
 import noIcon from "./No.gif";
 import deleteConfirmationIcon from "./DeleteConfirmation.gif";
-import Spinner from "../../../elements/Spinner/Spinner";
+import Spinner from "../../../../elements/Spinner/Spinner";
 
 interface IConfirmationProps {
   openedMemory: IMemoryData;

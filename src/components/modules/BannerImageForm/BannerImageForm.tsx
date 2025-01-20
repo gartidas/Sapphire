@@ -2,12 +2,12 @@ import { FormProvider, UseFormMethods } from "react-hook-form";
 
 import { FormContent } from "./BannerImageForm.styled";
 import Spinner from "../../elements/Spinner/Spinner";
-import { FormButton } from "../../elements/FormButton";
+import { FormButton } from "../../elements/FormButton/FormButton";
 import { SubmitIcon } from "../../elements/SubmitIcon/SubmitIcon";
 import DropZone from "../../elements/DropZone/DropZone";
 import { useDropzone, DropEvent, FileRejection } from "react-dropzone";
 import FormFile from "../../elements/FormFile/FormFile";
-import { IFamily } from "../../../utils/types";
+import { IFamily } from "../../../model";
 
 interface IBannerImageFormProps {
   methods: UseFormMethods<IFamily>;

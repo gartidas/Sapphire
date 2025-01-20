@@ -11,6 +11,7 @@ firebase.analytics();
 const projectStorage = firebase.storage();
 const projectFirestore = firebase.firestore();
 const projectAuth = firebase.auth();
+const projectAuthObject = firebase.auth;
 const FieldValue = firebase.firestore.FieldValue;
 const FieldPath = firebase.firestore.FieldPath;
 const getTimestamp = () =>
@@ -20,6 +21,7 @@ export {
   projectStorage,
   projectFirestore,
   projectAuth,
+  projectAuthObject,
   getTimestamp,
   FieldValue,
   FieldPath,

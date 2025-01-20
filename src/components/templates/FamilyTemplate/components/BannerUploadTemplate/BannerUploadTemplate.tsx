@@ -1,9 +1,9 @@
-import { uploadImage } from "../../../../utils/FirebaseStorageUtils";
-import { IFamily } from "../../../../utils/types";
-import { errorToast, successToast } from "../../../../services/toastService";
+import { uploadImage } from "../../../../../utils/FirebaseStorageUtils";
+import { IFamily } from "../../../../../model";
+import { errorToast, successToast } from "../../../../../services/toastService";
 import { useForm } from "react-hook-form";
-import { useUser } from "../../../../contextProviders/UserProvider";
-import BannerImageForm from "../../../modules/BannerImageForm/BannerImageForm";
+import { useUser } from "../../../../../contextProviders/UserProvider";
+import BannerImageForm from "../../../../modules/BannerImageForm/BannerImageForm";
 
 interface IBannerUploadProps {
   file: File | undefined;

@@ -1,5 +1,5 @@
-import { IMemoryData } from "../../../../utils/types";
-import MemoryModalButtons from "../../../modules/MemoryModalButtons/MemoryModalButtons";
+import { IMemoryData } from "../../../../../model";
+import MemoryModalButtons from "../../../../modules/MemoryModalButtons/MemoryModalButtons";
 
 import {
   Wrapper,

@@ -9,7 +9,7 @@ import {
 import { projectFirestore } from "../firebase/config";
 import { errorToast } from "../services/toastService";
 import { deleteImage } from "../utils/FirebaseStorageUtils";
-import { IMemoryData } from "../utils/types";
+import { IMemoryData } from "../model";
 import firebase from "firebase/app";
 import { useUser } from "./UserProvider";
 

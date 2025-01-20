@@ -4,9 +4,9 @@ import { useForm } from "react-hook-form";
 import { projectAuth } from "../../../firebase/config";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { errorToast, infoToast } from "../../../services/toastService";
-import { firebaseErrorToFieldError } from "../../../utils/firebase-error";
+import { firebaseErrorToFieldError } from "../../../helpers/firebaseErrorToFieldError/firebaseErrorToFieldError";
 import { MD } from "../../../utils/theme";
-import { IUserData } from "../../../utils/types";
+import { IUserData } from "../../../model";
 import AccountForm from "../../modules/AccountForm/AccountForm";
 import {
   ShareButtons,
@@ -22,6 +22,7 @@ import { useUser } from "../../../contextProviders/UserProvider";
 import { v4 as uuidv4 } from "uuid";
 import Cookies from "universal-cookie/cjs/Cookies";
 import { FacebookMessengerIcon } from "../../elements/FacebookMessengerIcon/FacebookMessengerIcon";
+import { registerErrorConfig } from "../../../helpers/firebaseErrorToFieldError/config/registerErrorConfig";
 
 const RegisterTemplate = () => {
   const appDomain = commonConfig.appDomain!;
@@ -69,7 +70,9 @@ const RegisterTemplate = () => {
       }
       cookies.remove("sessionId");
     } catch (err: any) {
-      var error = firebaseErrorToFieldError(err);
+      var error = firebaseErrorToFieldError<
+        IUserData & { repeatPassword: string }
+      >(err, registerErrorConfig);
       setError(error.field, error.error);
     }
     setIsLoading(false);

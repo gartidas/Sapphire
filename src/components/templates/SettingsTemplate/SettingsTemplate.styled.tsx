@@ -1,9 +1,35 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { NAVBAR_HEIGHT } from "../../modules/Navbar/Navbar.styled";
+import { Tabs } from "@material-ui/core";
+import { MD } from "../../../utils/theme";
 
-export const Wrapper = styled.div`
+interface IWrapperProps {
+  isHorizontal: boolean;
+}
+
+export const Wrapper = styled.div<IWrapperProps>`
+  display: flex;
+  height: calc(100vh - ${NAVBAR_HEIGHT}px);
+
+  ${({ isHorizontal }) =>
+    isHorizontal &&
+    css`
+      flex-direction: column;
+    `}
+`;
+
+export const TabWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: calc(100vh - ${NAVBAR_HEIGHT}px);
+  width: 100%;
+  height: 100%;
+`;
+
+export const StyledTabs = styled(Tabs)`
+  height: calc(100vh - ${NAVBAR_HEIGHT}px);
+
+  @media screen and (max-width: ${MD}px) {
+    height: initial;
+  }
 `;

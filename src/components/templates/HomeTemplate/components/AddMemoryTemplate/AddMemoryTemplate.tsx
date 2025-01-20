@@ -1,12 +1,12 @@
 import moment from "moment";
 
-import { uploadImage } from "../../../../utils/FirebaseStorageUtils";
-import { IMemoryData } from "../../../../utils/types";
-import { errorToast, successToast } from "../../../../services/toastService";
-import MemoryForm from "../../../modules/MemoryForm/MemoryForm";
+import { uploadImage } from "../../../../../utils/FirebaseStorageUtils";
+import { IMemoryData } from "../../../../../model";
+import { errorToast, successToast } from "../../../../../services/toastService";
+import MemoryForm from "../../../../modules/MemoryForm/MemoryForm";
 import { useForm } from "react-hook-form";
-import { useMemory } from "../../../../contextProviders/MemoryProvider";
-import { useUser } from "../../../../contextProviders/UserProvider";
+import { useMemory } from "../../../../../contextProviders/MemoryProvider";
+import { useUser } from "../../../../../contextProviders/UserProvider";
 
 interface IAddMemoryProps {
   file: File | undefined;

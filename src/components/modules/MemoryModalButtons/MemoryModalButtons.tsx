@@ -1,7 +1,7 @@
 import { useMemory } from "../../../contextProviders/MemoryProvider";
 import { useModal } from "../../../contextProviders/ModalProvider";
 
-import { IMemoryData, ModalType } from "../../../utils/types";
+import { IMemoryData, ModalType } from "../../../model";
 
 import { Wrapper, Button } from "./MemoryModalButtons.styled";
 import editIcon from "./Edit.gif";

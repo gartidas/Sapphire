@@ -9,10 +9,9 @@ import {
 } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core";
 
-import Modal from "../../elements/Modal";
-import AddMemoryTemplate from "./AddMemoryTemplate/AddMemoryTemplate";
-import MemoryDetail from "./MemoryDetailTemplate/MemoryDetailTemplate";
-import EditMemoryTemplate from "./EditMemoryTemplate/EditMemoryTemplate";
+import AddMemoryTemplate from "./components/AddMemoryTemplate/AddMemoryTemplate";
+import MemoryDetail from "./components/MemoryDetailTemplate/MemoryDetailTemplate";
+import EditMemoryTemplate from "./components/EditMemoryTemplate/EditMemoryTemplate";
 
 import {
   ButtonsWrapper,
@@ -25,13 +24,14 @@ import {
 } from "./HomeTemplate.styled";
 import { useModal } from "../../../contextProviders/ModalProvider";
 import { useMemory } from "../../../contextProviders/MemoryProvider";
-import { ModalType } from "../../../utils/types";
+import { ModalType } from "../../../model";
 import useObserver from "../../../hooks/useObserver";
 import FullPageSpinner from "../../modules/FullPageSpinner/FullPageSpinner";
 import NoData from "../../elements/NoData/NoData";
 import addIcon from "./Add.gif";
 import { useUser } from "../../../contextProviders/UserProvider";
-import ConfirmationTemplate from "./ConfirmationTemplate/ConfirmationTemplate";
+import ConfirmationTemplate from "./components/ConfirmationTemplate/ConfirmationTemplate";
+import Modal from "../../elements/Modal/Modal";
 
 const useStyles = makeStyles((theme) => ({
   timelineDot: {

@@ -1,5 +1,5 @@
 import { createContext, FC, useCallback, useContext, useState } from "react";
-import { OpenedModalType } from "../utils/types";
+import { OpenedModalType } from "../model";
 
 interface IModalContextValue {
   openedModal: OpenedModalType | undefined;

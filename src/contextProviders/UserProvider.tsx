@@ -8,7 +8,7 @@ import {
 } from "react";
 
 import { projectFirestore } from "../firebase/config";
-import { IFamily, IUserData } from "../utils/types";
+import { IFamily, IUserData } from "../model";
 import { errorToast } from "../services/toastService";
 import { useAuth } from "./AuthProvider";
 import { deleteImage } from "../utils/FirebaseStorageUtils";

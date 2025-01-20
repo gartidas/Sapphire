@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import TextBox from "../TextBox";
 import { Button as MuiButton } from "@material-ui/core";
+import TextBox from "../TextBox/TextBox";
 
 export const ShowHideButton = styled(MuiButton)`
   position: absolute;

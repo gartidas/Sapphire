@@ -1,11 +1,14 @@
 import { useForm } from "react-hook-form";
-import { useMemory } from "../../../../contextProviders/MemoryProvider";
-import { useUser } from "../../../../contextProviders/UserProvider";
+import { useMemory } from "../../../../../contextProviders/MemoryProvider";
+import { useUser } from "../../../../../contextProviders/UserProvider";
 
-import { errorToast, successToast } from "../../../../services/toastService";
-import { getImage, uploadImage } from "../../../../utils/FirebaseStorageUtils";
-import { IMemoryData } from "../../../../utils/types";
-import MemoryForm from "../../../modules/MemoryForm/MemoryForm";
+import { errorToast, successToast } from "../../../../../services/toastService";
+import {
+  getImage,
+  uploadImage,
+} from "../../../../../utils/FirebaseStorageUtils";
+import { IMemoryData } from "../../../../../model";
+import MemoryForm from "../../../../modules/MemoryForm/MemoryForm";
 
 interface IEditMemoryProps {
   file: File | undefined;

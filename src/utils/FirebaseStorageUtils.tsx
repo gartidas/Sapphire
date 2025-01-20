@@ -1,6 +1,6 @@
 import { projectStorage } from "../firebase/config";
 import { errorToast } from "../services/toastService";
-import { IMemoryData, SetError } from "./types";
+import { IMemoryData, SetError } from "../model";
 
 export const uploadImage = async (
   filePath: string,

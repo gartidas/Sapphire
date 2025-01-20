@@ -1,6 +1,6 @@
 import { Avatar } from "@material-ui/core";
 import { Wrapper } from "./FamilyMemberBadge.styled";
-import { IUserData } from "../../../utils/types";
+import { IUserData } from "../../../model";
 import { getAvatarUrl } from "../../../helpers/getAvatarUrl";
 
 interface IFamilyMemberBadgeProps {

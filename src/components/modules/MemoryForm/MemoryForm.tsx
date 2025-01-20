@@ -1,16 +1,16 @@
 import { Controller, FormProvider, UseFormMethods } from "react-hook-form";
 
-import TextBox from "../../elements/TextBox";
-import DatePicker from "../../elements/DatePicker";
-import { IMemoryData } from "../../../utils/types";
+import { IMemoryData } from "../../../model";
 
 import { FormContent } from "./MemoryForm.styled";
 import Spinner from "../../elements/Spinner/Spinner";
-import { FormButton } from "../../elements/FormButton";
+import { FormButton } from "../../elements/FormButton/FormButton";
 import { SubmitIcon } from "../../elements/SubmitIcon/SubmitIcon";
 import DropZone from "../../elements/DropZone/DropZone";
 import { useDropzone, DropEvent, FileRejection } from "react-dropzone";
 import FormFile from "../../elements/FormFile/FormFile";
+import DatePicker from "../../elements/DatePicker/DatePicker";
+import TextBox from "../../elements/TextBox/TextBox";
 
 interface IMemoryFormProps {
   methods: UseFormMethods<IMemoryData>;
