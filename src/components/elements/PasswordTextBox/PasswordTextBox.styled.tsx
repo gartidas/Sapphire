@@ -4,7 +4,7 @@ import TextBox from "../TextBox/TextBox";
 
 export const ShowHideButton = styled(MuiButton)`
   position: absolute;
-  padding-top: 8px;
+  padding-top: 0.5rem;
   right: 0;
 `;
 
@@ -15,6 +15,6 @@ export const PasswordWrapper = styled.div`
 
 export const StyledTextBox = styled(TextBox)`
   input {
-    padding: 18.5px 64px 18.5px 14px;
+    padding: 1.15625rem 4rem 1.15625rem 0.875rem;
   }
 `;

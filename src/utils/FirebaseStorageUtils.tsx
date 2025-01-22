@@ -4,19 +4,21 @@ import { IMemoryData, SetError } from "../model";
 
 export const uploadImage = async (
   filePath: string,
-  file: File
+  file: File,
+  customPrefix?: string
 ): Promise<string | undefined> => {
   try {
     const uploadResponse = await projectStorage
-      .ref(`images/${filePath}`)
+      .ref(`${customPrefix ?? "images"}/${filePath}`)
       .put(file);
 
     if (uploadResponse.state !== "success") {
       errorToast("Oops... something went wrong!");
       return undefined;
     }
-
-    const url = await projectStorage.ref(`images/${filePath}`).getDownloadURL();
+    const url = await projectStorage
+      .ref(`${customPrefix ?? "images"}/${filePath}`)
+      .getDownloadURL();
     return url;
   } catch (err: any) {
     errorToast(
@@ -28,9 +30,14 @@ export const uploadImage = async (
   }
 };
 
-export const deleteImage = async (filePath: string): Promise<boolean> => {
+export const deleteImage = async (
+  filePath: string,
+  customPrefix?: string
+): Promise<boolean> => {
   try {
-    await projectStorage.ref(`images/${filePath}`).delete();
+    await projectStorage
+      .ref(`${customPrefix ?? "images"}/${filePath}`)
+      .delete();
     return true;
   } catch (err: any) {
     errorToast(
@@ -46,11 +53,12 @@ export const getImage = async (
   filePath: string,
   callback: (file: File, data: IMemoryData, setError: SetError) => void,
   data: IMemoryData,
-  setError: SetError
+  setError: SetError,
+  customPrefix?: string
 ): Promise<void> => {
   try {
     await projectStorage
-      .ref(`images/${filePath}`)
+      .ref(`${customPrefix ?? "images"}/${filePath}`)
       .getDownloadURL()
       .then((url) => {
         var xhr = new XMLHttpRequest();

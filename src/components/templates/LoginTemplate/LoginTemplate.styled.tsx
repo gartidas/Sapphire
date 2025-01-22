@@ -16,11 +16,11 @@ export const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 500px;
+  max-width: 31.25rem;
   width: 90%;
   flex: 1;
   > * + * {
-    margin-top: 30px;
+    margin-top: 1.875rem;
   }
 `;
 
@@ -30,7 +30,7 @@ export const StyledLogo = styled(Logo)`
 
 export const LoginButton = styled(MuiButton)`
   img {
-    margin-right: 10px;
+    margin-right: 0.625rem;
   }
 `;
 

@@ -7,11 +7,12 @@ import {
   useEffect,
 } from "react";
 
-import { projectFirestore } from "../firebase/config";
+import { FieldValue, projectFirestore } from "../firebase/config";
 import { IFamily, IUserData } from "../model";
 import { errorToast } from "../services/toastService";
 import { useAuth } from "./AuthProvider";
 import { deleteImage } from "../utils/FirebaseStorageUtils";
+import firebase from "firebase/app";
 
 interface IUserContextValue {
   user?: IUserData;
@@ -26,6 +27,12 @@ interface IUserContextValue {
   ) => Promise<void>;
   isFamilyLoading: boolean;
   changeFamilyLoadingState: (isLoading: boolean) => void;
+  updateUser: (
+    data: Omit<IUserData, "familyId" | "password">,
+    revertOnError?: boolean
+  ) => Promise<void>;
+  isUserLoading: boolean;
+  changeUserLoadingState: (isLoading: boolean) => void;
   family?: IFamily;
   familyMembers?: IUserData[];
 }
@@ -40,9 +47,14 @@ const UserProvider: FC = ({ children }) => {
   const [family, setFamily] = useState<IFamily>();
   const { user: authUser } = useAuth();
   const [isFamilyLoading, setIsFamilyLoading] = useState(false);
+  const [isUserLoading, setIsUserLoading] = useState(false);
 
   const changeFamilyLoadingState = useCallback((isLoading: boolean) => {
     setIsFamilyLoading(isLoading);
+  }, []);
+
+  const changeUserLoadingState = useCallback((isLoading: boolean) => {
+    setIsUserLoading(isLoading);
   }, []);
 
   const createFamily = useCallback(async (data: IFamily) => {
@@ -87,7 +99,6 @@ const UserProvider: FC = ({ children }) => {
 
   const updateFamily = useCallback(
     async (data: Omit<IFamily, "familyId">, revertOnError?: boolean) => {
-      console.log(data);
       try {
         await projectFirestore
           .collection("families")
@@ -201,6 +212,46 @@ const UserProvider: FC = ({ children }) => {
     [fetchUser]
   );
 
+  const updateUser = useCallback(
+    async (
+      data: Omit<IUserData, "familyId" | "password">,
+      revertOnError?: boolean
+    ) => {
+      try {
+        const docRef = projectFirestore.collection("users").doc(data.email);
+        const updates: Record<string, firebase.firestore.FieldValue> = {};
+
+        Object.entries(data).forEach(([key, value]) => {
+          if (value === undefined) {
+            delete data[key as keyof Omit<IUserData, "familyId" | "password">];
+            updates[key] = FieldValue.delete();
+          }
+        });
+
+        if (Object.keys(updates).length > 0) {
+          docRef.update(updates);
+        }
+
+        await projectFirestore.collection("users").doc(data.email).set(data);
+
+        fetchUser(data.email);
+      } catch (err: any) {
+        revertOnError &&
+          (await deleteImage(`${data.email}/profilePicture`, "users"));
+
+        errorToast(
+          err.code === "permission-denied"
+            ? "Permission denied!"
+            : `${err.name}:${err.code}`
+        );
+        setIsUserLoading(false);
+        return;
+      }
+    },
+
+    [fetchUser]
+  );
+
   useEffect(() => {
     if (authUser) fetchUser(authUser.email!);
     // NOTE: Load user on first render only
@@ -218,6 +269,9 @@ const UserProvider: FC = ({ children }) => {
         doesFamilyIdExist,
         updateFamily,
         changeFamilyLoadingState,
+        updateUser,
+        changeUserLoadingState,
+        isUserLoading,
         isFamilyLoading,
         family,
         familyMembers,

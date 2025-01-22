@@ -6,15 +6,15 @@ import { SM } from "../../../utils/theme";
 export const Wrapper = styled.div`
   display: flex;
   position: fixed;
-  bottom: 10px;
-  right: 10px;
+  bottom: 0.625rem;
+  right: 0.625rem;
 `;
 
 export const Button = styled(MuiButton)`
   border-radius: 50%;
-  padding: 20px;
+  padding: 1.25rem;
 
   @media screen and (max-width: ${SM}px) {
-    padding: 10px;
+    padding: 0.625rem;
   }
 `;

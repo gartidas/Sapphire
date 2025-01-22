@@ -20,15 +20,15 @@ body{
 
 .Toastify__toast-container {
     @media only screen and (max-width: 480px) {
-      width: min(92%, 350px);
-      padding: 4px;
+      width: min(92%, 21.875rem);
+      padding: 0.25rem;
       left: auto;
       top: 1rem;
       margin: 0;
     }
     .Toastify__toast {
       padding: 0;
-      min-height: 0px;
+      min-height: 0;
       margin-bottom: 0.2rem !important;
       .Toastify__toast-body {
         width: 100%;

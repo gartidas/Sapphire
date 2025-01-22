@@ -20,7 +20,7 @@ export const StyledForm = styled.form`
   width: 100%;
   flex: 1;
   > * + * {
-    margin-top: 30px;
+    margin-top: 1.875rem;
   }
 `;
 

@@ -1,59 +1,60 @@
 import { uploadImage } from "../../../../../utils/FirebaseStorageUtils";
-import { IFamily } from "../../../../../model";
+import { IUserData } from "../../../../../model";
 import { errorToast, successToast } from "../../../../../services/toastService";
 import { useForm } from "react-hook-form";
 import { useUser } from "../../../../../contextProviders/UserProvider";
 import ImageForm from "../../../../modules/ImageForm/ImageForm";
 
-interface IBannerUploadProps {
+interface IProfilePictureUploadProps {
   file: File | undefined;
   setFile: (file?: File) => void;
   onClose: () => void;
 }
 
-const BannerUploadTemplate = ({
+const ProfilePictureUploadTemplate = ({
   file,
   setFile,
   onClose,
-}: IBannerUploadProps) => {
-  const { changeFamilyLoadingState, isFamilyLoading, updateFamily } = useUser();
-  const methods = useForm<IFamily>();
+}: IProfilePictureUploadProps) => {
+  const { changeUserLoadingState, updateUser, isUserLoading } = useUser();
+  const methods = useForm<IUserData>();
   const { setError } = methods;
-  const { user, family } = useUser();
+  const { user } = useUser();
 
-  const onSubmit = async (data: IFamily) => {
+  const onSubmit = async () => {
     try {
       if (!file) {
         errorToast("File not set!");
         return;
       }
 
-      changeFamilyLoadingState(true);
+      changeUserLoadingState(true);
       const storageResponse = await uploadImage(
-        `${user!.familyId}/banner`,
-        file!
+        `${user!.email}/profilePicture`,
+        file!,
+        "users"
       );
 
       if (!storageResponse) {
-        changeFamilyLoadingState(false);
+        changeUserLoadingState(false);
         return;
       }
 
-      await updateFamily(
+      await updateUser(
         {
-          ...family,
-          bannerUrl: storageResponse,
+          ...user!,
+          profilePicture: storageResponse,
         },
         true
       );
 
-      successToast("Banner uploaded!");
-      changeFamilyLoadingState(false);
+      successToast("Profile picture uploaded!");
+      changeUserLoadingState(false);
       setFile();
       onClose();
     } catch (err: any) {
       setError(err.field, err.error);
-      changeFamilyLoadingState(false);
+      changeUserLoadingState(false);
     }
   };
 
@@ -63,9 +64,9 @@ const BannerUploadTemplate = ({
       methods={methods}
       setFile={setFile}
       file={file}
-      isLoading={isFamilyLoading}
+      isLoading={isUserLoading}
     />
   );
 };
 
-export default BannerUploadTemplate;
+export default ProfilePictureUploadTemplate;

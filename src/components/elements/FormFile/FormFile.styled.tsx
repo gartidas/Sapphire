@@ -10,11 +10,11 @@ export const FormFileWrapper = styled.div<IFormFileProps>`
   justify-content: center;
   align-items: center;
   border: ${theme.primary} 1px dashed;
-  padding: calc(2em + 4.5px) 2em;
+  padding: calc(2rem + 0.28125rem) 2rem;
   ${({ fullWidth }) =>
     fullWidth &&
     css`
-      width: calc(100% - 4em);
+      width: calc(100% - 4rem);
     `};
 `;
 
@@ -42,10 +42,10 @@ export const FormFileExtension = styled.p`
 `;
 
 export const FormFileIcon = styled.div`
-  width: 60px;
-  margin-right: 1em;
+  width: 3.75rem;
+  margin-right: 1rem;
 
   @media screen and (max-width: ${MD}px) {
-    width: 40px;
+    width: 2.5rem;
   }
 `;

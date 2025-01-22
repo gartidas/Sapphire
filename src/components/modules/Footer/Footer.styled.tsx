@@ -6,13 +6,13 @@ export const FOOTER_HEIGHT = 60;
 export const StyledFooter = styled.div`
   bottom: 0;
   position: fixed;
-  width: calc(100vw - 20px);
+  width: calc(100vw - 1.25rem);
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: calc(${FOOTER_HEIGHT}px - 1px);
   border-top: 1px solid ${theme.primary};
-  padding: 0 10px 0 10px;
+  padding: 0 0.625rem;
   background-color: ${theme.secondary};
 `;
 
@@ -39,7 +39,7 @@ export const Version = styled.h1`
 
 export const SocialIcon = styled.a`
   transition: transform 0.5s ease;
-  padding: 0 10px 0 10px;
+  padding: 0 0.625rem 0 0.625rem;
 
   :hover {
     transform: scale(1.5);

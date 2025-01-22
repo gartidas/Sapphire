@@ -13,7 +13,7 @@ const Footer = () => {
   return (
     <StyledFooter>
       <Version>{commonConfig.version}</Version>
-      <DevelopedBy>Developed by Gartidas ™</DevelopedBy>
+      <DevelopedBy>Developed by Gartidas™</DevelopedBy>
       <SocialsWrapper>
         <SocialIcon
           href={socialsConfig.instagram}

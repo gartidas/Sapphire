@@ -15,12 +15,12 @@ export const StyledForm = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  max-width: 500px;
+  max-width: 31.25rem;
   width: 90%;
   height: 100%;
   flex: 1;
   > * + * {
-    margin-top: 30px;
+    margin-top: 1.875rem;
   }
 `;
 

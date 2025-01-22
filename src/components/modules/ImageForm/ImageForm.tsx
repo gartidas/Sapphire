@@ -1,29 +1,33 @@
-import { FormProvider, UseFormMethods } from "react-hook-form";
+import {
+  FieldValues,
+  FormProvider,
+  SubmitHandler,
+  UseFormMethods,
+} from "react-hook-form";
 
-import { FormContent } from "./BannerImageForm.styled";
+import { FormContent } from "./ImageForm.styled";
 import Spinner from "../../elements/Spinner/Spinner";
 import { FormButton } from "../../elements/FormButton/FormButton";
 import { SubmitIcon } from "../../elements/SubmitIcon/SubmitIcon";
 import DropZone from "../../elements/DropZone/DropZone";
 import { useDropzone, DropEvent, FileRejection } from "react-dropzone";
 import FormFile from "../../elements/FormFile/FormFile";
-import { IFamily } from "../../../model";
 
-interface IBannerImageFormProps {
-  methods: UseFormMethods<IFamily>;
-  onSubmit: (data: IFamily) => Promise<void>;
+interface IImageFormProps<T extends FieldValues> {
+  methods: UseFormMethods<T>;
+  onSubmit: (data: T) => Promise<void>;
   file: File | undefined;
   setFile: (file?: File) => void;
   isLoading: boolean;
 }
 
-const BannerImageForm = ({
+const ImageForm = <T extends FieldValues>({
   methods,
   setFile,
   file,
   isLoading,
   onSubmit,
-}: IBannerImageFormProps) => {
+}: IImageFormProps<T>) => {
   const { handleSubmit } = methods;
 
   const handleOnDrop = (
@@ -48,7 +52,7 @@ const BannerImageForm = ({
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit as SubmitHandler<T>)}>
         <FormContent>
           {file ? (
             <>
@@ -79,4 +83,4 @@ const BannerImageForm = ({
   );
 };
 
-export default BannerImageForm;
+export default ImageForm;

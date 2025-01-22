@@ -4,9 +4,9 @@ export const FormContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 1.25rem;
 
   > * + * {
-    margin-top: 30px;
+    margin-top: 1.875rem;
   }
 `;

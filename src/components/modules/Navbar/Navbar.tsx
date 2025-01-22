@@ -19,6 +19,7 @@ import placeholderIcon from "./Placeholder.gif";
 
 import {
   ChipContent,
+  StyledImage,
   StyledLink,
   StyledLogo,
   StyledLogoImage,
@@ -41,7 +42,7 @@ const Navbar = ({ hideUserTag, useLogoLink }: INavbarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
   const prevOpen = useRef(isMenuOpen);
-  const { clearUser } = useUser();
+  const { clearUser, user } = useUser();
 
   const handleToggle = () => {
     setIsMenuOpen((prevOpen) => !prevOpen);
@@ -92,7 +93,11 @@ const Navbar = ({ hideUserTag, useLogoLink }: INavbarProps) => {
       {!hideUserTag && (
         <Button ref={anchorRef} onClick={handleToggle}>
           <ChipContent>
-            <Avatar src={getAvatarUrl(auth.user?.email!)} />
+            {user?.profilePicture ? (
+              <StyledImage src={user?.profilePicture} />
+            ) : (
+              <Avatar src={getAvatarUrl(auth.user?.email!)} />
+            )}
             <div>{isMenuOpen ? "▲" : "▼"}</div>
           </ChipContent>
         </Button>

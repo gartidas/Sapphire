@@ -4,7 +4,7 @@ import { MD, SM } from "../../../../../utils/theme";
 
 export const Wrapper = styled.div`
   display: flex;
-  padding: 20px;
+  padding: 1.25rem;
   align-items: center;
   justify-content: center;
 
@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
 `;
 
 export const StyledImage = styled.img`
-  margin-right: 20px;
+  margin-right: 1.25rem;
   max-width: 70%;
   max-height: 50%;
   object-fit: contain;

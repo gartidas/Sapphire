@@ -27,19 +27,19 @@ export const ButtonsWrapper = styled.div`
   position: fixed;
   display: flex;
   flex-direction: column;
-  bottom: 10px;
-  left: 10px;
+  bottom: 0.625rem;
+  left: 0.625rem;
 
   button {
     border-radius: 50%;
-    padding: 20px;
+    padding: 1.25rem;
   }
 
   @media screen and (max-width: ${SM}px) {
-    left: 5px;
+    left: 0.3125rem;
 
     button {
-      padding: 10px;
+      padding: 0.625rem;
     }
   }
 `;

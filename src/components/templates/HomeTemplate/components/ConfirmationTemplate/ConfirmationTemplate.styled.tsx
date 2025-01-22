@@ -7,11 +7,11 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2em;
-  gap: 3em;
+  padding: 2rem;
+  gap: 3rem;
 
   @media screen and (max-width: ${MD}px) {
-    gap: 1.5em;
+    gap: 1.5rem;
   }
 `;
 
@@ -19,14 +19,14 @@ export const ButtonsWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 7em;
+  gap: 7rem;
 
   @media screen and (max-width: ${MD}px) {
-    gap: 3em;
+    gap: 3rem;
   }
 
   @media screen and (max-width: ${SM}px) {
-    gap: 1.7em;
+    gap: 1.7rem;
   }
 `;
 
@@ -39,13 +39,13 @@ export const Title = styled.h1`
 `;
 
 export const StyledButton = styled(Button)`
-  padding: 0 5em;
+  padding: 0 5rem;
 
   @media screen and (max-width: ${MD}px) {
-    padding: 0 3em;
+    padding: 0 3rem;
   }
 
   @media screen and (max-width: ${SM}px) {
-    padding: 0 1.3em;
+    padding: 0 1.3rem;
   }
 `;

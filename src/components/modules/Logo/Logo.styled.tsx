@@ -10,11 +10,11 @@ export const Wrapper = styled.div`
   img {
     position: absolute;
     top: calc(50% - 3.5rem);
-    margin-left: 155px;
+    margin-left: 9.6875rem;
 
     @media screen and (max-width: ${SM}px) {
       top: calc(50% - 2rem);
-      margin-left: 65px;
+      margin-left: 4.0625rem;
     }
   }
 `;
