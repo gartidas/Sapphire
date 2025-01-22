@@ -3,13 +3,13 @@ import { ToastContainer } from "react-toastify";
 import moment from "moment";
 import "react-toastify/dist/ReactToastify.min.css";
 
-import AuthorizedPage from "./components/layouts/AuthorizedPage";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import Family from "./pages/Family";
 import Settings from "./pages/Settings";
+import AuthorizedPage from "./components/layouts/AuthorizedPage";
 
 function App() {
   moment().locale("sk-SK");

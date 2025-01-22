@@ -7,10 +7,10 @@ import { ThemeProvider } from "styled-components";
 import App from "./App";
 import { theme } from "./utils/theme";
 import GlobalStyles from "./utils/GlobalStyles";
+import UserProvider from "./contextProviders/UserProvider";
 import AuthProvider from "./contextProviders/AuthProvider";
 import ModalProvider from "./contextProviders/ModalProvider";
 import MemoryProvider from "./contextProviders/MemoryProvider";
-import UserProvider from "./contextProviders/UserProvider";
 
 ReactDOM.render(
   <React.StrictMode>

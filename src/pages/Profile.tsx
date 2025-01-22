@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet";
 
+import ProfileTemplate from "../components/templates/ProfileTemplate";
 import LoggedLayout from "../components/layouts/LoggedLayout";
-import ProfileTemplate from "../components/templates/ProfileTemplate/ProfileTemplate";
 
 function Profile() {
   return (

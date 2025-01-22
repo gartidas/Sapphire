@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet";
 
+import SettingsTemplate from "../components/templates/SettingsTemplate";
 import LoggedLayout from "../components/layouts/LoggedLayout";
-import SettingsTemplate from "../components/templates/SettingsTemplate/SettingsTemplate";
 
 function Settings() {
   return (

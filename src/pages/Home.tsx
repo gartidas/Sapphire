@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet";
 
+import HomeTemplate from "../components/templates/HomeTemplate";
 import LoggedLayout from "../components/layouts/LoggedLayout";
-import HomeTemplate from "../components/templates/HomeTemplate/HomeTemplate";
 
 function Home() {
   return (
