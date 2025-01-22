@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef, useState } from "react";
 import Snowfall from "react-snowfall";
-import { SM, theme, XXXL } from "../../../utils/theme";
+import { SM, theme, XXXL } from "../../../theme/theme";
 import flowerImageSrc from "./Flower.png";
 import useWindowSize from "../../../hooks/useWindowSize";
 

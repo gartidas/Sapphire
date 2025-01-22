@@ -1,5 +1,5 @@
 import { makeStyles, TextField, TextFieldProps } from "@material-ui/core";
-import { theme } from "../../../utils/theme";
+import { theme } from "../../../theme/theme";
 
 const useStyles = makeStyles(() => ({
   textFieldPrimaryColor: {

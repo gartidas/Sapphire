@@ -6,7 +6,7 @@ import {
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import moment from "moment";
-import { theme } from "../../../utils/theme";
+import { theme } from "../../../theme/theme";
 
 const useStyles = makeStyles(() => ({
   datePickerPrimaryColor: {

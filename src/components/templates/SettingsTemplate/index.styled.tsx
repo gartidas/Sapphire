@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { Tabs } from "@material-ui/core";
-import { MD } from "../../../utils/theme";
-import { NAVBAR_HEIGHT } from "../../../const";
+import { MD } from "../../../theme/theme";
+import { NAVBAR_HEIGHT } from "../../../constants";
 
 interface IWrapperProps {
   isHorizontal: boolean;

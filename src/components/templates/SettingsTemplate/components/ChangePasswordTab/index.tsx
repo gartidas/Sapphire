@@ -102,7 +102,7 @@ const ChangePasswordTab = () => {
           ) : (
             <>
               {/* TODO: Add real icon */}
-              <Icon icon={EIcon.Register} alt="Register" width={30} />
+              <Icon icon={EIcon.Submit} alt="Register" width={30} />
               Change password
             </>
           )}

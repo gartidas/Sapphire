@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { MD, SM, theme } from "../../../utils/theme";
-import { FOOTER_HEIGHT } from "../../../const";
+import { MD, SM, theme } from "../../../theme/theme";
+import { FOOTER_HEIGHT } from "../../../constants";
 
 export const StyledFooter = styled.div`
   bottom: 0;

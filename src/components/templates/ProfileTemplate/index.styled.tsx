@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import TextBox from "../../elements/TextBox";
-import { MD } from "../../../utils/theme";
-import { NAVBAR_HEIGHT } from "../../../const";
+import { MD } from "../../../theme/theme";
+import { NAVBAR_HEIGHT } from "../../../constants";
 
 export const Wrapper = styled.div`
   display: flex;

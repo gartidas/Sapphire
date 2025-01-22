@@ -1,6 +1,6 @@
 import moment from "moment";
 
-import { uploadImage } from "../../../../../utils/FirebaseStorageUtils";
+import { uploadImage } from "../../../../../helpers/imageStorageHandlers";
 import { IMemoryData } from "../../../../../model";
 import { errorToast, successToast } from "../../../../../services/toastService";
 import MemoryForm from "../../../../modules/MemoryForm";

@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { theme } from "../../../utils/theme";
-import { NAVBAR_HEIGHT } from "../../../const";
+import { theme } from "../../../theme/theme";
+import { NAVBAR_HEIGHT } from "../../../constants";
 
 export const PageContent = styled.div`
   display: flex;

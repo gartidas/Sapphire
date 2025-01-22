@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { theme } from "../../../../../utils/theme";
+import { theme } from "../../../../../theme/theme";
 
 export const PageContent = styled.div`
   display: flex;

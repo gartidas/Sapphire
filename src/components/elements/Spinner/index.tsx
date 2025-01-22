@@ -1,5 +1,5 @@
 import useWindowSize from "../../../hooks/useWindowSize";
-import { SM } from "../../../utils/theme";
+import { SM } from "../../../theme/theme";
 import Icon from "../Icon";
 import { EIcon } from "../Icon/model";
 

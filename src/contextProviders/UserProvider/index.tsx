@@ -10,7 +10,7 @@ import {
 import { FieldValue, projectFirestore } from "../../firebase/config";
 import { IFamily, IUserData } from "../../model";
 import { errorToast } from "../../services/toastService";
-import { deleteImage } from "../../utils/FirebaseStorageUtils";
+import { deleteImage } from "../../helpers/imageStorageHandlers";
 import firebase from "firebase/app";
 import { useAuth } from "../AuthProvider";
 

@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import Logo from "../../modules/Logo";
 import { Button as MuiButton } from "@material-ui/core";
-import { theme } from "../../../utils/theme";
-import { FOOTER_HEIGHT } from "../../../const";
+import { theme } from "../../../theme/theme";
+import { FOOTER_HEIGHT } from "../../../constants";
 
 export const PageContent = styled.div`
   display: flex;

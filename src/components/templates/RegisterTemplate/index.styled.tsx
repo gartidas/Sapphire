@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { LG, SM } from "../../../utils/theme";
-import { NAVBAR_HEIGHT } from "../../../const";
+import { LG, SM } from "../../../theme/theme";
+import { NAVBAR_HEIGHT } from "../../../constants";
 
 export const ThankYouPageWrapper = styled.div`
   display: flex;

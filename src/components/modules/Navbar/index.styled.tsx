@@ -1,9 +1,9 @@
 import styled, { css } from "styled-components";
-import { LG, SM, theme } from "../../../utils/theme";
+import { LG, SM, theme } from "../../../theme/theme";
 import LogoImage from "../LogoImage";
 import Logo from "../Logo";
 import { MenuList } from "@material-ui/core";
-import { NAVBAR_HEIGHT } from "../../../const";
+import { NAVBAR_HEIGHT } from "../../../constants";
 
 interface IStyledLinkProps {
   useLogoLink?: boolean;

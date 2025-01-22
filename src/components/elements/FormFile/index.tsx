@@ -4,7 +4,7 @@ import {
   FormFileName,
   FormFileWrapper,
 } from "./index.styled";
-import { theme } from "../../../utils/theme";
+import { theme } from "../../../theme/theme";
 import { DefaultExtensionType, defaultStyles, FileIcon } from "react-file-icon";
 
 interface IFormFileProps {

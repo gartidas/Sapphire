@@ -1,7 +1,7 @@
 import { Tab } from "@material-ui/core";
 import { StyledTabs, TabWrapper, Wrapper } from "./index.styled";
 import { ReactNode, useState } from "react";
-import { MD } from "../../../utils/theme";
+import { MD } from "../../../theme/theme";
 import useWindowSize from "../../../hooks/useWindowSize";
 import ThemedDivider from "../../elements/ThemedDivider";
 import ChangePasswordTab from "./components/ChangePasswordTab";

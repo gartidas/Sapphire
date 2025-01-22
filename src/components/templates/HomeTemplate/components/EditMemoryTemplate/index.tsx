@@ -5,7 +5,7 @@ import { errorToast, successToast } from "../../../../../services/toastService";
 import {
   getImage,
   uploadImage,
-} from "../../../../../utils/FirebaseStorageUtils";
+} from "../../../../../helpers/imageStorageHandlers";
 import { IMemoryData } from "../../../../../model";
 import MemoryForm from "../../../../modules/MemoryForm";
 import { useMemory } from "../../../../../contextProviders/MemoryProvider";

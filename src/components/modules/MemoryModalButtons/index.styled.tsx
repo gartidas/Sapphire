@@ -1,7 +1,7 @@
 import { IconButton as MuiButton } from "@material-ui/core";
 import styled from "styled-components";
 
-import { SM } from "../../../utils/theme";
+import { SM } from "../../../theme/theme";
 
 export const Wrapper = styled.div`
   display: flex;

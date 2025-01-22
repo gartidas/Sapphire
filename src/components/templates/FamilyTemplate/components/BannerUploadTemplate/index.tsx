@@ -1,4 +1,4 @@
-import { uploadImage } from "../../../../../utils/FirebaseStorageUtils";
+import { uploadImage } from "../../../../../helpers/imageStorageHandlers";
 import { IFamily } from "../../../../../model";
 import { errorToast, successToast } from "../../../../../services/toastService";
 import { useForm } from "react-hook-form";

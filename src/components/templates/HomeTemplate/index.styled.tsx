@@ -1,8 +1,8 @@
 import styled, { css } from "styled-components";
-import { MD, SM, theme } from "../../../utils/theme";
+import { MD, SM, theme } from "../../../theme/theme";
 import { ButtonProps, IconButton as MuiButton } from "@material-ui/core";
 import Spinner from "../../elements/Spinner";
-import { NAVBAR_HEIGHT } from "../../../const";
+import { NAVBAR_HEIGHT } from "../../../constants";
 
 interface IIndicatingButtonProps extends ButtonProps {
   isIndicating?: boolean;

@@ -10,7 +10,7 @@ import firebase from "firebase/app";
 import { IMemoryData } from "../../model";
 import { useUser } from "../UserProvider";
 import { projectFirestore } from "../../firebase/config";
-import { deleteImage } from "../../utils/FirebaseStorageUtils";
+import { deleteImage } from "../../helpers/imageStorageHandlers";
 import { errorToast } from "../../services/toastService";
 
 interface IMemoryContextValue {

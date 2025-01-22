@@ -5,7 +5,7 @@ import { projectAuth } from "../../../firebase/config";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { errorToast, infoToast } from "../../../services/toastService";
 import { firebaseErrorToFieldError } from "../../../helpers/firebaseErrorToFieldError/firebaseErrorToFieldError";
-import { MD } from "../../../utils/theme";
+import { MD } from "../../../theme/theme";
 import { IUserData } from "../../../model";
 import AccountForm from "../../modules/AccountForm";
 import {

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { LG, MD, SM } from "../../../utils/theme";
+import { LG, MD, SM } from "../../../theme/theme";
 
 export const Wrapper = styled.div`
   display: flex;

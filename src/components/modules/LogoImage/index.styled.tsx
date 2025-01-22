@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { SM } from "../../../utils/theme";
+import { SM } from "../../../theme/theme";
 
 interface IImageProps {
   isAnimationRunning?: boolean;

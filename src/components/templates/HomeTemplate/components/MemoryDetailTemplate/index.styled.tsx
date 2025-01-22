@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { MD, SM } from "../../../../../utils/theme";
+import { MD, SM } from "../../../../../theme/theme";
 
 export const Wrapper = styled.div`
   display: flex;

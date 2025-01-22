@@ -18,7 +18,7 @@ import FamilyMemberBadge from "../../elements/FamilyMemberBadge";
 import { Button, ClickAwayListener, MenuItem, Popper } from "@material-ui/core";
 import commonConfig from "../../../config";
 import useWindowSize from "../../../hooks/useWindowSize";
-import { MD } from "../../../utils/theme";
+import { MD } from "../../../theme/theme";
 import { Email, Link, Share, WhatsApp } from "@material-ui/icons";
 import ThemedDivider from "../../elements/ThemedDivider";
 import Modal from "../../elements/Modal";

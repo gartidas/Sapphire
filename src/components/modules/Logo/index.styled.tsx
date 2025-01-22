@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { SM } from "../../../utils/theme";
+import { SM } from "../../../theme/theme";
 
 export const Wrapper = styled.div`
   position: relative;

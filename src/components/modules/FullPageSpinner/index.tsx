@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import Spinner from "../../elements/Spinner";
-import { NAVBAR_HEIGHT } from "../../../const";
+import { NAVBAR_HEIGHT } from "../../../constants";
 
 const StyledWrapper = styled.div<IFullPageSpinnerProps>`
   display: flex;

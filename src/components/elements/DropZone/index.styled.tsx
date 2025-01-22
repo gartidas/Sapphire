@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { theme } from "../../../utils/theme";
+import { theme } from "../../../theme/theme";
 
 interface IDropZoneProps {
   fullWidth?: boolean;

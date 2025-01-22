@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { ModalProps, Dialog, makeStyles, Paper } from "@material-ui/core";
-import { theme } from "../../../utils/theme";
+import { theme } from "../../../theme/theme";
 
 const useStyles = makeStyles(() => ({
   paper: {

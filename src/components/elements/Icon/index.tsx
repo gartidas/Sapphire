@@ -32,53 +32,53 @@ interface IIconProps
   alt?: string;
 }
 
-const Icon = ({ icon, alt, ...rest }: IIconProps) => {
-  const getIconSrc = (icon: EIcon) => {
-    switch (icon) {
-      case EIcon.Add:
-        return addIcon;
-      case EIcon.Confirm:
-        return confirmIcon;
-      case EIcon.Delete:
-        return deleteIcon;
-      case EIcon.DeleteConfirmation:
-        return deleteConfirmationIcon;
-      case EIcon.Deny:
-        return denyIcon;
-      case EIcon.Edit:
-        return editIcon;
-      case EIcon.FacebookMessenger:
-        return facebookMessengerIcon;
-      case EIcon.Flower:
-        return flowerIcon;
-      case EIcon.Hide:
-        return hideIcon;
-      case EIcon.Login:
-        return loginIcon;
-      case EIcon.Logo:
-        return logoIcon;
-      case EIcon.Logout:
-        return logoutIcon;
-      case EIcon.NoData:
-        return noDataIcon;
-      case EIcon.Register:
-        return registerIcon;
-      case EIcon.Show:
-        return showIcon;
-      case EIcon.Spinner:
-        return spinnerIcon;
-      case EIcon.Submit:
-        return submitIcon;
-      case EIcon.UploadImage:
-        return uploadImageIcon;
-      case EIcon.WrongAction:
-        return wrongActionIcon;
-      default:
-        // TODO: Add default icon
-        return defaultIcon;
-    }
-  };
+const getIconSrc = (icon: EIcon) => {
+  switch (icon) {
+    case EIcon.Add:
+      return addIcon;
+    case EIcon.Confirm:
+      return confirmIcon;
+    case EIcon.Delete:
+      return deleteIcon;
+    case EIcon.DeleteConfirmation:
+      return deleteConfirmationIcon;
+    case EIcon.Deny:
+      return denyIcon;
+    case EIcon.Edit:
+      return editIcon;
+    case EIcon.FacebookMessenger:
+      return facebookMessengerIcon;
+    case EIcon.Flower:
+      return flowerIcon;
+    case EIcon.Hide:
+      return hideIcon;
+    case EIcon.Login:
+      return loginIcon;
+    case EIcon.Logo:
+      return logoIcon;
+    case EIcon.Logout:
+      return logoutIcon;
+    case EIcon.NoData:
+      return noDataIcon;
+    case EIcon.Register:
+      return registerIcon;
+    case EIcon.Show:
+      return showIcon;
+    case EIcon.Spinner:
+      return spinnerIcon;
+    case EIcon.Submit:
+      return submitIcon;
+    case EIcon.UploadImage:
+      return uploadImageIcon;
+    case EIcon.WrongAction:
+      return wrongActionIcon;
+    default:
+      // TODO: Add default icon
+      return defaultIcon;
+  }
+};
 
+const Icon = ({ icon, alt, ...rest }: IIconProps) => {
   return <img src={getIconSrc(icon)} alt={alt} {...rest} />;
 };
 

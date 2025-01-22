@@ -12,7 +12,7 @@ import { useUser } from "../../../contextProviders/UserProvider";
 import { projectAuth } from "../../../firebase/config";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { noop } from "../../../utils";
-import { MD } from "../../../utils/theme";
+import { MD } from "../../../theme/theme";
 
 import {
   ChipContent,

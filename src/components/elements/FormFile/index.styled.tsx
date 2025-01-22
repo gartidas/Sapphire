@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { MD, theme } from "../../../utils/theme";
+import { MD, theme } from "../../../theme/theme";
 
 interface IFormFileProps {
   fullWidth?: boolean;
