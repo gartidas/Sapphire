@@ -2,7 +2,7 @@ import { createContext, FC, useContext } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "firebase/app";
 import { projectAuth } from "../../firebase/config";
-import FullPageSpinner from "../../components/modules/FullPageSpinner";
+import FullPageSpinner from "../../sharedComponents/modules/FullPageSpinner";
 
 interface IAuthContextValue {
   user?: firebase.User;

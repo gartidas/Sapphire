@@ -9,7 +9,7 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import Family from "./pages/Family";
 import Settings from "./pages/Settings";
-import AuthorizedPage from "./components/layouts/AuthorizedPage";
+import AuthorizedPage from "./sharedComponents/layouts/AuthorizedPage";
 
 function App() {
   moment().locale("sk-SK");
