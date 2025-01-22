@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { MD, SM, theme } from "../../../utils/theme";
-
-export const FOOTER_HEIGHT = 60;
+import { FOOTER_HEIGHT } from "../../../const";
 
 export const StyledFooter = styled.div`
   bottom: 0;

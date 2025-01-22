@@ -13,12 +13,13 @@ import {
   LoginButton,
   Text,
 } from "./index.styled";
-import loginIcon from "./Login.gif";
 import Spinner from "../../elements/Spinner";
 import { useUser } from "../../../contextProviders/UserProvider";
 import PasswordTextBox from "../../elements/PasswordTextBox";
 import TextBox from "../../elements/TextBox";
 import { loginErrorConfig } from "../../../helpers/firebaseErrorToFieldError/config/loginErrorConfig";
+import Icon from "../../elements/Icon";
+import { EIcon } from "../../elements/Icon/model";
 
 const LoginTemplate = () => {
   const { register, handleSubmit, errors, setError } = useForm<IUserData>();
@@ -75,7 +76,7 @@ const LoginTemplate = () => {
             <Spinner size={{ desktop: 40, mobile: 40 }} />
           ) : (
             <>
-              <img src={loginIcon} alt="Login" width={40} />
+              <Icon icon={EIcon.Login} alt="Login" width={40} />
               Login
             </>
           )}

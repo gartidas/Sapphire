@@ -1,6 +1,5 @@
 import { Image } from "./index.styled";
-import logo from "../../../logo.png";
-
+import logoImage from "./Logo.png";
 export interface ILogoImageProps {
   isAnimationRunning?: boolean;
   isInfinite?: boolean;
@@ -10,7 +9,7 @@ export interface ILogoImageProps {
 }
 
 const LogoImage = (props: ILogoImageProps) => {
-  return <Image src={logo} {...props} />;
+  return <Image src={logoImage} {...props} />;
 };
 
 export default LogoImage;

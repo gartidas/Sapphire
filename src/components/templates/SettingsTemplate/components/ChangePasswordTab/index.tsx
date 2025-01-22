@@ -3,7 +3,6 @@ import PasswordTextBox from "../../../../elements/PasswordTextBox";
 import { FormButton } from "../../../../elements/FormButton";
 import Spinner from "../../../../elements/Spinner";
 import { PageContent, StyledForm } from "./index.styled";
-import { RegisterIcon } from "../../../../elements/RegisterIcon";
 import { useState } from "react";
 import { firebaseErrorToFieldError } from "../../../../../helpers/firebaseErrorToFieldError/firebaseErrorToFieldError";
 import { successToast } from "../../../../../services/toastService";
@@ -11,6 +10,8 @@ import { projectAuthObject } from "../../../../../firebase/config";
 import { IChangePasswordData } from "../../../../../model";
 import { changePasswordErrorConfig } from "../../../../../helpers/firebaseErrorToFieldError/config/changePasswordErrorConfig";
 import { useAuth } from "../../../../../contextProviders/AuthProvider";
+import Icon from "../../../../elements/Icon";
+import { EIcon } from "../../../../elements/Icon/model";
 
 const ChangePasswordTab = () => {
   const { errors, register, reset, setError, handleSubmit } =
@@ -101,7 +102,7 @@ const ChangePasswordTab = () => {
           ) : (
             <>
               {/* TODO: Add real icon */}
-              <RegisterIcon />
+              <Icon icon={EIcon.Register} alt="Register" width={30} />
               Change password
             </>
           )}

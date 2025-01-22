@@ -15,15 +15,15 @@ import BannerUploadTemplate from "./components/BannerUploadTemplate";
 import { useUser } from "../../../contextProviders/UserProvider";
 import { infoToast, successToast } from "../../../services/toastService";
 import FamilyMemberBadge from "../../elements/FamilyMemberBadge";
-import addIcon from "./Add.gif";
 import { Button, ClickAwayListener, MenuItem, Popper } from "@material-ui/core";
 import commonConfig from "../../../config";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { MD } from "../../../utils/theme";
 import { Email, Link, Share, WhatsApp } from "@material-ui/icons";
-import { FacebookMessengerIcon } from "../../elements/FacebookMessengerIcon";
 import ThemedDivider from "../../elements/ThemedDivider";
 import Modal from "../../elements/Modal";
+import Icon from "../../elements/Icon";
+import { EIcon } from "../../elements/Icon/model";
 
 const FamilyTemplate = () => {
   const [file, setFile] = useState<File>();
@@ -132,7 +132,7 @@ const FamilyTemplate = () => {
         onClick={handleToggle}
       >
         <InviteMemberBadge>
-          <img src={addIcon} alt="Add" width={40} />
+          <Icon icon={EIcon.Add} alt="Add" width={40} />
           <ButtonLabel>Invite member</ButtonLabel>
         </InviteMemberBadge>
       </Button>
@@ -163,7 +163,12 @@ const FamilyTemplate = () => {
                       }`}&redirect_uri=${`${shareUrl}/${user!.familyId}`}`}
                       target="_blank"
                     >
-                      <FacebookMessengerIcon />
+                      <Icon
+                        icon={EIcon.FacebookMessenger}
+                        alt="Messenger"
+                        width={40}
+                      />
+                      ;
                     </SocialIcon>
                   </MenuItem>
                   <MenuItem>

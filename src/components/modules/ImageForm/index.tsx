@@ -8,10 +8,11 @@ import {
 import { FormContent } from "./index.styled";
 import Spinner from "../../elements/Spinner";
 import { FormButton } from "../../elements/FormButton";
-import { SubmitIcon } from "../../elements/SubmitIcon";
 import DropZone from "../../elements/DropZone";
 import { useDropzone, DropEvent, FileRejection } from "react-dropzone";
 import FormFile from "../../elements/FormFile";
+import Icon from "../../elements/Icon";
+import { EIcon } from "../../elements/Icon/model";
 
 interface IImageFormProps<T extends FieldValues> {
   methods: UseFormMethods<T>;
@@ -72,7 +73,7 @@ const ImageForm = <T extends FieldValues>({
               <Spinner size={{ desktop: 30, mobile: 30 }} />
             ) : (
               <>
-                <SubmitIcon />
+                <Icon icon={EIcon.Submit} alt="Submit" width={30} />
                 Submit
               </>
             )}

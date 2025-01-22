@@ -13,8 +13,6 @@ import { projectAuth } from "../../../firebase/config";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { noop } from "../../../utils";
 import { MD } from "../../../utils/theme";
-import logoutIcon from "./Logout.gif";
-import placeholderIcon from "./Placeholder.gif";
 
 import {
   ChipContent,
@@ -28,6 +26,8 @@ import {
 import ThemedDivider from "../../elements/ThemedDivider";
 import { getAvatarUrl } from "../../../helpers/getAvatarUrl";
 import { useAuth } from "../../../contextProviders/AuthProvider";
+import Icon from "../../elements/Icon";
+import { EIcon } from "../../elements/Icon/model";
 
 interface INavbarProps {
   hideUserTag?: boolean;
@@ -113,17 +113,17 @@ const Navbar = ({ hideUserTag, useLogoLink }: INavbarProps) => {
           <StyledMenuWrapper autoFocusItem={isMenuOpen}>
             {/* TODO: Replace with real icons */}
             <MenuItem onClick={() => router.push("/profile")}>
-              <img src={placeholderIcon} alt="Profile" width={40} /> Profile
+              <Icon icon={EIcon.Default} alt="Profile" width={40} /> Profile
             </MenuItem>
             <MenuItem onClick={() => router.push("/family")}>
-              <img src={placeholderIcon} alt="Family" width={40} /> Family
+              <Icon icon={EIcon.Default} alt="Family" width={40} /> Family
             </MenuItem>
             <MenuItem onClick={() => router.push("/settings")}>
-              <img src={placeholderIcon} alt="Settings" width={40} /> Settings
+              <Icon icon={EIcon.Default} alt="Settings" width={40} /> Settings
             </MenuItem>
             <ThemedDivider />
             <MenuItem onClick={onLogoutClick}>
-              <img src={logoutIcon} alt="Log out" width={40} /> Log out
+              <Icon icon={EIcon.Logout} alt="Log out" width={40} /> Log out
             </MenuItem>
           </StyledMenuWrapper>
         </ClickAwayListener>

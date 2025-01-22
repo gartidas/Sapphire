@@ -1,6 +1,7 @@
 import useWindowSize from "../../../hooks/useWindowSize";
 import { SM } from "../../../utils/theme";
-import icon from "./Spinner.gif";
+import Icon from "../Icon";
+import { EIcon } from "../Icon/model";
 
 interface ISpinnerProps {
   size?: { mobile?: number; desktop?: number };
@@ -13,9 +14,9 @@ const Spinner = ({ size, className }: ISpinnerProps) => {
   const desktop = size ? (size.desktop ? size.desktop : 30) : 30;
 
   return (
-    <img
+    <Icon
       className={className}
-      src={icon}
+      icon={EIcon.Spinner}
       alt="Loading"
       width={isDesktop ? desktop : mobile}
     />

@@ -5,12 +5,13 @@ import { IMemoryData } from "../../../model";
 import { FormContent } from "./index.styled";
 import Spinner from "../../elements/Spinner";
 import { FormButton } from "../../elements/FormButton";
-import { SubmitIcon } from "../../elements/SubmitIcon";
 import DropZone from "../../elements/DropZone";
 import { useDropzone, DropEvent, FileRejection } from "react-dropzone";
 import FormFile from "../../elements/FormFile";
 import DatePicker from "../../elements/DatePicker";
 import TextBox from "../../elements/TextBox";
+import Icon from "../../elements/Icon";
+import { EIcon } from "../../elements/Icon/model";
 
 interface IMemoryFormProps {
   methods: UseFormMethods<IMemoryData>;
@@ -103,7 +104,7 @@ const MemoryForm = ({
               <Spinner size={{ desktop: 30, mobile: 30 }} />
             ) : (
               <>
-                <SubmitIcon />
+                <Icon icon={EIcon.Submit} alt="Submit" width={30} />
                 Submit
               </>
             )}

@@ -1,7 +1,7 @@
 import { DropzoneState } from "react-dropzone";
 import { DropZoneWrapper } from "./index.styled";
-import uploadImageIcon from "./UploadImage.gif";
-import wrongActionIcon from "./WrongAction.gif";
+import Icon from "../Icon";
+import { EIcon } from "../Icon/model";
 
 interface IDropZoneProps {
   state: DropzoneState;
@@ -22,7 +22,7 @@ const DropZone = ({ state, fullWidth }: IDropZoneProps) => {
       isDragAccept={isDragAccept}
     >
       <input {...getInputProps()} />
-      <img src={wrongActionIcon} alt="Wrong action" width={60} />
+      <Icon icon={EIcon.WrongAction} alt="Wrong action" width={60} />
       This file format is not accepted
     </DropZoneWrapper>
   ) : (
@@ -33,7 +33,7 @@ const DropZone = ({ state, fullWidth }: IDropZoneProps) => {
       isDragAccept={isDragAccept}
     >
       <input {...getInputProps()} />
-      <img src={uploadImageIcon} alt="Upload image" width={60} />
+      <Icon icon={EIcon.UploadImage} alt="Upload image" width={60} />
       Drag and drop your image here or click
     </DropZoneWrapper>
   );

@@ -21,8 +21,9 @@ import { useHistory } from "react-router-dom";
 import { useUser } from "../../../contextProviders/UserProvider";
 import { v4 as uuidv4 } from "uuid";
 import Cookies from "universal-cookie/cjs/Cookies";
-import { FacebookMessengerIcon } from "../../elements/FacebookMessengerIcon";
 import { registerErrorConfig } from "../../../helpers/firebaseErrorToFieldError/config/registerErrorConfig";
+import Icon from "../../elements/Icon";
+import { EIcon } from "../../elements/Icon/model";
 
 const RegisterTemplate = () => {
   const appDomain = commonConfig.appDomain!;
@@ -98,7 +99,11 @@ const RegisterTemplate = () => {
                 href={`http://www.facebook.com/dialog/send?app_id=${commonConfig.facebookAppId!}&link=${`${shareUrl}/${user.familyId}`}&redirect_uri=${`${shareUrl}/${user.familyId}`}`}
                 target="_blank"
               >
-                <FacebookMessengerIcon />
+                <Icon
+                  icon={EIcon.FacebookMessenger}
+                  alt="Messenger"
+                  width={40}
+                />
               </SocialIcon>
               <SocialIcon
                 href={`https://wa.me/?text=${`${shareUrl}/${user.familyId}`}`}

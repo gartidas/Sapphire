@@ -3,8 +3,7 @@ import { LG, SM, theme } from "../../../utils/theme";
 import LogoImage from "../LogoImage";
 import Logo from "../Logo";
 import { MenuList } from "@material-ui/core";
-
-export const NAVBAR_HEIGHT = 80;
+import { NAVBAR_HEIGHT } from "../../../const";
 
 interface IStyledLinkProps {
   useLogoLink?: boolean;

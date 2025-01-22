@@ -26,12 +26,13 @@ import { ModalType } from "../../../model";
 import useObserver from "../../../hooks/useObserver";
 import FullPageSpinner from "../../modules/FullPageSpinner";
 import NoData from "../../elements/NoData";
-import addIcon from "./Add.gif";
 import { useUser } from "../../../contextProviders/UserProvider";
 import ConfirmationTemplate from "./components/ConfirmationTemplate";
 import Modal from "../../elements/Modal";
 import { useMemory } from "../../../contextProviders/MemoryProvider";
 import { useModal } from "../../../contextProviders/ModalProvider";
+import Icon from "../../elements/Icon";
+import { EIcon } from "../../elements/Icon/model";
 
 const useStyles = makeStyles((theme) => ({
   timelineDot: {
@@ -72,7 +73,7 @@ const HomeTemplate = () => {
           isIndicating={!memories || memories.length === 0}
           onClick={() => changeOpenedModalState({ type: ModalType.Add })}
         >
-          <img src={addIcon} alt="Add" width={40} />
+          <Icon icon={EIcon.Add} alt="Add" width={40} />
         </IndicatingButton>
       </ButtonsWrapper>
       {family?.nickname && (

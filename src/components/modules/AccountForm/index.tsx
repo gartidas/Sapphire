@@ -6,9 +6,10 @@ import Spinner from "../../elements/Spinner";
 import { FormButton } from "../../elements/FormButton";
 import { PageContent, StyledForm, Text } from "./index.styled";
 import { useHistory } from "react-router-dom";
-import { RegisterIcon } from "../../elements/RegisterIcon";
 import PasswordTextBox from "../../elements/PasswordTextBox";
 import TextBox from "../../elements/TextBox";
+import Icon from "../../elements/Icon";
+import { EIcon } from "../../elements/Icon/model";
 
 interface IAccountFormProps {
   methods: UseFormMethods<IUserData & { repeatPassword: string }>;
@@ -62,8 +63,7 @@ const AccountForm = ({ methods, onSubmit, isLoading }: IAccountFormProps) => {
             <Spinner size={{ desktop: 30, mobile: 30 }} />
           ) : (
             <>
-              <RegisterIcon />
-              Register
+              <Icon icon={EIcon.Register} alt="Register" width={30} /> Register
             </>
           )}
         </FormButton>
