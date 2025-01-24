@@ -77,7 +77,9 @@ const HomeTemplate = () => {
         </IndicatingButton>
       </ButtonsWrapper>
       {family?.nickname && (
-        <FamilyNickname>{`${family?.nickname}'s timeline`}</FamilyNickname>
+        <FamilyNickname>
+          <span>{family?.nickname}</span>'s timeline
+        </FamilyNickname>
       )}
       {memories && memories.length > 0 ? (
         <TimelineWrapper>

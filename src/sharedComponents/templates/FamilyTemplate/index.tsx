@@ -4,6 +4,7 @@ import {
   FamilyMembersWrapper,
   FamilyNicknamePlaceholder,
   InviteMemberBadge,
+  NicknameWrapper,
   SocialIcon,
   StyledImage,
   StyledMenuWrapper,
@@ -109,18 +110,20 @@ const FamilyTemplate = () => {
         </BannerPlaceholder>
       )}
 
-      {isEditing ? (
-        <StyledTextBox
-          placeholder={family?.nickname ?? "Your family's nickname"}
-          onKeyUp={handleNicknameSubmit}
-          onBlur={() => handleTextBoxUnfocus()}
-          inputRef={textFieldRef}
-        />
-      ) : (
-        <FamilyNicknamePlaceholder onClick={() => setIsEditing(true)}>
-          {family?.nickname ?? "Your family's nickname"}
-        </FamilyNicknamePlaceholder>
-      )}
+      <NicknameWrapper>
+        {isEditing ? (
+          <StyledTextBox
+            placeholder={family?.nickname ?? "Your family's nickname"}
+            onKeyUp={handleNicknameSubmit}
+            onBlur={() => handleTextBoxUnfocus()}
+            inputRef={textFieldRef}
+          />
+        ) : (
+          <FamilyNicknamePlaceholder onClick={() => setIsEditing(true)}>
+            {family?.nickname ?? "Your family's nickname"}
+          </FamilyNicknamePlaceholder>
+        )}
+      </NicknameWrapper>
 
       <FamilyMembersWrapper ref={scrollContainerRef} hasOverflow={hasOverflow}>
         {familyMembers &&

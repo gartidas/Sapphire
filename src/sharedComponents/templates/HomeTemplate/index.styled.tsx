@@ -71,11 +71,22 @@ export const StyledSpinner = styled(Spinner)`
 `;
 
 export const FamilyNickname = styled.h2`
+  display: flex;
+  justify-content: center;
   font-size: 3rem;
   margin: 0;
-  max-width: 70%;
-  word-wrap: break-word;
+  max-width: 80%;
   text-align: center;
+
+  span {
+    max-width: 55%;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+  }
 
   @media screen and (max-width: ${MD}px) {
     font-size: 1.5rem;

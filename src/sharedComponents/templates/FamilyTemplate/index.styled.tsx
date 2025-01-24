@@ -44,7 +44,7 @@ export const StyledImage = styled.img`
 export const FamilyNicknamePlaceholder = styled.h2`
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   word-wrap: break-word;
@@ -52,7 +52,6 @@ export const FamilyNicknamePlaceholder = styled.h2`
   font-size: 3rem;
   margin: 0;
   max-width: 70%;
-  margin-top: 1.5rem;
 
   @media screen and (max-width: ${MD}px) {
     font-size: 1.75rem;
@@ -61,11 +60,22 @@ export const FamilyNicknamePlaceholder = styled.h2`
 
 export const StyledTextBox = styled(TextBox)`
   width: 32rem;
-  height: 4rem;
-  margin-top: 1.5rem;
 
   @media screen and (max-width: ${MD}px) {
     width: 19rem;
+  }
+`;
+
+export const NicknameWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.5rem;
+  height: 4rem;
+  width: 70%;
+
+  @media screen and (max-width: ${MD}px) {
+    height: 3.5rem;
   }
 `;
 
