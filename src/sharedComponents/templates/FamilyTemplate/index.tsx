@@ -24,6 +24,7 @@ import ThemedDivider from "../../elements/ThemedDivider";
 import Modal from "../../elements/Modal";
 import Icon from "../../elements/Icon";
 import { EIcon } from "../../elements/Icon/model";
+import { useDragScroll } from "../../../hooks/useDragScroll";
 
 const FamilyTemplate = () => {
   const [file, setFile] = useState<File>();
@@ -37,6 +38,7 @@ const FamilyTemplate = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
   const prevOpen = useRef(isMenuOpen);
+  const { scrollContainerRef, hasOverflow } = useDragScroll();
 
   const handleToggle = () => {
     setIsMenuOpen((prevOpen) => !prevOpen);
@@ -120,17 +122,17 @@ const FamilyTemplate = () => {
         </FamilyNicknamePlaceholder>
       )}
 
-      <FamilyMembersWrapper>
+      <FamilyMembersWrapper ref={scrollContainerRef} hasOverflow={hasOverflow}>
         {familyMembers &&
           familyMembers.map((familyMember) => (
-            <FamilyMemberBadge familyMember={familyMember} />
+            <FamilyMemberBadge
+              key={familyMember.email}
+              familyMember={familyMember}
+            />
           ))}
       </FamilyMembersWrapper>
-      <Button
-        style={{ padding: 0, marginTop: "2rem" }}
-        ref={anchorRef}
-        onClick={handleToggle}
-      >
+
+      <Button style={{ padding: 0 }} ref={anchorRef} onClick={handleToggle}>
         <InviteMemberBadge>
           <Icon icon={EIcon.Add} alt="Add" width={40} />
           <ButtonLabel>Invite member</ButtonLabel>
@@ -144,6 +146,7 @@ const FamilyTemplate = () => {
           role={undefined}
           placement="bottom-start"
           transition
+          style={{ zIndex: 100 }}
         >
           <ClickAwayListener onClickAway={handleClose}>
             <StyledMenuWrapper autoFocusItem={isMenuOpen}>
@@ -168,7 +171,6 @@ const FamilyTemplate = () => {
                         alt="Messenger"
                         width={40}
                       />
-                      ;
                     </SocialIcon>
                   </MenuItem>
                   <MenuItem>

@@ -9,6 +9,7 @@ export interface IUserData {
   familyId: string;
   email: string;
   nickname?: string;
+  status?: string;
   dateOfBirth?: string;
   password: string;
   profilePicture?: string;

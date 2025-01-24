@@ -2,7 +2,11 @@ import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import {
   ContentWrapper,
   EmailWrapper,
-  FamilyNicknamePlaceholder,
+  NicknamePlaceholder,
+  StatusTextbox,
+  StatusWrapper,
+  StyledCharacterCounter,
+  StyledIcon,
   StyledImage,
   StyledTextBox,
   TitleCard,
@@ -14,12 +18,22 @@ import { Avatar } from "@material-ui/core";
 import { getAvatarUrl } from "../../../helpers/getAvatarUrl";
 import Modal from "../../elements/Modal";
 import ProfilePictureUploadTemplate from "./components/ProfilePictureUploadTemplate";
+import useDebounce from "../../../hooks/useDebounce";
+import { EIcon } from "../../elements/Icon/model";
 
 const ProfileTemplate = () => {
   const [file, setFile] = useState<File>();
   const { user, updateUser } = useUser();
-  const textFieldRef = useRef<HTMLInputElement>(null);
-  const [isEditing, setIsEditing] = useState(false);
+  const nicknameTextFieldRef = useRef<HTMLInputElement>(null);
+  const statusTextFieldRef = useRef<HTMLInputElement>(null);
+  const isFirstRender = useRef(true);
+  const [isNicknameEditing, setIsNicknameEditing] = useState(false);
+  const [isStatusLoading, setIsStatusLoading] = useState(false);
+  const [statusLength, setStatusLength] = useState(0);
+  const debouncedHandleStatusSubmit = useDebounce(
+    (targetElement: HTMLInputElement) => handleStatusSubmit(targetElement),
+    500
+  );
   const [openedProfilePictureModal, setOpenedProfilePictureModal] =
     useState(false);
 
@@ -36,27 +50,53 @@ const ProfileTemplate = () => {
         });
         successToast("Nickname updated!");
       }
-      setIsEditing(false);
+      setIsNicknameEditing(false);
     } else if (event.key === "Escape") {
-      setIsEditing(false);
+      setIsNicknameEditing(false);
     }
   };
 
-  const handleTextBoxFocus = () => {
-    if (textFieldRef.current) {
-      textFieldRef.current.focus();
+  const handleStatusSubmit = async (targetElement: HTMLInputElement) => {
+    const textBoxValue = targetElement.value;
+
+    if (
+      (user!.status || textBoxValue !== "") &&
+      textBoxValue !== user!.status
+    ) {
+      setIsStatusLoading(true);
+
+      await updateUser({
+        ...user!,
+        status: textBoxValue !== "" ? textBoxValue : undefined,
+      });
+
+      setIsStatusLoading(false);
+      successToast("Status updated!");
     }
   };
 
-  const handleTextBoxUnfocus = () => {
-    setIsEditing(false);
+  const handleNicknameTextBoxFocus = () => {
+    if (nicknameTextFieldRef.current) {
+      nicknameTextFieldRef.current.focus();
+    }
+  };
+
+  const handleNicknameTextBoxUnfocus = () => {
+    setIsNicknameEditing(false);
   };
 
   useEffect(() => {
-    if (isEditing) {
-      handleTextBoxFocus();
+    if (user?.status && isFirstRender.current) {
+      setStatusLength(user?.status.length);
+      isFirstRender.current = false;
     }
-  }, [isEditing]);
+  }, [user?.status]);
+
+  useEffect(() => {
+    if (isNicknameEditing) {
+      handleNicknameTextBoxFocus();
+    }
+  }, [isNicknameEditing]);
 
   return (
     <Wrapper>
@@ -75,25 +115,47 @@ const ProfileTemplate = () => {
             />
           )}
 
-          {isEditing ? (
+          {isNicknameEditing ? (
             <StyledTextBox
               placeholder={user?.nickname ?? user?.email}
               onKeyUp={handleNicknameSubmit}
-              onBlur={() => handleTextBoxUnfocus()}
-              inputRef={textFieldRef}
+              onBlur={() => handleNicknameTextBoxUnfocus()}
+              inputRef={nicknameTextFieldRef}
             />
           ) : (
-            <FamilyNicknamePlaceholder onClick={() => setIsEditing(true)}>
+            <NicknamePlaceholder onClick={() => setIsNicknameEditing(true)}>
               {user?.nickname ?? user?.email}
-            </FamilyNicknamePlaceholder>
+            </NicknamePlaceholder>
           )}
         </TitleCard>
 
         {user?.nickname && (
-          <EmailWrapper onClick={() => setIsEditing(true)}>
+          <EmailWrapper onClick={() => setIsNicknameEditing(true)}>
             ({user?.email})
           </EmailWrapper>
         )}
+
+        <StatusWrapper>
+          <StatusTextbox
+            placeholder={user?.status ? undefined : "What's on your mind?"}
+            onKeyUp={(event) => {
+              const targetElement = event.target as HTMLInputElement;
+
+              setStatusLength(
+                targetElement.value ? targetElement.value.length : 0
+              );
+              debouncedHandleStatusSubmit(targetElement);
+            }}
+            multiline
+            minRows={10}
+            maxRows={18}
+            inputProps={{ maxLength: 60 }}
+            inputRef={statusTextFieldRef}
+            defaultValue={user?.status ? user?.status : undefined}
+          />
+          <StyledCharacterCounter>{statusLength} / 60</StyledCharacterCounter>
+          {isStatusLoading && <StyledIcon icon={EIcon.Spinner} width={40} />}
+        </StatusWrapper>
       </ContentWrapper>
 
       {openedProfilePictureModal && (

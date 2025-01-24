@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { MD, SM, theme } from "../../../theme/theme";
 import { MenuList } from "@material-ui/core";
 import TextBox from "../../elements/TextBox";
@@ -8,9 +8,8 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: calc(100vh - ${NAVBAR_HEIGHT}px);
+  min-height: calc(100vh - ${NAVBAR_HEIGHT}px - 2rem);
   padding: 1rem 0;
-  gap: 1rem;
 `;
 
 export const BannerPlaceholder = styled.div`
@@ -43,11 +42,17 @@ export const StyledImage = styled.img`
 `;
 
 export const FamilyNicknamePlaceholder = styled.h2`
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
   cursor: pointer;
   font-size: 3rem;
   margin: 0;
   max-width: 70%;
-  word-wrap: break-word;
+  margin-top: 1.5rem;
 
   @media screen and (max-width: ${MD}px) {
     font-size: 1.75rem;
@@ -56,23 +61,39 @@ export const FamilyNicknamePlaceholder = styled.h2`
 
 export const StyledTextBox = styled(TextBox)`
   width: 32rem;
+  height: 4rem;
+  margin-top: 1.5rem;
 
   @media screen and (max-width: ${MD}px) {
     width: 19rem;
   }
 `;
 
-export const FamilyMembersWrapper = styled.div`
+export const FamilyMembersWrapper = styled.div<{ hasOverflow: boolean }>`
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  width: 70%;
-  justify-content: center;
-  gap: 3rem;
+  position: relative;
+  align-items: flex-start;
+  overflow-x: scroll;
+  overflow-y: visible;
+  padding: 4rem 0;
+  max-width: 80%;
+  gap: 6rem;
   margin-top: 2rem;
 
+  ${({ hasOverflow }) =>
+    hasOverflow &&
+    css`
+      cursor: grab;
+    `}
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   @media screen and (max-width: ${MD}px) {
-    justify-content: center;
+    gap: 3rem;
   }
 `;
 

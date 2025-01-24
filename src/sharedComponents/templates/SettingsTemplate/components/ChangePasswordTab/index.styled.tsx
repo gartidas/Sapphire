@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { theme } from "../../../../../theme/theme";
+import { MD, theme } from "../../../../../theme/theme";
 
 export const PageContent = styled.div`
   display: flex;
@@ -9,6 +9,10 @@ export const PageContent = styled.div`
   height: 100%;
   width: 60%;
   max-width: 62.5rem;
+
+  @media screen and (max-width: ${MD}px) {
+    width: 80%;
+  }
 `;
 
 export const StyledForm = styled.form`

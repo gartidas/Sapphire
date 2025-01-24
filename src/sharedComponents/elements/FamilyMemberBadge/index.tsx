@@ -1,5 +1,13 @@
 import { Avatar } from "@material-ui/core";
-import { StyledImage, Wrapper } from "./index.styled";
+import {
+  CredentialWrapper,
+  SmallBubble,
+  SmallerBubble,
+  StatusBubble,
+  StatusWrapper,
+  StyledImage,
+  Wrapper,
+} from "./index.styled";
 import { IUserData } from "../../../model";
 import { getAvatarUrl } from "../../../helpers/getAvatarUrl";
 
@@ -10,12 +18,26 @@ interface IFamilyMemberBadgeProps {
 const FamilyMemberBadge = ({ familyMember }: IFamilyMemberBadgeProps) => {
   return (
     <Wrapper>
-      {familyMember?.profilePicture ? (
-        <StyledImage src={familyMember?.profilePicture} />
-      ) : (
-        <Avatar src={getAvatarUrl(familyMember.email!)} />
+      <StatusWrapper>
+        {familyMember.status && (
+          <>
+            <StatusBubble>{familyMember.status}</StatusBubble>
+            <SmallBubble />
+            <SmallerBubble />
+          </>
+        )}
+
+        {familyMember?.profilePicture ? (
+          <StyledImage src={familyMember?.profilePicture} />
+        ) : (
+          <Avatar src={getAvatarUrl(familyMember.email!)} />
+        )}
+      </StatusWrapper>
+
+      {familyMember.nickname && (
+        <CredentialWrapper>{familyMember.nickname}</CredentialWrapper>
       )}
-      <div>{familyMember.email}</div>
+      <CredentialWrapper>{familyMember.email}</CredentialWrapper>
     </Wrapper>
   );
 };
