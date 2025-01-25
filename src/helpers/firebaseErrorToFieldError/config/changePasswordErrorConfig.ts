@@ -4,4 +4,5 @@ export const changePasswordErrorConfig: Partial<
   Record<string, keyof IChangePasswordData>
 > = {
   "auth/wrong-password": "currentPassword",
+  "auth/weak-password": "newPassword",
 };
