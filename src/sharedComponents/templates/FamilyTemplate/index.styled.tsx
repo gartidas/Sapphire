@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { MD, SM, theme, XL } from "../../../theme/theme";
-import { MenuList } from "@material-ui/core";
+import { MenuList, Button as MuiButton } from "@material-ui/core";
 import TextBox from "../../elements/TextBox";
 import { NAVBAR_HEIGHT } from "../../../constants";
 
@@ -20,7 +20,7 @@ export const BannerPlaceholder = styled.div`
     rgba(0, 0, 0, 1) 0%,
     rgba(245, 0, 87, 1) 100%
   );
-  width: 80%;
+  width: 100%;
   min-height: 25vh;
   color: ${theme.primary};
   text-shadow: 0.1rem 0.1rem ${theme.secondary};
@@ -36,7 +36,7 @@ export const StyledImage = styled.img`
   cursor: pointer;
   border-radius: 1rem;
   height: 25vh;
-  width: 80%;
+  width: 100%;
   object-fit: cover;
   object-position: center;
 `;
@@ -152,4 +152,21 @@ export const SocialIcon = styled.a`
 export const StyledMenuWrapper = styled(MenuList)`
   background-color: ${theme.secondary};
   padding: 0;
+`;
+
+export const ProfilePictureWrapper = styled.div`
+  position: relative;
+  width: 80%;
+`;
+
+export const DeleteButtonWrapper = styled.div`
+  position: absolute;
+  right: 0;
+  top: 0;
+`;
+
+export const DeleteButton = styled(MuiButton)`
+  border-radius: 50%;
+  padding: 0;
+  min-width: fit-content;
 `;

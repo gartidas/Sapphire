@@ -1,10 +1,13 @@
 import {
   BannerPlaceholder,
   ButtonLabel,
+  DeleteButton,
+  DeleteButtonWrapper,
   FamilyMembersWrapper,
   FamilyNicknamePlaceholder,
   InviteMemberBadge,
   NicknameWrapper,
+  ProfilePictureWrapper,
   SocialIcon,
   StyledImage,
   StyledMenuWrapper,
@@ -26,11 +29,22 @@ import Modal from "../../elements/Modal";
 import Icon from "../../elements/Icon";
 import { EIcon } from "../../elements/Icon/model";
 import { useDragScroll } from "../../../hooks/useDragScroll";
+import Spinner from "../../elements/Spinner";
+import ConfirmationForm from "../../modules/ConfirmationForm";
 
 const FamilyTemplate = () => {
   const [file, setFile] = useState<File>();
-  const { user, family, familyMembers, updateFamily } = useUser();
+  const {
+    user,
+    family,
+    familyMembers,
+    isFamilyLoading,
+    updateFamily,
+    deleteBanner,
+    changeFamilyLoadingState,
+  } = useUser();
   const [openedBannerModal, setOpenedBannerModal] = useState(false);
+  const [openedDeleteBannerModal, setOpenedDeleteBannerModal] = useState(false);
   const textFieldRef = useRef<HTMLInputElement>(null);
   const [isEditing, setIsEditing] = useState(false);
   const appDomain = commonConfig.appDomain!;
@@ -102,16 +116,34 @@ const FamilyTemplate = () => {
 
   return (
     <Wrapper>
-      {family?.bannerUrl ? (
-        <StyledImage
-          src={family.bannerUrl}
-          onClick={() => setOpenedBannerModal(true)}
-        />
-      ) : (
-        <BannerPlaceholder onClick={() => setOpenedBannerModal(true)}>
-          No image available
-        </BannerPlaceholder>
-      )}
+      <ProfilePictureWrapper>
+        {family?.bannerUrl ? (
+          <StyledImage
+            src={family.bannerUrl}
+            onClick={() => setOpenedBannerModal(true)}
+          />
+        ) : (
+          <BannerPlaceholder onClick={() => setOpenedBannerModal(true)}>
+            No image available
+          </BannerPlaceholder>
+        )}
+
+        {family?.bannerUrl && (
+          <DeleteButtonWrapper>
+            <DeleteButton
+              onClick={() => {
+                setOpenedDeleteBannerModal(true);
+              }}
+            >
+              {isFamilyLoading ? (
+                <Spinner size={{ desktop: 40, mobile: 40 }} />
+              ) : (
+                <Icon icon={EIcon.Delete} alt="Delete" width={40} />
+              )}
+            </DeleteButton>
+          </DeleteButtonWrapper>
+        )}
+      </ProfilePictureWrapper>
 
       <NicknameWrapper>
         {isEditing ? (
@@ -248,6 +280,26 @@ const FamilyTemplate = () => {
             file={file}
             setFile={setFile}
             onClose={() => setOpenedBannerModal(false)}
+          />
+        </Modal>
+      )}
+
+      {openedDeleteBannerModal && (
+        <Modal
+          open
+          onClose={() => {
+            setOpenedDeleteBannerModal(false);
+          }}
+        >
+          <ConfirmationForm
+            onClose={() => setOpenedDeleteBannerModal(false)}
+            onDelete={async () => {
+              changeFamilyLoadingState(true);
+              await deleteBanner();
+              successToast("Banner deleted!");
+              setOpenedDeleteBannerModal(false);
+            }}
+            isLoading={isFamilyLoading}
           />
         </Modal>
       )}
