@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { MD, SM, theme } from "../../../theme/theme";
+import { MD, SM, theme, XL } from "../../../theme/theme";
 import { MenuList } from "@material-ui/core";
 import TextBox from "../../elements/TextBox";
 import { NAVBAR_HEIGHT } from "../../../constants";
@@ -49,12 +49,18 @@ export const FamilyNicknamePlaceholder = styled.h2`
   text-overflow: ellipsis;
   word-wrap: break-word;
   cursor: pointer;
+  text-align: center;
   font-size: 3rem;
   margin: 0;
   max-width: 70%;
 
+  @media screen and (max-width: calc(${XL}px + 38px)) {
+    -webkit-line-clamp: 2;
+  }
+
   @media screen and (max-width: ${MD}px) {
-    font-size: 1.75rem;
+    font-size: 1.6rem;
+    max-width: 80%;
   }
 `;
 
@@ -74,8 +80,13 @@ export const NicknameWrapper = styled.div`
   height: 4rem;
   width: 70%;
 
+  @media screen and (max-width: calc(${XL}px + 38px)) {
+    height: 8rem;
+  }
+
   @media screen and (max-width: ${MD}px) {
-    height: 3.5rem;
+    height: 4rem;
+    width: 80%;
   }
 `;
 
