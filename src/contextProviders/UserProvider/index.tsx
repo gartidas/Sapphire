@@ -35,6 +35,10 @@ interface IUserContextValue {
   changeUserLoadingState: (isLoading: boolean) => void;
   deleteProfilePicture: (user: IUserData) => Promise<boolean>;
   deleteBanner: () => Promise<boolean>;
+  removeMemberFromFamily: (
+    data: Omit<IUserData, "familyId">,
+    newFamilyId: string
+  ) => Promise<void>;
   family?: IFamily;
   familyMembers?: IUserData[];
 }
@@ -270,6 +274,30 @@ const UserProvider: FC = ({ children }) => {
     [fetchUser]
   );
 
+  const removeMemberFromFamily = useCallback(
+    async (data: Omit<IUserData, "familyId">, newFamilyId: string) => {
+      try {
+        await projectFirestore
+          .collection("users")
+          .doc(data.email)
+          .set({ ...data, familyId: newFamilyId } as IUserData);
+
+        setIsFamilyLoading(false);
+        fetchFamilyMembers(family!.familyId);
+      } catch (err: any) {
+        errorToast(
+          err.code === "permission-denied"
+            ? "Permission denied!"
+            : `${err.name}:${err.code}`
+        );
+        setIsFamilyLoading(false);
+        return;
+      }
+    },
+
+    [family, fetchFamilyMembers]
+  );
+
   const deleteProfilePicture = async (user: IUserData): Promise<boolean> => {
     try {
       const isDeleted = await deleteImage(
@@ -342,6 +370,7 @@ const UserProvider: FC = ({ children }) => {
         changeUserLoadingState,
         deleteProfilePicture,
         deleteBanner,
+        removeMemberFromFamily,
         isUserLoading,
         isFamilyLoading,
         family,

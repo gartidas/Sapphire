@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { theme } from "../../../theme/theme";
+import { Button as MuiButton } from "@material-ui/core";
 
 export const Wrapper = styled.div`
   display: flex;
@@ -74,4 +75,13 @@ export const CredentialWrapper = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   word-wrap: break-word;
+`;
+
+export const DeleteButton = styled(MuiButton)`
+  position: absolute;
+  right: 0;
+  top: 0;
+  border-radius: 50%;
+  padding: 0;
+  min-width: fit-content;
 `;

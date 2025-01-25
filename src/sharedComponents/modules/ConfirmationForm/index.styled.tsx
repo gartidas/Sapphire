@@ -19,7 +19,7 @@ export const ButtonsWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 7rem;
+  gap: 5.5rem;
 
   @media screen and (max-width: ${MD}px) {
     gap: 3rem;
@@ -48,4 +48,11 @@ export const StyledButton = styled(Button)`
   @media screen and (max-width: ${SM}px) {
     padding: 0 1.3rem;
   }
+`;
+
+export const ButtonContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 `;

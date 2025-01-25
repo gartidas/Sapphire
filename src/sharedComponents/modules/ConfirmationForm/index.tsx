@@ -1,7 +1,13 @@
 import Icon from "../../elements/Icon";
 import { EIcon } from "../../elements/Icon/model";
 import Spinner from "../../elements/Spinner";
-import { ButtonsWrapper, StyledButton, Title, Wrapper } from "./index.styled";
+import {
+  ButtonContent,
+  ButtonsWrapper,
+  StyledButton,
+  Title,
+  Wrapper,
+} from "./index.styled";
 
 interface IConfirmationForm {
   onClose: () => void;
@@ -23,11 +29,17 @@ const ConfirmationForm = ({
           {isLoading ? (
             <Spinner size={{ desktop: 60, mobile: 60 }} />
           ) : (
-            <Icon icon={EIcon.Confirm} alt="Confirm" width={60} />
+            <ButtonContent>
+              <Icon icon={EIcon.Confirm} alt="Confirm" width={60} />
+              Yes
+            </ButtonContent>
           )}
         </StyledButton>
         <StyledButton onClick={() => onClose()}>
-          <Icon icon={EIcon.Deny} alt="Deny" width={60} />
+          <ButtonContent>
+            <Icon icon={EIcon.Deny} alt="Deny" width={60} />
+            No
+          </ButtonContent>
         </StyledButton>
       </ButtonsWrapper>
     </Wrapper>
