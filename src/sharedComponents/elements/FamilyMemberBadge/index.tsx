@@ -35,6 +35,7 @@ const FamilyMemberBadge = ({ familyMember }: IFamilyMemberBadgeProps) => {
     user,
     removeMemberFromFamily,
   } = useUser();
+  const familyOwnerEmailTag = familyMember!.familyId.split("-")[0].trim();
 
   return (
     <Wrapper>
@@ -53,15 +54,16 @@ const FamilyMemberBadge = ({ familyMember }: IFamilyMemberBadgeProps) => {
           <Avatar src={getAvatarUrl(familyMember.email!)} />
         )}
 
-        {familyMember.email !== user?.email && (
-          <DeleteButton onClick={() => setIsDeleteModalOpen(true)}>
-            {isDeleteModalOpen && isFamilyLoading ? (
-              <Spinner size={{ desktop: 40, mobile: 40 }} />
-            ) : (
-              <Close />
-            )}
-          </DeleteButton>
-        )}
+        {familyMember.email !== user?.email &&
+          familyOwnerEmailTag !== emailTag && (
+            <DeleteButton onClick={() => setIsDeleteModalOpen(true)}>
+              {isDeleteModalOpen && isFamilyLoading ? (
+                <Spinner size={{ desktop: 40, mobile: 40 }} />
+              ) : (
+                <Close />
+              )}
+            </DeleteButton>
+          )}
       </StatusWrapper>
 
       {familyMember.nickname && (
