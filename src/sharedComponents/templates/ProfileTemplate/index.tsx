@@ -129,11 +129,7 @@ const ProfileTemplate = () => {
           )}
         </TitleCard>
 
-        {user?.nickname && (
-          <EmailWrapper onClick={() => setIsNicknameEditing(true)}>
-            ({user?.email})
-          </EmailWrapper>
-        )}
+        {user?.nickname && <EmailWrapper>({user?.email})</EmailWrapper>}
 
         <StatusWrapper>
           <StatusTextbox
