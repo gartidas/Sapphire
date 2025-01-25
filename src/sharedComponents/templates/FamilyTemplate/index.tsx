@@ -63,8 +63,11 @@ const FamilyTemplate = () => {
     if (event.key === "Enter") {
       const textBoxValue = (event.target as HTMLInputElement).value;
 
-      if (textBoxValue !== "") {
-        await updateFamily({ ...family, nickname: textBoxValue });
+      if (user!.nickname || textBoxValue !== "") {
+        await updateFamily({
+          ...family,
+          nickname: textBoxValue !== "" ? textBoxValue : undefined,
+        });
         successToast("Nickname updated!");
       }
       setIsEditing(false);

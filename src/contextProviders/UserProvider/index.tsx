@@ -100,6 +100,22 @@ const UserProvider: FC = ({ children }) => {
   const updateFamily = useCallback(
     async (data: Omit<IFamily, "familyId">, revertOnError?: boolean) => {
       try {
+        const docRef = projectFirestore
+          .collection("families")
+          .doc(family!.familyId);
+        const updates: Record<string, firebase.firestore.FieldValue> = {};
+
+        Object.entries(data).forEach(([key, value]) => {
+          if (value === undefined) {
+            delete data[key as keyof Omit<IFamily, "familyId">];
+            updates[key] = FieldValue.delete();
+          }
+        });
+
+        if (Object.keys(updates).length > 0) {
+          docRef.update(updates);
+        }
+
         await projectFirestore
           .collection("families")
           .doc(family!.familyId)
