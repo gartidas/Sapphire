@@ -33,6 +33,7 @@ interface IUserContextValue {
   ) => Promise<void>;
   isUserLoading: boolean;
   changeUserLoadingState: (isLoading: boolean) => void;
+  deleteProfilePicture: (user: IUserData) => Promise<boolean>;
   family?: IFamily;
   familyMembers?: IUserData[];
 }
@@ -268,6 +269,33 @@ const UserProvider: FC = ({ children }) => {
     [fetchUser]
   );
 
+  const deleteProfilePicture = async (user: IUserData): Promise<boolean> => {
+    try {
+      const isDeleted = await deleteImage(
+        `${user!.email}/profilePicture`,
+        "users"
+      );
+
+      if (!isDeleted) {
+        setIsUserLoading(false);
+        return false;
+      }
+
+      await projectFirestore
+        .collection("users")
+        .doc(user.email)
+        .update("profilePicture", FieldValue.delete());
+
+      setIsUserLoading(false);
+      fetchUser(user.email);
+      return true;
+    } catch (err: any) {
+      setIsUserLoading(false);
+      errorToast(err.code);
+      return false;
+    }
+  };
+
   useEffect(() => {
     if (authUser) fetchUser(authUser.email!);
     // NOTE: Load user on first render only
@@ -287,6 +315,7 @@ const UserProvider: FC = ({ children }) => {
         changeFamilyLoadingState,
         updateUser,
         changeUserLoadingState,
+        deleteProfilePicture,
         isUserLoading,
         isFamilyLoading,
         family,

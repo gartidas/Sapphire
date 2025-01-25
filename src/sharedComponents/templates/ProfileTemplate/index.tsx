@@ -1,8 +1,11 @@
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import {
   ContentWrapper,
+  DeleteButton,
+  DeleteButtonWrapper,
   EmailWrapper,
   NicknamePlaceholder,
+  ProfilePictureWrapper,
   StatusTextbox,
   StatusWrapper,
   StyledCharacterCounter,
@@ -20,10 +23,19 @@ import Modal from "../../elements/Modal";
 import ProfilePictureUploadTemplate from "./components/ProfilePictureUploadTemplate";
 import useDebounce from "../../../hooks/useDebounce";
 import { EIcon } from "../../elements/Icon/model";
+import Spinner from "../../elements/Spinner";
+import Icon from "../../elements/Icon";
+import ConfirmationForm from "../../modules/ConfirmationForm";
 
 const ProfileTemplate = () => {
   const [file, setFile] = useState<File>();
-  const { user, updateUser } = useUser();
+  const {
+    user,
+    isUserLoading,
+    updateUser,
+    changeUserLoadingState,
+    deleteProfilePicture,
+  } = useUser();
   const nicknameTextFieldRef = useRef<HTMLInputElement>(null);
   const statusTextFieldRef = useRef<HTMLInputElement>(null);
   const isFirstRender = useRef(true);
@@ -35,6 +47,8 @@ const ProfileTemplate = () => {
     500
   );
   const [openedProfilePictureModal, setOpenedProfilePictureModal] =
+    useState(false);
+  const [openedDeleteProfilePictureModal, setOpenedDeleteProfilePictureModal] =
     useState(false);
 
   const handleNicknameSubmit = async (
@@ -102,18 +116,36 @@ const ProfileTemplate = () => {
     <Wrapper>
       <ContentWrapper>
         <TitleCard>
-          {user?.profilePicture ? (
-            <StyledImage
-              src={user?.profilePicture}
-              onClick={() => setOpenedProfilePictureModal(true)}
-            />
-          ) : (
-            <Avatar
-              src={getAvatarUrl(user?.email!)}
-              style={{ width: "5rem", height: "5rem", cursor: "pointer" }}
-              onClick={() => setOpenedProfilePictureModal(true)}
-            />
-          )}
+          <ProfilePictureWrapper>
+            {user?.profilePicture ? (
+              <StyledImage
+                src={user?.profilePicture}
+                onClick={() => setOpenedProfilePictureModal(true)}
+              />
+            ) : (
+              <Avatar
+                src={getAvatarUrl(user?.email!)}
+                style={{ width: "5rem", height: "5rem", cursor: "pointer" }}
+                onClick={() => setOpenedProfilePictureModal(true)}
+              />
+            )}
+
+            {user?.profilePicture && (
+              <DeleteButtonWrapper>
+                <DeleteButton
+                  onClick={() => {
+                    setOpenedDeleteProfilePictureModal(true);
+                  }}
+                >
+                  {isUserLoading ? (
+                    <Spinner size={{ desktop: 40, mobile: 40 }} />
+                  ) : (
+                    <Icon icon={EIcon.Delete} alt="Delete" width={40} />
+                  )}
+                </DeleteButton>
+              </DeleteButtonWrapper>
+            )}
+          </ProfilePictureWrapper>
 
           {isNicknameEditing ? (
             <StyledTextBox
@@ -166,6 +198,26 @@ const ProfileTemplate = () => {
             file={file}
             setFile={setFile}
             onClose={() => setOpenedProfilePictureModal(false)}
+          />
+        </Modal>
+      )}
+
+      {openedDeleteProfilePictureModal && (
+        <Modal
+          open
+          onClose={() => {
+            setOpenedDeleteProfilePictureModal(false);
+          }}
+        >
+          <ConfirmationForm
+            onClose={() => setOpenedDeleteProfilePictureModal(false)}
+            onDelete={async () => {
+              changeUserLoadingState(true);
+              await deleteProfilePicture(user!);
+              successToast("Profile picture deleted!");
+              setOpenedDeleteProfilePictureModal(false);
+            }}
+            isLoading={isUserLoading}
           />
         </Modal>
       )}

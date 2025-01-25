@@ -27,12 +27,13 @@ import useObserver from "../../../hooks/useObserver";
 import FullPageSpinner from "../../modules/FullPageSpinner";
 import NoData from "../../elements/NoData";
 import { useUser } from "../../../contextProviders/UserProvider";
-import ConfirmationTemplate from "./components/ConfirmationTemplate";
 import Modal from "../../elements/Modal";
 import { useMemory } from "../../../contextProviders/MemoryProvider";
 import { useModal } from "../../../contextProviders/ModalProvider";
 import Icon from "../../elements/Icon";
 import { EIcon } from "../../elements/Icon/model";
+import ConfirmationForm from "../../modules/ConfirmationForm";
+import { successToast } from "../../../services/toastService";
 
 const useStyles = makeStyles((theme) => ({
   timelineDot: {
@@ -58,7 +59,14 @@ const useStyles = makeStyles((theme) => ({
 const HomeTemplate = () => {
   const classes = useStyles();
   const [file, setFile] = useState<File>();
-  const { memories, isLoading, loadNextBatch, hasMore } = useMemory();
+  const {
+    memories,
+    deleteMemory,
+    changeLoadingState,
+    isLoading,
+    loadNextBatch,
+    hasMore,
+  } = useMemory();
   const { openedModal, changeOpenedModalState } = useModal();
   const { user, family } = useUser();
   const observe = useObserver<HTMLDivElement>(
@@ -146,7 +154,21 @@ const HomeTemplate = () => {
             )}
 
             {openedModal.type === ModalType.Confirmation && (
-              <ConfirmationTemplate openedMemory={openedModal.memory} />
+              <ConfirmationForm
+                onDelete={async () => {
+                  changeLoadingState(true);
+                  await deleteMemory(openedModal.memory, user!.familyId);
+                  successToast("Memory deleted!");
+                  changeOpenedModalState(undefined);
+                }}
+                onClose={() =>
+                  changeOpenedModalState({
+                    type: ModalType.Detail,
+                    memory: openedModal.memory,
+                  })
+                }
+                isLoading={isLoading}
+              />
             )}
           </>
         </Modal>

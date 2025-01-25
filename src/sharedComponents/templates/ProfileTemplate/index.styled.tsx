@@ -3,6 +3,7 @@ import TextBox from "../../elements/TextBox";
 import { MD } from "../../../theme/theme";
 import { NAVBAR_HEIGHT } from "../../../constants";
 import Icon from "../../elements/Icon";
+import { Button as MuiButton } from "@material-ui/core";
 
 export const Wrapper = styled.div`
   display: flex;
@@ -89,6 +90,22 @@ export const StyledIcon = styled(Icon)`
   position: absolute;
   right: 0;
   top: 0;
+`;
+
+export const ProfilePictureWrapper = styled.div`
+  position: relative;
+`;
+
+export const DeleteButtonWrapper = styled.div`
+  position: absolute;
+  right: -0.5rem;
+  top: -1rem;
+`;
+
+export const DeleteButton = styled(MuiButton)`
+  border-radius: 50%;
+  padding: 0;
+  min-width: fit-content;
 `;
 
 export const StyledCharacterCounter = styled.div`
