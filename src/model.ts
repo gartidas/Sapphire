@@ -17,6 +17,7 @@ export interface IUserData {
 
 export interface IFamily {
   familyId: string;
+  familyOwnerEmail: string;
   nickname?: string;
   bannerUrl?: string;
 }

@@ -1,11 +1,12 @@
 import {
   BannerPlaceholder,
   ButtonLabel,
+  ControlButtons,
   DeleteButton,
   DeleteButtonWrapper,
   FamilyMembersWrapper,
   FamilyNicknamePlaceholder,
-  InviteMemberBadge,
+  ButtonBadge,
   NicknameWrapper,
   ProfilePictureWrapper,
   SocialIcon,
@@ -17,7 +18,11 @@ import {
 import { KeyboardEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import BannerUploadTemplate from "./components/BannerUploadTemplate";
 import { useUser } from "../../../contextProviders/UserProvider";
-import { infoToast, successToast } from "../../../services/toastService";
+import {
+  errorToast,
+  infoToast,
+  successToast,
+} from "../../../services/toastService";
 import FamilyMemberBadge from "../../elements/FamilyMemberBadge";
 import { Button, ClickAwayListener, MenuItem, Popper } from "@material-ui/core";
 import commonConfig from "../../../config";
@@ -31,6 +36,12 @@ import { EIcon } from "../../elements/Icon/model";
 import { useDragScroll } from "../../../hooks/useDragScroll";
 import Spinner from "../../elements/Spinner";
 import ConfirmationForm from "../../modules/ConfirmationForm";
+import { v4 as uuidv4 } from "uuid";
+import JoinFamilyForm from "../../modules/JoinFamilyForm";
+import { firebaseErrorToFieldError } from "../../../helpers/firebaseErrorToFieldError/firebaseErrorToFieldError";
+import { joinFamilyConfig } from "../../../helpers/firebaseErrorToFieldError/config/joinFamilyConfig";
+import { useForm } from "react-hook-form";
+import { IUserData } from "../../../model";
 
 const FamilyTemplate = () => {
   const [file, setFile] = useState<File>();
@@ -41,10 +52,22 @@ const FamilyTemplate = () => {
     isFamilyLoading,
     updateFamily,
     deleteBanner,
+    joinFamily,
+    leaveFamily,
+    removeMemberFromFamily,
+    addMemberToFamily,
     changeFamilyLoadingState,
   } = useUser();
+  const randomId = uuidv4();
+  const emailTag = user?.email.trim().split("@")[0];
+  const finalId = `${emailTag}-${randomId}`;
   const [openedBannerModal, setOpenedBannerModal] = useState(false);
   const [openedDeleteBannerModal, setOpenedDeleteBannerModal] = useState(false);
+  const [openedLeaveFamilyModal, setOpenedLeaveFamilyModal] = useState(false);
+  const [openedJoinFamilyModal, setOpenedJoinFamilyModal] = useState(false);
+  const [openedConfirmJoinFamilyModal, setOpenedConfirmJoinFamilyModal] =
+    useState(false);
+  const [familyJoinLink, setFamilyJoinLink] = useState<string>();
   const textFieldRef = useRef<HTMLInputElement>(null);
   const [isEditing, setIsEditing] = useState(false);
   const appDomain = commonConfig.appDomain!;
@@ -54,6 +77,11 @@ const FamilyTemplate = () => {
   const anchorRef = useRef<HTMLButtonElement>(null);
   const prevOpen = useRef(isMenuOpen);
   const { scrollContainerRef, hasOverflow } = useDragScroll();
+  const joinFamilyFormMethods = useForm<{ joinLink: string }>({
+    mode: "onSubmit",
+  });
+
+  const { setError } = joinFamilyFormMethods;
 
   const handleToggle = () => {
     setIsMenuOpen((prevOpen) => !prevOpen);
@@ -79,7 +107,7 @@ const FamilyTemplate = () => {
 
       if (user!.nickname || textBoxValue !== "") {
         await updateFamily({
-          ...family,
+          ...family!,
           nickname: textBoxValue !== "" ? textBoxValue : undefined,
         });
         successToast("Nickname updated!");
@@ -98,6 +126,81 @@ const FamilyTemplate = () => {
 
   const handleTextBoxUnfocus = () => {
     setIsEditing(false);
+  };
+
+  const handleJoinFamilySubmit = async ({ joinLink }: { joinLink: string }) => {
+    try {
+      const linkParts = joinLink.split("/register/");
+      const targetFamilyId = linkParts[1];
+
+      if (!targetFamilyId) {
+        setError("joinLink", {
+          type: "manual",
+          message: "Invalid join link",
+        });
+        return;
+      }
+
+      if (user?.email === family?.familyOwnerEmail) {
+        setFamilyJoinLink(joinLink);
+        setOpenedJoinFamilyModal(false);
+        setOpenedConfirmJoinFamilyModal(true);
+        return;
+      }
+
+      const result = await addMemberToFamily(user!, linkParts[1]);
+
+      setOpenedJoinFamilyModal(false);
+
+      if (result) {
+        successToast("Family joined!");
+      }
+    } catch (err: any) {
+      const error = firebaseErrorToFieldError<{ joinLink: string }>(
+        err,
+        joinFamilyConfig
+      );
+      setError(error.field, error.error);
+    }
+  };
+
+  const handleConfirmJoinFamilySubmit = async () => {
+    try {
+      const removedMembers: {
+        member: Omit<IUserData, "familyId">;
+        tempFamilyId: string;
+      }[] = [];
+
+      for (const familyMember of familyMembers!) {
+        if (familyMember.email === user?.email) continue;
+
+        const randomId = uuidv4();
+        const emailTag = familyMember.email.trim().split("@")[0];
+        const tempFamilyId = `${emailTag}-${randomId}`;
+
+        await removeMemberFromFamily(familyMember, tempFamilyId);
+        removedMembers.push({ member: familyMember, tempFamilyId });
+      }
+
+      const linkParts = familyJoinLink!.split("/register/");
+      const result = await joinFamily(user!, user!.familyId, linkParts[1]);
+
+      if (!result) {
+        await Promise.all(
+          removedMembers.map(({ member, tempFamilyId }) =>
+            joinFamily(member, user!.familyId, tempFamilyId)
+          )
+        );
+
+        errorToast("Failed to join family!");
+      }
+    } catch (err: any) {
+      const error = firebaseErrorToFieldError<{ joinLink: string }>(
+        err,
+        joinFamilyConfig
+      );
+      setError(error.field, error.error);
+    }
   };
 
   useEffect(() => {
@@ -170,12 +273,46 @@ const FamilyTemplate = () => {
           ))}
       </FamilyMembersWrapper>
 
-      <Button style={{ padding: 0 }} ref={anchorRef} onClick={handleToggle}>
-        <InviteMemberBadge>
-          <Icon icon={EIcon.Add} alt="Add" width={40} />
-          <ButtonLabel>Invite member</ButtonLabel>
-        </InviteMemberBadge>
-      </Button>
+      <ControlButtons>
+        <Button style={{ padding: 0 }} ref={anchorRef} onClick={handleToggle}>
+          <ButtonBadge>
+            <Icon icon={EIcon.Add} alt="Add" width={40} />
+            <ButtonLabel>Invite member</ButtonLabel>
+          </ButtonBadge>
+        </Button>
+
+        <Button
+          style={{ padding: 0 }}
+          onClick={() => setOpenedJoinFamilyModal((prev) => !prev)}
+        >
+          {/* TODO: Icon */}
+          <ButtonBadge>
+            {isFamilyLoading ? (
+              <Spinner size={{ desktop: 40, mobile: 40 }} />
+            ) : (
+              <Icon icon={EIcon.Add} alt="Join family" width={40} />
+            )}
+            <ButtonLabel>Join family</ButtonLabel>
+          </ButtonBadge>
+        </Button>
+
+        {user?.email !== family?.familyOwnerEmail && (
+          <Button
+            style={{ padding: 0 }}
+            onClick={() => setOpenedLeaveFamilyModal((prev) => !prev)}
+          >
+            {/* TODO: Icon */}
+            <ButtonBadge>
+              {isFamilyLoading ? (
+                <Spinner size={{ desktop: 40, mobile: 40 }} />
+              ) : (
+                <Icon icon={EIcon.Logout} alt="Leave family" width={40} />
+              )}
+              <ButtonLabel>Leave family</ButtonLabel>
+            </ButtonBadge>
+          </Button>
+        )}
+      </ControlButtons>
 
       {user?.familyId && (
         <Popper
@@ -292,12 +429,70 @@ const FamilyTemplate = () => {
           }}
         >
           <ConfirmationForm
+            title="Are you sure you want to delete the banner?"
             onClose={() => setOpenedDeleteBannerModal(false)}
             onDelete={async () => {
               changeFamilyLoadingState(true);
               await deleteBanner();
               successToast("Banner deleted!");
               setOpenedDeleteBannerModal(false);
+            }}
+            isLoading={isFamilyLoading}
+          />
+        </Modal>
+      )}
+
+      {openedLeaveFamilyModal && (
+        <Modal
+          open
+          onClose={() => {
+            setOpenedLeaveFamilyModal(false);
+          }}
+        >
+          <ConfirmationForm
+            title="Are you sure you want to leave the family?"
+            onClose={() => setOpenedLeaveFamilyModal(false)}
+            onDelete={async () => {
+              changeFamilyLoadingState(true);
+              await leaveFamily(user!, finalId);
+              successToast("Family left!");
+              setOpenedLeaveFamilyModal(false);
+            }}
+            isLoading={isFamilyLoading}
+          />
+        </Modal>
+      )}
+
+      {openedJoinFamilyModal && (
+        <Modal
+          open
+          onClose={() => {
+            setOpenedJoinFamilyModal(false);
+          }}
+        >
+          <JoinFamilyForm
+            methods={joinFamilyFormMethods}
+            onSubmit={handleJoinFamilySubmit}
+            isLoading={isFamilyLoading}
+          />
+        </Modal>
+      )}
+
+      {openedConfirmJoinFamilyModal && (
+        <Modal
+          open
+          onClose={() => {
+            setOpenedConfirmJoinFamilyModal(false);
+          }}
+        >
+          <ConfirmationForm
+            title="Are you sure you want to dissolve the family?"
+            onClose={() => setOpenedConfirmJoinFamilyModal(false)}
+            onDelete={async () => {
+              changeFamilyLoadingState(true);
+              await handleConfirmJoinFamilySubmit();
+              successToast("Family joined!");
+              setOpenedConfirmJoinFamilyModal(false);
             }}
             isLoading={isFamilyLoading}
           />

@@ -21,7 +21,7 @@ const BannerUploadTemplate = ({
   const { setError } = methods;
   const { user, family } = useUser();
 
-  const onSubmit = async (data: IFamily) => {
+  const onSubmit = async (_: IFamily) => {
     try {
       if (!file) {
         errorToast("File not set!");
@@ -41,7 +41,7 @@ const BannerUploadTemplate = ({
 
       await updateFamily(
         {
-          ...family,
+          ...family!,
           bannerUrl: storageResponse,
         },
         true

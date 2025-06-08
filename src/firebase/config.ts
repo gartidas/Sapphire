@@ -15,6 +15,7 @@ const projectAuth = firebase.auth();
 const projectAuthObject = firebase.auth;
 const FieldValue = firebase.firestore.FieldValue;
 const FieldPath = firebase.firestore.FieldPath;
+
 const getTimestamp = () =>
   firebase.firestore.FieldValue.serverTimestamp() as firebase.firestore.Timestamp;
 
@@ -28,3 +29,5 @@ export {
   FieldValue,
   FieldPath,
 };
+
+export type Query = firebase.firestore.Query;

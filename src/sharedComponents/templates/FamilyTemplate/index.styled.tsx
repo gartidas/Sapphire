@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { MD, SM, theme, XL } from "../../../theme/theme";
+import { MD, SM, theme } from "../../../theme/theme";
 import { MenuList, Button as MuiButton } from "@material-ui/core";
 import TextBox from "../../elements/TextBox";
 import { NAVBAR_HEIGHT } from "../../../constants";
@@ -54,10 +54,6 @@ export const FamilyNicknamePlaceholder = styled.h2`
   margin: 0;
   max-width: 70%;
 
-  @media screen and (max-width: calc(${XL}px + 38px)) {
-    -webkit-line-clamp: 2;
-  }
-
   @media screen and (max-width: ${MD}px) {
     font-size: 1.6rem;
     max-width: 80%;
@@ -77,16 +73,12 @@ export const NicknameWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 1.5rem;
-  height: 4rem;
   width: 70%;
-
-  @media screen and (max-width: calc(${XL}px + 38px)) {
-    height: 8rem;
-  }
+  height: 4rem;
 
   @media screen and (max-width: ${MD}px) {
-    height: 4rem;
     width: 80%;
+    height: 3.5rem;
   }
 `;
 
@@ -118,7 +110,7 @@ export const FamilyMembersWrapper = styled.div<{ hasOverflow: boolean }>`
   }
 `;
 
-export const InviteMemberBadge = styled.div`
+export const ButtonBadge = styled.div`
   display: flex;
   align-items: center;
   text-transform: none;
@@ -169,4 +161,15 @@ export const DeleteButton = styled(MuiButton)`
   border-radius: 50%;
   padding: 0;
   min-width: fit-content;
+`;
+
+export const ControlButtons = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5rem;
+
+  @media screen and (max-width: ${MD}px) {
+    flex-direction: column;
+    gap: 2rem;
+  }
 `;

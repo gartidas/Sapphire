@@ -40,11 +40,38 @@ export const deleteImage = async (
       .delete();
     return true;
   } catch (err: any) {
-    errorToast(
-      err.code === "storage/unauthorized"
-        ? "Permission denied!"
-        : `${err.name}:${err.code}`
-    );
+    if (err.code !== "storage/object-not-found") {
+      errorToast(
+        err.code === "storage/unauthorized"
+          ? "Permission denied!"
+          : `${err.name}:${err.code}`
+      );
+    }
+    return false;
+  }
+};
+
+export const deleteFolder = async (
+  folderPath: string,
+  customPrefix?: string
+): Promise<boolean> => {
+  try {
+    const fullPath = `${customPrefix ?? "images"}/${folderPath}`;
+    const folderRef = projectStorage.ref(fullPath);
+    const listResult = await folderRef.listAll();
+
+    const deletePromises = listResult.items.map((item) => item.delete());
+    await Promise.all(deletePromises);
+
+    return true;
+  } catch (err: any) {
+    if (err.code !== "storage/object-not-found") {
+      errorToast(
+        err.code === "storage/unauthorized"
+          ? "Permission denied!"
+          : `${err.name}:${err.code}`
+      );
+    }
     return false;
   }
 };

@@ -10,9 +10,10 @@ import {
 import { FieldValue, projectFirestore } from "../../firebase/config";
 import { IFamily, IUserData } from "../../model";
 import { errorToast } from "../../services/toastService";
-import { deleteImage } from "../../helpers/imageStorageHandlers";
+import { deleteFolder, deleteImage } from "../../helpers/imageStorageHandlers";
 import firebase from "firebase/app";
 import { useAuth } from "../AuthProvider";
+import { deleteCollection } from "../../utils/firebase";
 
 interface IUserContextValue {
   user?: IUserData;
@@ -39,6 +40,19 @@ interface IUserContextValue {
     data: Omit<IUserData, "familyId">,
     newFamilyId: string
   ) => Promise<void>;
+  leaveFamily: (
+    data: Omit<IUserData, "familyId">,
+    newFamilyId: string
+  ) => Promise<void>;
+  joinFamily: (
+    data: Omit<IUserData, "familyId">,
+    oldFamilyId: string,
+    newFamilyId: string
+  ) => Promise<boolean>;
+  addMemberToFamily: (
+    data: Omit<IUserData, "familyId">,
+    newFamilyId: string
+  ) => Promise<boolean>;
   family?: IFamily;
   familyMembers?: IUserData[];
 }
@@ -79,17 +93,17 @@ const UserProvider: FC = ({ children }) => {
     }
   }, []);
 
-  const fetchFamily = useCallback(async (familyId: string) => {
+  const fetchFamilyMembers = useCallback(async (familyId: string) => {
     try {
       const response = await projectFirestore
-        .collection("/families")
-        .doc(familyId)
+        .collection("/users")
+        .where("familyId", "==", familyId)
         .get();
 
-      if (!response.exists) return;
-
-      const family = response.data()! as IFamily;
-      setFamily(family);
+      const newFamilyMembers = response.docs.map(
+        (doc) => doc.data() as IUserData
+      );
+      setFamilyMembers(newFamilyMembers);
     } catch (err: any) {
       errorToast(
         err.code === "permission-denied"
@@ -98,6 +112,60 @@ const UserProvider: FC = ({ children }) => {
       );
     }
   }, []);
+
+  const fetchFamily = useCallback(
+    async (familyId: string) => {
+      try {
+        const response = await projectFirestore
+          .collection("/families")
+          .doc(familyId)
+          .get();
+
+        if (!response.exists) return;
+
+        const newFamily = response.data()! as IFamily;
+
+        setFamily(newFamily);
+        await fetchFamilyMembers(familyId);
+      } catch (err: any) {
+        errorToast(
+          err.code === "permission-denied"
+            ? "Permission denied!"
+            : `${err.name}:${err.code}`
+        );
+      }
+    },
+    [fetchFamilyMembers]
+  );
+
+  const fetchUser = useCallback(
+    async (email: string) => {
+      try {
+        const response = await projectFirestore
+          .collection("/users")
+          .doc(email)
+          .get();
+
+        if (!response.exists) return;
+
+        const newUser = response.data()! as IUserData;
+        setUser(newUser);
+        await fetchFamily(newUser.familyId);
+      } catch (err: any) {
+        errorToast(
+          err.code === "permission-denied"
+            ? "Permission denied!"
+            : `${err.name}:${err.code}`
+        );
+      }
+    },
+    [fetchFamily]
+  );
+
+  const clearUser = () => {
+    setUser(undefined);
+    clearFamily();
+  };
 
   const clearFamily = () => {
     setFamily(undefined);
@@ -119,7 +187,7 @@ const UserProvider: FC = ({ children }) => {
         });
 
         if (Object.keys(updates).length > 0) {
-          docRef.update(updates);
+          await docRef.update(updates);
         }
 
         await projectFirestore
@@ -127,7 +195,7 @@ const UserProvider: FC = ({ children }) => {
           .doc(family!.familyId)
           .set({ ...data, familyId: family!.familyId });
 
-        fetchFamily(family!.familyId);
+        await fetchFamily(family!.familyId);
       } catch (err: any) {
         revertOnError && (await deleteImage(`${family!.familyId}/banner`));
 
@@ -162,56 +230,6 @@ const UserProvider: FC = ({ children }) => {
     }
   }, []);
 
-  const fetchFamilyMembers = useCallback(async (familyId: string) => {
-    try {
-      const response = await projectFirestore
-        .collection("/users")
-        .where("familyId", "==", familyId)
-        .get();
-
-      const newFamilyMembers = response.docs.map(
-        (doc) => doc.data() as IUserData
-      );
-      setFamilyMembers(newFamilyMembers);
-    } catch (err: any) {
-      errorToast(
-        err.code === "permission-denied"
-          ? "Permission denied!"
-          : `${err.name}:${err.code}`
-      );
-    }
-  }, []);
-
-  const fetchUser = useCallback(
-    async (email: string) => {
-      try {
-        const response = await projectFirestore
-          .collection("/users")
-          .doc(email)
-          .get();
-
-        if (!response.exists) return;
-
-        const user = response.data()! as IUserData;
-        setUser(user);
-        fetchFamily(user.familyId);
-        fetchFamilyMembers(user.familyId);
-      } catch (err: any) {
-        errorToast(
-          err.code === "permission-denied"
-            ? "Permission denied!"
-            : `${err.name}:${err.code}`
-        );
-      }
-    },
-    [fetchFamily, fetchFamilyMembers]
-  );
-
-  const clearUser = () => {
-    setUser(undefined);
-    clearFamily();
-  };
-
   const createUser = useCallback(
     async (data: Omit<IUserData, "password">) => {
       const email = data.email.trim();
@@ -229,7 +247,7 @@ const UserProvider: FC = ({ children }) => {
         );
         return;
       }
-      fetchUser(email);
+      await fetchUser(email);
     },
     [fetchUser]
   );
@@ -251,12 +269,12 @@ const UserProvider: FC = ({ children }) => {
         });
 
         if (Object.keys(updates).length > 0) {
-          docRef.update(updates);
+          await docRef.update(updates);
         }
 
         await projectFirestore.collection("users").doc(data.email).set(data);
 
-        fetchUser(data.email);
+        await fetchUser(data.email);
       } catch (err: any) {
         revertOnError &&
           (await deleteImage(`${data.email}/profilePicture`, "users"));
@@ -277,13 +295,18 @@ const UserProvider: FC = ({ children }) => {
   const removeMemberFromFamily = useCallback(
     async (data: Omit<IUserData, "familyId">, newFamilyId: string) => {
       try {
+        await createFamily({
+          familyId: newFamilyId,
+          familyOwnerEmail: data.email,
+        });
+
         await projectFirestore
           .collection("users")
           .doc(data.email)
           .set({ ...data, familyId: newFamilyId } as IUserData);
 
+        await fetchUser(user!.email);
         setIsFamilyLoading(false);
-        fetchFamilyMembers(family!.familyId);
       } catch (err: any) {
         errorToast(
           err.code === "permission-denied"
@@ -295,7 +318,7 @@ const UserProvider: FC = ({ children }) => {
       }
     },
 
-    [family, fetchFamilyMembers]
+    [createFamily, fetchUser, user]
   );
 
   const deleteProfilePicture = async (user: IUserData): Promise<boolean> => {
@@ -315,8 +338,8 @@ const UserProvider: FC = ({ children }) => {
         .doc(user.email)
         .update("profilePicture", FieldValue.delete());
 
+      await fetchUser(user.email);
       setIsUserLoading(false);
-      fetchUser(user.email);
       return true;
     } catch (err: any) {
       setIsUserLoading(false);
@@ -325,7 +348,7 @@ const UserProvider: FC = ({ children }) => {
     }
   };
 
-  const deleteBanner = async (): Promise<boolean> => {
+  const deleteBanner = useCallback(async (): Promise<boolean> => {
     try {
       const isDeleted = await deleteImage(`${family!.familyId}/banner`);
 
@@ -339,18 +362,125 @@ const UserProvider: FC = ({ children }) => {
         .doc(family!.familyId)
         .update("bannerUrl", FieldValue.delete());
 
+      await fetchFamily(family!.familyId!);
       setIsFamilyLoading(false);
-      fetchFamily(family!.familyId!);
       return true;
     } catch (err: any) {
       setIsFamilyLoading(false);
       errorToast(err.code);
       return false;
     }
-  };
+  }, [family, fetchFamily]);
+
+  const deleteFamily = useCallback(
+    async (familyId: string): Promise<boolean> => {
+      try {
+        await deleteCollection(`familyAssets/memories/${familyId}`);
+        await deleteBanner();
+        await deleteFolder(familyId);
+        await projectFirestore.collection("/families").doc(familyId).delete();
+        return true;
+      } catch (err: any) {
+        errorToast(
+          err.code === "permission-denied"
+            ? "Permission denied!"
+            : `${err.name}:${err.code}`
+        );
+        return false;
+      }
+    },
+    [deleteBanner]
+  );
+
+  const addMemberToFamily = useCallback(
+    async (
+      data: Omit<IUserData, "familyId">,
+      newFamilyId: string
+    ): Promise<boolean> => {
+      try {
+        await projectFirestore
+          .collection("users")
+          .doc(data.email)
+          .set({ ...data, familyId: newFamilyId } as IUserData);
+
+        await fetchUser(data.email);
+        setIsFamilyLoading(false);
+        return true;
+      } catch (err: any) {
+        errorToast(
+          err.code === "permission-denied"
+            ? "Permission denied!"
+            : `${err.name}:${err.code}`
+        );
+        setIsFamilyLoading(false);
+        return false;
+      }
+    },
+    [fetchUser]
+  );
+
+  const joinFamily = useCallback(
+    async (
+      data: Omit<IUserData, "familyId">,
+      oldFamilyId: string,
+      newFamilyId: string
+    ): Promise<boolean> => {
+      try {
+        await projectFirestore
+          .collection("users")
+          .doc(data.email)
+          .set({ ...data, familyId: newFamilyId } as IUserData);
+
+        await deleteFamily(oldFamilyId);
+        await fetchUser(data.email);
+        setIsFamilyLoading(false);
+        return true;
+      } catch (err: any) {
+        errorToast(
+          err.code === "permission-denied"
+            ? "Permission denied!"
+            : `${err.name}:${err.code}`
+        );
+        setIsFamilyLoading(false);
+        return false;
+      }
+    },
+    [deleteFamily, fetchUser]
+  );
+
+  const leaveFamily = useCallback(
+    async (data: Omit<IUserData, "familyId">, newFamilyId: string) => {
+      try {
+        await createFamily({
+          familyId: newFamilyId,
+          familyOwnerEmail: data.email,
+        });
+
+        await projectFirestore
+          .collection("users")
+          .doc(data.email)
+          .set({ ...data, familyId: newFamilyId } as IUserData);
+
+        await fetchUser(data.email);
+        setIsFamilyLoading(false);
+      } catch (err: any) {
+        errorToast(
+          err.code === "permission-denied"
+            ? "Permission denied!"
+            : `${err.name}:${err.code}`
+        );
+        setIsFamilyLoading(false);
+        return;
+      }
+    },
+
+    [createFamily, fetchUser]
+  );
 
   useEffect(() => {
-    if (authUser) fetchUser(authUser.email!);
+    if (authUser) {
+      void fetchUser(authUser.email!);
+    }
     // NOTE: Load user on first render only
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -358,7 +488,6 @@ const UserProvider: FC = ({ children }) => {
   return (
     <UserContext.Provider
       value={{
-        user: user || undefined,
         createUser,
         fetchUser,
         clearUser,
@@ -371,6 +500,10 @@ const UserProvider: FC = ({ children }) => {
         deleteProfilePicture,
         deleteBanner,
         removeMemberFromFamily,
+        leaveFamily,
+        joinFamily,
+        addMemberToFamily,
+        user,
         isUserLoading,
         isFamilyLoading,
         family,

@@ -1,5 +1,5 @@
 import { Email, Link, Share, WhatsApp } from "@material-ui/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { projectAuth } from "../../../firebase/config";
 import useWindowSize from "../../../hooks/useWindowSize";
@@ -32,20 +32,18 @@ const RegisterTemplate = () => {
   const { setError } = methods;
   const router = useHistory();
   const [isLoading, setIsLoading] = useState(false);
-  const [isExternalLink, setIsExternalLink] = useState(false);
   const { createUser, user, createFamily, doesFamilyIdExist } = useUser();
   const shareUrl = `${appDomain}register`;
   const randomId = uuidv4();
   const cookies = new Cookies();
+  const sessionId = cookies.get("sessionId");
+  const isExternalLink = sessionId !== undefined;
 
   const onSubmit = async (data: IUserData & { repeatPassword: string }) => {
     try {
       const { repeatPassword, ...rest } = data;
       const emailTag = data.email.trim().split("@")[0];
-      const sessionId = cookies.get("sessionId");
       const finalId = sessionId || `${emailTag}-${randomId}`;
-      const isExternalLink = sessionId !== undefined;
-      setIsExternalLink(isExternalLink);
 
       if (isExternalLink && !(await doesFamilyIdExist(finalId))) {
         errorToast("Provided invitation URL was corrupted.");
@@ -67,7 +65,11 @@ const RegisterTemplate = () => {
       if (user) {
         createUser({ ...additionalData, familyId: finalId });
 
-        if (!isExternalLink) createFamily({ familyId: finalId });
+        if (!isExternalLink)
+          createFamily({
+            familyId: finalId,
+            familyOwnerEmail: data.email.trim(),
+          });
       }
       cookies.remove("sessionId");
     } catch (err: any) {
@@ -78,6 +80,12 @@ const RegisterTemplate = () => {
     }
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    if (isExternalLink) {
+      router.replace(`/register`);
+    }
+  }, [isExternalLink, router, sessionId]);
 
   return user ? (
     <ThankYouPageWrapper>

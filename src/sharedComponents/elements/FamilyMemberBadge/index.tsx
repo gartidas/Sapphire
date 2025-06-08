@@ -79,6 +79,9 @@ const FamilyMemberBadge = ({ familyMember }: IFamilyMemberBadgeProps) => {
           }}
         >
           <ConfirmationForm
+            title={`Are you sure you want to remove ${
+              familyMember.nickname ?? familyMember.email
+            }?`}
             onClose={() => setIsDeleteModalOpen(false)}
             onDelete={async () => {
               changeFamilyLoadingState(true);

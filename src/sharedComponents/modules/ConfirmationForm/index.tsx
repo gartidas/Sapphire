@@ -13,16 +13,18 @@ interface IConfirmationForm {
   onClose: () => void;
   onDelete: () => Promise<void>;
   isLoading: boolean;
+  title?: string;
 }
 
 const ConfirmationForm = ({
   onClose,
   onDelete,
   isLoading,
+  title,
 }: IConfirmationForm) => {
   return (
     <Wrapper>
-      <Title>Are you sure?</Title>
+      <Title>{title ?? "Are you sure?"}</Title>
       <Icon icon={EIcon.DeleteConfirmation} alt="Confirmation" width={150} />
       <ButtonsWrapper>
         <StyledButton onClick={onDelete}>

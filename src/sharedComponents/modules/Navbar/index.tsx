@@ -11,7 +11,7 @@ import { useHistory } from "react-router-dom";
 import { useUser } from "../../../contextProviders/UserProvider";
 import { projectAuth } from "../../../firebase/config";
 import useWindowSize from "../../../hooks/useWindowSize";
-import { noop } from "../../../utils";
+import { noop } from "../../../utils/generic";
 import { MD } from "../../../theme/theme";
 
 import {
