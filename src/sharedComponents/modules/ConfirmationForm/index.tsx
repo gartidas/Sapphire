@@ -14,6 +14,7 @@ interface IConfirmationForm {
   onDelete: () => Promise<void>;
   isLoading: boolean;
   title?: string;
+  icon?: EIcon;
 }
 
 const ConfirmationForm = ({
@@ -21,11 +22,16 @@ const ConfirmationForm = ({
   onDelete,
   isLoading,
   title,
+  icon,
 }: IConfirmationForm) => {
   return (
     <Wrapper>
       <Title>{title ?? "Are you sure?"}</Title>
-      <Icon icon={EIcon.DeleteConfirmation} alt="Confirmation" width={150} />
+      <Icon
+        icon={icon ?? EIcon.DeleteConfirmation}
+        alt="Confirmation"
+        width={150}
+      />
       <ButtonsWrapper>
         <StyledButton onClick={onDelete}>
           {isLoading ? (

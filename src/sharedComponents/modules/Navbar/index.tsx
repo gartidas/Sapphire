@@ -2,6 +2,7 @@ import {
   Avatar,
   Button,
   ClickAwayListener,
+  makeStyles,
   MenuItem,
   Popper,
 } from "@material-ui/core";
@@ -34,7 +35,17 @@ interface INavbarProps {
   useLogoLink?: boolean;
 }
 
+const useStyles = makeStyles({
+  menuItem: {
+    gap: "0.5rem",
+    "&:hover": {
+      backgroundColor: "#f500570a",
+    },
+  },
+});
+
 const Navbar = ({ hideUserTag, useLogoLink }: INavbarProps) => {
+  const classes = useStyles();
   const auth = useAuth();
   const router = useHistory();
   const isDesktop = useWindowSize().width > MD;
@@ -111,19 +122,31 @@ const Navbar = ({ hideUserTag, useLogoLink }: INavbarProps) => {
       >
         <ClickAwayListener onClickAway={handleClose}>
           <StyledMenuWrapper autoFocusItem={isMenuOpen}>
-            {/* TODO: Replace with real icons */}
-            <MenuItem onClick={() => router.push("/profile")}>
-              <Icon icon={EIcon.Default} alt="Profile" width={40} /> Profile
+            <MenuItem
+              onClick={() => router.push("/profile")}
+              className={classes.menuItem}
+            >
+              <Icon icon={EIcon.Profile} alt="Profile" width={40} />
+              <div>Profile</div>
             </MenuItem>
-            <MenuItem onClick={() => router.push("/family")}>
-              <Icon icon={EIcon.Default} alt="Family" width={40} /> Family
+            <MenuItem
+              onClick={() => router.push("/family")}
+              className={classes.menuItem}
+            >
+              <Icon icon={EIcon.Family} alt="Family" width={40} />
+              <div>Family</div>
             </MenuItem>
-            <MenuItem onClick={() => router.push("/settings")}>
-              <Icon icon={EIcon.Default} alt="Settings" width={40} /> Settings
+            <MenuItem
+              onClick={() => router.push("/settings")}
+              className={classes.menuItem}
+            >
+              <Icon icon={EIcon.Settings} alt="Settings" width={40} />
+              <div>Settings</div>
             </MenuItem>
             <ThemedDivider />
-            <MenuItem onClick={onLogoutClick}>
-              <Icon icon={EIcon.Logout} alt="Log out" width={40} /> Log out
+            <MenuItem onClick={onLogoutClick} className={classes.menuItem}>
+              <Icon icon={EIcon.Logout} alt="Log out" width={40} />
+              <div>Log out</div>
             </MenuItem>
           </StyledMenuWrapper>
         </ClickAwayListener>

@@ -19,4 +19,11 @@ export enum EIcon {
   Submit,
   UploadImage,
   WrongAction,
+  JoinFamily,
+  LeaveFamily,
+  InviteMember,
+  Profile,
+  Family,
+  Settings,
+  ChangePassword,
 }

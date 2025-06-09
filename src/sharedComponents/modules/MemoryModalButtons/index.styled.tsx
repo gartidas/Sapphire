@@ -17,4 +17,8 @@ export const Button = styled(MuiButton)`
   @media screen and (max-width: ${SM}px) {
     padding: 0.625rem;
   }
+
+  :hover {
+    background-color: #f500570a;
+  }
 `;

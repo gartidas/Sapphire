@@ -19,6 +19,13 @@ import spinnerIcon from "./assets/Spinner.gif";
 import submitIcon from "./assets/Submit.gif";
 import uploadImageIcon from "./assets/UploadImage.gif";
 import wrongActionIcon from "./assets/WrongAction.gif";
+import joinFamilyIcon from "./assets/JoinFamily.gif";
+import leaveFamilyIcon from "./assets/LeaveFamily.gif";
+import inviteMemberIcon from "./assets/InviteMember.gif";
+import profileIcon from "./assets/Profile.gif";
+import familyIcon from "./assets/Family.gif";
+import settingsIcon from "./assets/Settings.gif";
+import changePasswordIcon from "./assets/ChangePassword.gif";
 import { EIcon } from "./model";
 
 interface IIconProps
@@ -72,8 +79,21 @@ const getIconSrc = (icon: EIcon) => {
       return uploadImageIcon;
     case EIcon.WrongAction:
       return wrongActionIcon;
+    case EIcon.JoinFamily:
+      return joinFamilyIcon;
+    case EIcon.LeaveFamily:
+      return leaveFamilyIcon;
+    case EIcon.InviteMember:
+      return inviteMemberIcon;
+    case EIcon.Profile:
+      return profileIcon;
+    case EIcon.Family:
+      return familyIcon;
+    case EIcon.Settings:
+      return settingsIcon;
+    case EIcon.ChangePassword:
+      return changePasswordIcon;
     default:
-      // TODO: Add default icon
       return defaultIcon;
   }
 };

@@ -21,6 +21,10 @@ export const IndicatingButton = styled(MuiButton)<IIndicatingButtonProps>`
       box-shadow: 0 0 0 12px transparent, 0 0 0 24px rgba(227, 115, 14, 0);
     }
   }
+
+  :hover {
+    background-color: #f500570a;
+  }
 `;
 
 export const ButtonsWrapper = styled.div`
@@ -48,7 +52,7 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: calc(100vh - ${NAVBAR_HEIGHT}px);
+  min-height: calc(100vh - ${NAVBAR_HEIGHT}px - 0.5rem);
   padding-top: 0.5rem;
 `;
 

@@ -115,6 +115,11 @@ export const ButtonBadge = styled.div`
   align-items: center;
   text-transform: none;
   gap: 0.5rem;
+  padding: 0.5rem;
+
+  :hover {
+    background-color: #f500570a;
+  }
 `;
 
 export const ButtonLabel = styled.div`

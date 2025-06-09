@@ -50,8 +50,7 @@ const JoinFamilyForm = ({
               <Spinner size={{ desktop: 30, mobile: 30 }} />
             ) : (
               <>
-                {/* TODO: Icon */}
-                <Icon icon={EIcon.Submit} alt="Submit" width={30} />
+                <Icon icon={EIcon.JoinFamily} alt="Join family" width={30} />
                 Join
               </>
             )}

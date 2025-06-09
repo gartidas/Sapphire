@@ -101,8 +101,11 @@ const ChangePasswordTab = () => {
             <Spinner size={{ desktop: 30, mobile: 30 }} />
           ) : (
             <>
-              {/* TODO: Add real icon */}
-              <Icon icon={EIcon.Submit} alt="Register" width={30} />
+              <Icon
+                icon={EIcon.ChangePassword}
+                alt="Change password"
+                width={30}
+              />
               Change password
             </>
           )}

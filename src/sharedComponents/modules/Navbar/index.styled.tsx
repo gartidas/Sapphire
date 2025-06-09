@@ -14,6 +14,7 @@ export const StyledNavbar = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 0.5rem;
   height: calc(${NAVBAR_HEIGHT}px - 1px);
   border-bottom: 1px solid ${theme.primary};
   background-color: ${theme.secondary};

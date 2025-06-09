@@ -276,7 +276,7 @@ const FamilyTemplate = () => {
       <ControlButtons>
         <Button style={{ padding: 0 }} ref={anchorRef} onClick={handleToggle}>
           <ButtonBadge>
-            <Icon icon={EIcon.Add} alt="Add" width={40} />
+            <Icon icon={EIcon.InviteMember} alt="Invite member" width={40} />
             <ButtonLabel>Invite member</ButtonLabel>
           </ButtonBadge>
         </Button>
@@ -285,12 +285,11 @@ const FamilyTemplate = () => {
           style={{ padding: 0 }}
           onClick={() => setOpenedJoinFamilyModal((prev) => !prev)}
         >
-          {/* TODO: Icon */}
           <ButtonBadge>
             {isFamilyLoading ? (
               <Spinner size={{ desktop: 40, mobile: 40 }} />
             ) : (
-              <Icon icon={EIcon.Add} alt="Join family" width={40} />
+              <Icon icon={EIcon.JoinFamily} alt="Join family" width={40} />
             )}
             <ButtonLabel>Join family</ButtonLabel>
           </ButtonBadge>
@@ -301,12 +300,11 @@ const FamilyTemplate = () => {
             style={{ padding: 0 }}
             onClick={() => setOpenedLeaveFamilyModal((prev) => !prev)}
           >
-            {/* TODO: Icon */}
             <ButtonBadge>
               {isFamilyLoading ? (
                 <Spinner size={{ desktop: 40, mobile: 40 }} />
               ) : (
-                <Icon icon={EIcon.Logout} alt="Leave family" width={40} />
+                <Icon icon={EIcon.LeaveFamily} alt="Leave family" width={40} />
               )}
               <ButtonLabel>Leave family</ButtonLabel>
             </ButtonBadge>
@@ -451,6 +449,7 @@ const FamilyTemplate = () => {
         >
           <ConfirmationForm
             title="Are you sure you want to leave the family?"
+            icon={EIcon.LeaveFamily}
             onClose={() => setOpenedLeaveFamilyModal(false)}
             onDelete={async () => {
               changeFamilyLoadingState(true);
@@ -487,6 +486,7 @@ const FamilyTemplate = () => {
         >
           <ConfirmationForm
             title="Are you sure you want to dissolve the family?"
+            icon={EIcon.LeaveFamily}
             onClose={() => setOpenedConfirmJoinFamilyModal(false)}
             onDelete={async () => {
               changeFamilyLoadingState(true);

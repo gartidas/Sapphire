@@ -155,6 +155,7 @@ const HomeTemplate = () => {
 
             {openedModal.type === ModalType.Confirmation && (
               <ConfirmationForm
+                title="Are you sure you want to delete this memory?"
                 onDelete={async () => {
                   changeLoadingState(true);
                   await deleteMemory(openedModal.memory, user!.familyId);

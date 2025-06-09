@@ -48,6 +48,10 @@ export const StyledButton = styled(Button)`
   @media screen and (max-width: ${SM}px) {
     padding: 0 1.3rem;
   }
+
+  :hover {
+    background-color: #f500570a;
+  }
 `;
 
 export const ButtonContent = styled.div`
