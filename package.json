@@ -1,6 +1,6 @@
 {
-  "name": "test",
-  "version": "0.1.0",
+  "name": "sapphire",
+  "version": "3.0.0",
   "private": true,
   "dependencies": {
     "@date-io/moment": "1.x",
@@ -18,7 +18,7 @@
     "@types/react-file-icon": "^1.0.1",
     "@types/react-linkify": "^1.0.1",
     "@types/uuid": "^9.0.0",
-    "firebase": "^8.3.2",
+    "firebase": "8.10.0",
     "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -31,7 +31,7 @@
     "react-moment": "^1.1.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
-    "react-snowfall": "^1.1.2",
+    "react-snowfall": "^2.2.0",
     "react-toastify": "^7.0.4",
     "styled-components": "^5.2.2",
     "typescript": "^4.1.2",

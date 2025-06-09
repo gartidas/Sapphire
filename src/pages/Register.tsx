@@ -1,11 +1,11 @@
 import { Helmet } from "react-helmet";
 import { useHistory, useParams } from "react-router-dom";
 
-import DefaultLayout from "../components/layouts/DefaultLayout";
-import RegisterTemplate from "../components/templates/Register/RegisterTemplate";
+import RegisterTemplate from "../sharedComponents/templates/RegisterTemplate";
 import { useEffect } from "react";
-import Navbar from "../components/modules/Navbar/Navbar";
+import Navbar from "../sharedComponents/modules/Navbar";
 import Cookies from "universal-cookie";
+import DefaultLayout from "../sharedComponents/layouts/DefaultLayout";
 
 function Register() {
   const { sessionId } = useParams<{ sessionId: string }>();

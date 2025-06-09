@@ -1,11 +1,11 @@
 import { useEffect, useState, useCallback } from "react";
 
-export interface UseWindowSizeReturn {
+interface IUseWindowSizeReturn {
   width: number;
   height: number;
 }
 
-export const useWindowSize = (): UseWindowSizeReturn => {
+export const useWindowSize = (): IUseWindowSizeReturn => {
   const isClient = typeof window === "object";
 
   const getSize = useCallback(

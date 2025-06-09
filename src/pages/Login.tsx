@@ -1,8 +1,8 @@
 import { Helmet } from "react-helmet";
 
-import DefaultLayout from "../components/layouts/DefaultLayout";
-import Footer from "../components/modules/Footer/Footer";
-import LoginTemplate from "../components/templates/Login/LoginTemplate";
+import Footer from "../sharedComponents/modules/Footer";
+import LoginTemplate from "../sharedComponents/templates/LoginTemplate";
+import DefaultLayout from "../sharedComponents/layouts/DefaultLayout";
 
 function Login() {
   return (
