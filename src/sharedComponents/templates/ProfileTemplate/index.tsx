@@ -55,6 +55,9 @@ const ProfileTemplate = () => {
     event: KeyboardEvent<HTMLInputElement>
   ) => {
     if (event.key === "Enter") {
+      event.preventDefault();
+      event.stopPropagation();
+
       const input = event.target as HTMLInputElement;
       const textBoxValue = input.value;
 
@@ -66,7 +69,6 @@ const ProfileTemplate = () => {
         successToast("Nickname updated!");
       }
       setIsNicknameEditing(false);
-      input.blur();
     } else if (event.key === "Escape") {
       setIsNicknameEditing(false);
     }
