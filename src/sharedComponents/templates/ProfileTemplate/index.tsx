@@ -55,7 +55,8 @@ const ProfileTemplate = () => {
     event: KeyboardEvent<HTMLInputElement>
   ) => {
     if (event.key === "Enter") {
-      const textBoxValue = (event.target as HTMLInputElement).value;
+      const input = event.target as HTMLInputElement;
+      const textBoxValue = input.value;
 
       if (user!.nickname || textBoxValue !== "") {
         await updateUser({
@@ -65,6 +66,7 @@ const ProfileTemplate = () => {
         successToast("Nickname updated!");
       }
       setIsNicknameEditing(false);
+      input.blur();
     } else if (event.key === "Escape") {
       setIsNicknameEditing(false);
     }
