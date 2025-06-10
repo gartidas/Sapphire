@@ -26,6 +26,9 @@ import { EIcon } from "../../elements/Icon/model";
 import Spinner from "../../elements/Spinner";
 import Icon from "../../elements/Icon";
 import ConfirmationForm from "../../modules/ConfirmationForm";
+import { SM } from "../../../theme/theme";
+import useWindowSize from "../../../hooks/useWindowSize";
+import ProfileNicknameForm from "../../modules/ProfileNicknameForm";
 
 const ProfileTemplate = () => {
   const [file, setFile] = useState<File>();
@@ -42,10 +45,12 @@ const ProfileTemplate = () => {
   const [isNicknameEditing, setIsNicknameEditing] = useState(false);
   const [isStatusLoading, setIsStatusLoading] = useState(false);
   const [statusLength, setStatusLength] = useState(0);
+  const isDesktop = useWindowSize().width > SM;
   const debouncedHandleStatusSubmit = useDebounce(
     (targetElement: HTMLInputElement) => handleStatusSubmit(targetElement),
     500
   );
+  const [openedNicknameModal, setOpenedNicknameModal] = useState(false);
   const [openedProfilePictureModal, setOpenedProfilePictureModal] =
     useState(false);
   const [openedDeleteProfilePictureModal, setOpenedDeleteProfilePictureModal] =
@@ -156,7 +161,13 @@ const ProfileTemplate = () => {
               inputRef={nicknameTextFieldRef}
             />
           ) : (
-            <NicknamePlaceholder onClick={() => setIsNicknameEditing(true)}>
+            <NicknamePlaceholder
+              onClick={() =>
+                isDesktop
+                  ? setIsNicknameEditing(true)
+                  : setOpenedNicknameModal(true)
+              }
+            >
               {user?.nickname ?? user?.email}
             </NicknamePlaceholder>
           )}
@@ -219,6 +230,21 @@ const ProfileTemplate = () => {
               setOpenedDeleteProfilePictureModal(false);
             }}
             isLoading={isUserLoading}
+          />
+        </Modal>
+      )}
+
+      {openedNicknameModal && (
+        <Modal
+          open
+          onClose={() => {
+            setOpenedNicknameModal(false);
+          }}
+        >
+          <ProfileNicknameForm
+            onSubmit={() => {
+              setOpenedNicknameModal(false);
+            }}
           />
         </Modal>
       )}
